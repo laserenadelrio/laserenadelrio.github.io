@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta · La Serena</title>
+<meta name="description" content="Carta de La Serena, la cabaña junto al río. Horno de barro. Av. Victorica 708, Tigre.">
+<meta name="theme-color" content="#23402e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2323402e'/%3E%3Cpath d='M10 52 L32 12 L54 52' fill='none' stroke='%23b8862b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='27' y='32' width='10' height='12' fill='none' stroke='%23f6f0e4' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+  :root { --papel:#f6f0e4; --verde:#23402e; --oro:#b8862b; --barro:#a8502a; --tinta:#2a2520; --gris:#776e63; --linea:#d8ccb6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--verde); }
+  body { background: var(--papel); color: var(--tinta); font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; max-width: 640px; margin: 0 auto; min-height: 100vh; }
+  header { background: var(--verde); color: var(--papel); text-align: center; padding: 26px 16px 20px; }
+  header svg { display: block; margin: 0 auto 8px; }
+  header h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 34px; letter-spacing: 0.22em; }
+  header .hb { font-family: Georgia, serif; letter-spacing: 0.34em; font-size: 12px; color: var(--oro); text-transform: uppercase; margin-top: 4px; }
+  header .lema { font-family: Georgia, serif; font-style: italic; color: #d9c79f; font-size: 15px; margin-top: 8px; }
+  header .acc { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  header .acc a { color: var(--papel); text-decoration: none; border: 1px solid rgba(246,240,228,.4); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
+  header .acc a.oro { background: var(--oro); border-color: var(--oro); color: #1d2e22; font-weight: 600; }
+  .barra { position: sticky; top: 0; z-index: 2; background: var(--papel); border-bottom: 1px solid var(--linea); }
+  .buscar { padding: 10px 16px 0; }
+  .buscar input { width: 100%; font: inherit; font-size: 16px; padding: 9px 14px; border: 1px solid var(--linea); border-radius: 999px; background: #fbf7ee; color: var(--tinta); outline: none; }
+  .buscar input:focus { border-color: var(--oro); }
+  nav { display: flex; gap: 6px; overflow-x: auto; padding: 10px 16px; scrollbar-width: none; }
+  nav::-webkit-scrollbar { display: none; }
+  nav a { flex: none; text-decoration: none; color: var(--verde); border: 1px solid var(--linea); border-radius: 999px; padding: 6px 13px; font-size: 14px; background: #fbf7ee; }
+  nav a.on { background: var(--verde); color: var(--papel); border-color: var(--verde); }
+  main { padding: 4px 16px 10px; }
+  section { padding-top: 20px; scroll-margin-top: 112px; }
+  h2 { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--verde); border-bottom: 2px solid var(--oro); padding-bottom: 5px; margin-bottom: 4px; }
+  .it { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px dotted #cdbd9f; }
+  .it:last-child { border-bottom: none; }
+  .it .ft { width: 58px; height: 58px; border-radius: 9px; object-fit: cover; flex: none; background: #ece2cd; }
+  .it .tx { flex: 1; min-width: 0; }
+  .it .n { font-weight: 600; font-size: 16px; line-height: 1.25; }
+  .it .d { color: var(--gris); font-size: 13.5px; line-height: 1.4; margin-top: 3px; }
+  .it .p { font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; font-size: 16px; color: var(--verde); white-space: nowrap; align-self: flex-start; padding-top: 1px; }
+  .stc { display: inline-block; vertical-align: 2px; margin-left: 6px; color: var(--verde); font-size: 10.5px; font-weight: 700; border: 1px solid var(--verde); border-radius: 4px; padding: 0 4px; }
+  /* Promos en tarjetas */
+  .promos { display: grid; gap: 10px; margin-top: 10px; }
+  .promo { display: flex; border: 2px solid var(--barro); border-radius: 12px; background: #fffaf0; overflow: hidden; }
+  .promo img { width: 96px; object-fit: cover; flex: none; }
+  .promo .tx { padding: 10px 12px; flex: 1; }
+  .promo .n { font-family: Georgia, serif; font-size: 17px; line-height: 1.2; }
+  .promo .d { color: var(--gris); font-size: 13.5px; line-height: 1.4; margin-top: 4px; }
+  .promo .p { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 20px; color: var(--barro); margin-top: 6px; }
+  .avisovinos { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 10px 0 4px; border: 1.5px dashed var(--oro); border-radius: 10px; background: #fbf7ee; padding: 10px 14px; color: var(--verde); text-decoration: none; font-size: 15px; }
+  .avisovinos b { font-family: Georgia, serif; font-weight: 400; }
+  .vacio { text-align: center; color: var(--gris); padding: 40px 0; display: none; }
+  footer { text-align: center; padding: 22px 16px 34px; color: var(--gris); font-size: 13.5px; line-height: 1.7; border-top: 2px solid var(--oro); margin: 18px 16px 0; }
+  footer .sl { font-family: Georgia, serif; font-style: italic; color: var(--oro); font-size: 20px; margin-bottom: 6px; }
+  footer a { color: var(--verde); font-weight: 600; text-decoration: none; }
+  footer small { display: block; margin-top: 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <svg width="70" height="56" viewBox="0 0 64 52" aria-hidden="true"><path d="M4 48 L32 4 L60 48" fill="none" stroke="#b8862b" stroke-width="2.4" stroke-linejoin="round"/><rect x="27" y="24" width="10" height="13" fill="none" stroke="#f6f0e4" stroke-width="2"/><line x1="32" y1="24" x2="32" y2="37" stroke="#f6f0e4" stroke-width="2"/></svg>
+  <h1>LA SERENA</h1>
+  <div class="hb">Horno de barro</div>
+  <div class="lema">La cabaña junto al río</div>
+  <div class="acc"><a class="oro" href="vinos/">Carta de vinos</a><a href="https://wa.me/5491153349375">Reservas por WhatsApp</a></div>
+</header>
+<div class="barra">
+  <div class="buscar"><input id="q" type="search" placeholder="Buscar en la carta…" aria-label="Buscar en la carta"></div>
+  <nav id="nav"></nav>
+</div>
+<main id="carta"></main>
+<p class="vacio" id="vacio">No encontramos nada con esa búsqueda.</p>
+<footer>
+  <div class="sl">¡Gracias por venir!</div>
+  <span class="stc" style="margin:0">S/TACC</span> Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.<br><br>
+  Martes a domingo de 10 a 01 h · lunes cerrado, salvo feriados<br>
+  Av. Victorica 708, Tigre · <a href="https://instagram.com/laserenadelrio">@laserenadelrio</a><br>
+  Reservas y takeaway: <a href="https://wa.me/5491153349375">+54 9 11 5334-9375</a>
+  <small id="act"></small>
+</footer>
+<script src="datos/fudo.js"></script>
+<script src="datos/ajustes.js"></script>
+<script>
+  function slug(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-"); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  var nav = "", html = "";
+  FUDO.categorias.forEach(function (c) {
+    var nom = nombreCategoria(c), id = slug(nom), esPromo = /PROMO/i.test(c.nombre), esVino = /vino/i.test(c.nombre);
+    var items = c.productos.map(function (p) { return producto(c.nombre, p); }).filter(Boolean);
+    if (!items.length) return;
+    nav += '<a href="#' + id + '">' + nom + '</a>';
+    html += '<section id="' + id + '"><h2>' + nom + '</h2>';
+    if (esVino) html += '<a class="avisovinos" href="vinos/"><b>Mirá la carta de vinos completa</b><span>→</span></a>';
+    if (esPromo) html += '<div class="promos">';
+    items.forEach(function (v) {
+      var buscar = esc((v.nombre + " " + v.desc + " " + nom).toLowerCase());
+      var pr = v.precio ? '$' + precio(v.precio) : '';
+      var stc = v.stacc ? '<span class="stc">S/TACC</span>' : '';
+      var nota = v.nota || v.desc;
+      if (esPromo) {
+        html += '<div class="promo" data-b="' + buscar + '">' + (v.foto ? '<img loading="lazy" alt="" src="' + v.foto + '">' : '') +
+          '<div class="tx"><div class="n">' + esc(v.nombre) + '</div>' + (nota ? '<div class="d">' + esc(nota) + '</div>' : '') + (pr ? '<div class="p">' + pr + '</div>' : '') + '</div></div>';
+      } else {
+        html += '<div class="it" data-b="' + buscar + '">' + (v.foto ? '<img class="ft" loading="lazy" alt="" src="' + v.foto + '">' : '') +
+          '<div class="tx"><div class="n">' + esc(v.nombre) + stc + '</div>' + (nota ? '<div class="d">' + esc(nota) + '</div>' : '') + '</div><div class="p">' + pr + '</div></div>';
+      }
+    });
+    if (esPromo) html += '</div>';
+    html += '</section>';
+  });
+  document.getElementById("nav").innerHTML = nav;
+  document.getElementById("carta").innerHTML = html;
+  document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
+
+  // Buscador: filtra productos y esconde las categorías que quedan vacías.
+  document.getElementById("q").addEventListener("input", function () {
+    var q = this.value.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""), hay = false;
+    document.querySelectorAll("#carta section").forEach(function (s) {
+      var alguno = false;
+      s.querySelectorAll("[data-b]").forEach(function (el) {
+        var ok = !q || el.getAttribute("data-b").normalize("NFD").replace(/[̀-ͯ]/g, "").indexOf(q) >= 0;
+        el.style.display = ok ? "" : "none"; if (ok) alguno = true;
+      });
+      s.style.display = alguno ? "" : "none"; if (alguno) hay = true;
+    });
+    document.getElementById("vacio").style.display = hay ? "none" : "block";
+  });
+
+  // Marca en la barra la categoría que se está viendo.
+  var links = document.querySelectorAll("#nav a");
+  var obs = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a) {
+        var on = a.getAttribute("href") === "#" + e.target.id;
+        a.classList.toggle("on", on);
+        if (on) a.scrollIntoView({ block: "nearest", inline: "center" });
+      });
+    });
+  }, { rootMargin: "-120px 0px -70% 0px" });
+  document.querySelectorAll("#carta section").forEach(function (s) { obs.observe(s); });
+</script>
+</body>
+</html>
