@@ -1,0 +1,22 @@
+# Cada hora lee la carta QR de Fudo y, si cambió algún producto o precio, actualiza la página publicada.
+name: Actualizar carta desde Fudo
+on:
+  schedule:
+    - cron: "15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leer Fudo
+        shell: pwsh
+        run: ./actualizar-desde-fudo.ps1
+      - name: Guardar si hubo cambios
+        run: |
+          git config user.name "Carta La Serena"
+          git config user.email "actions@users.noreply.github.com"
+          git add datos/fudo.js
+          git diff --cached --quiet || (git commit -m "Carta actualizada desde Fudo" && git push)
