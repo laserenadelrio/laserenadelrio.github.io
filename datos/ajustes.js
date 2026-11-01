@@ -4,6 +4,8 @@
 // Nombres de categorías más lindos (la clave es el nombre en Fudo, en mayúsculas).
 var CATEGORIAS = {
   "PIZZA": "Pizzas",
+  "PASTAS CASERAS": "Pastas caseras",
+  "COSAS SALADAS": "Cosas saladas",
   "CERVEZA": "Cervezas",
   "COSAS DULCES Y POSTRES": "Dulces y postres",
   "MENU INFANTIL": "Menú infantil",
