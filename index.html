@@ -8,52 +8,178 @@
 <meta name="theme-color" content="#23402e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2323402e'/%3E%3Cpath d='M10 52 L32 12 L54 52' fill='none' stroke='%23b8862b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='27' y='32' width='10' height='12' fill='none' stroke='%23f6f0e4' stroke-width='3'/%3E%3C/svg%3E">
 <style>
-  :root { --papel:#f6f0e4; --verde:#23402e; --oro:#b8862b; --barro:#a8502a; --tinta:#2a2520; --gris:#776e63; --linea:#d8ccb6; }
+  :root { --papel:#f6f0e4; --crema2:#fbf7ee; --verde:#23402e; --verde2:#1f3a2b; --oro:#b8862b; --barro:#a8502a; --tinta:#2a2520; --gris:#776e63; --linea:#d8ccb6; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { background: var(--verde); }
-  body { background: var(--papel); color: var(--tinta); font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; max-width: 640px; margin: 0 auto; min-height: 100vh; }
-  header { background: var(--verde); color: var(--papel); text-align: center; padding: 26px 16px 20px; }
+  body { background: var(--papel); color: var(--tinta); font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; max-width: 640px; margin: 0 auto; min-height: 100vh; overflow-x: hidden; }
+  a { color: inherit; }
+  .serif { font-family: Georgia, "Times New Roman", serif; }
+
+  header { background: var(--verde); color: var(--papel); text-align: center; padding: 24px 16px 20px; }
   header svg { display: block; margin: 0 auto 8px; }
-  header h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 34px; letter-spacing: 0.22em; }
+  header h1 { font-family: Georgia, serif; font-weight: 400; font-size: 34px; letter-spacing: 0.22em; }
   header .hb { font-family: Georgia, serif; letter-spacing: 0.34em; font-size: 12px; color: var(--oro); text-transform: uppercase; margin-top: 4px; }
   header .lema { font-family: Georgia, serif; font-style: italic; color: #d9c79f; font-size: 15px; margin-top: 8px; }
   header .acc { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
   header .acc a { color: var(--papel); text-decoration: none; border: 1px solid rgba(246,240,228,.4); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
   header .acc a.oro { background: var(--oro); border-color: var(--oro); color: #1d2e22; font-weight: 600; }
-  .barra { position: sticky; top: 0; z-index: 2; background: var(--papel); border-bottom: 1px solid var(--linea); }
+
+  .barra { position: sticky; top: 0; z-index: 3; background: var(--papel); border-bottom: 1px solid var(--linea); }
   .buscar { padding: 10px 16px 0; }
-  .buscar input { width: 100%; font: inherit; font-size: 16px; padding: 9px 14px; border: 1px solid var(--linea); border-radius: 999px; background: #fbf7ee; color: var(--tinta); outline: none; }
+  .buscar input { width: 100%; font: inherit; font-size: 16px; padding: 9px 14px; border: 1px solid var(--linea); border-radius: 999px; background: var(--crema2); color: var(--tinta); outline: none; }
   .buscar input:focus { border-color: var(--oro); }
   nav { display: flex; gap: 6px; overflow-x: auto; padding: 10px 16px; scrollbar-width: none; }
   nav::-webkit-scrollbar { display: none; }
-  nav a { flex: none; text-decoration: none; color: var(--verde); border: 1px solid var(--linea); border-radius: 999px; padding: 6px 13px; font-size: 14px; background: #fbf7ee; }
+  nav a { flex: none; text-decoration: none; color: var(--verde); border: 1px solid var(--linea); border-radius: 999px; padding: 6px 13px; font-size: 14px; background: var(--crema2); }
   nav a.on { background: var(--verde); color: var(--papel); border-color: var(--verde); }
+  nav a.esp { border-color: var(--oro); color: #7a5a1c; }
+  nav a.esp.on { background: var(--oro); color: #1d2e22; }
+
   main { padding: 4px 16px 10px; }
-  section { padding-top: 20px; scroll-margin-top: 112px; }
-  h2 { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--verde); border-bottom: 2px solid var(--oro); padding-bottom: 5px; margin-bottom: 4px; }
-  .it { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px dotted #cdbd9f; }
+  section { padding-top: 22px; scroll-margin-top: 112px; }
+  h2 { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--verde); border-bottom: 2px solid var(--oro); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  h2 small { font-family: "Segoe UI", system-ui, sans-serif; letter-spacing: 0; text-transform: none; font-size: 12.5px; color: var(--gris); font-style: italic; text-align: right; }
+  .sub { font-size: 11.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oro); margin: 14px 0 0; }
+
+  /* Filas de la carta: todas con el mismo recuadro de foto */
+  .it { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px dotted #cdbd9f; }
   .it:last-child { border-bottom: none; }
-  .it .ft { width: 58px; height: 58px; border-radius: 9px; object-fit: cover; flex: none; background: #ece2cd; }
+  .ft { width: 60px; height: 60px; border-radius: 10px; flex: none; overflow: hidden; background: #ece2cd; }
+  .ft img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ft.vacia { background: var(--crema2); border: 1.5px dashed #d3bf95; display: flex; align-items: center; justify-content: center; }
   .it .tx { flex: 1; min-width: 0; }
-  .it .n { font-weight: 600; font-size: 16px; line-height: 1.25; }
-  .it .d { color: var(--gris); font-size: 13.5px; line-height: 1.4; margin-top: 3px; }
-  .it .p { font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; font-size: 16px; color: var(--verde); white-space: nowrap; align-self: flex-start; padding-top: 1px; }
-  .stc { display: inline-block; vertical-align: 2px; margin-left: 6px; color: var(--verde); font-size: 10.5px; font-weight: 700; border: 1px solid var(--verde); border-radius: 4px; padding: 0 4px; }
-  /* Promos en tarjetas */
-  .promos { display: grid; gap: 10px; margin-top: 10px; }
-  .promo { display: flex; border: 2px solid var(--barro); border-radius: 12px; background: #fffaf0; overflow: hidden; }
-  .promo img { width: 96px; object-fit: cover; flex: none; }
-  .promo .tx { padding: 10px 12px; flex: 1; }
-  .promo .n { font-family: Georgia, serif; font-size: 17px; line-height: 1.2; }
-  .promo .d { color: var(--gris); font-size: 13.5px; line-height: 1.4; margin-top: 4px; }
-  .promo .p { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 20px; color: var(--barro); margin-top: 6px; }
-  .avisovinos { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 10px 0 4px; border: 1.5px dashed var(--oro); border-radius: 10px; background: #fbf7ee; padding: 10px 14px; color: var(--verde); text-decoration: none; font-size: 15px; }
-  .avisovinos b { font-family: Georgia, serif; font-weight: 400; }
+  .it .n { font-weight: 600; font-size: 15.5px; line-height: 1.25; }
+  .it .d { color: var(--gris); font-size: 13px; line-height: 1.35; margin-top: 2px; }
+  .it .p { font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; font-size: 15.5px; color: var(--verde); text-align: right; flex: none; max-width: 42%; line-height: 1.25; }
+  .it.star .n::after { content: " ★"; color: var(--oro); font-size: 13px; }
+  .stc { display: inline-block; vertical-align: 2px; margin-left: 6px; color: var(--verde); font-size: 10px; font-weight: 700; border: 1px solid var(--verde); border-radius: 4px; padding: 0 4px; letter-spacing: 0.02em; }
+
+  /* Lo que se viene */
+  .eventos { display: flex; align-items: flex-start; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 12px -16px 0; padding: 0 16px 6px; scrollbar-width: none; }
+  .eventos::-webkit-scrollbar { display: none; }
+  .ev { flex: none; width: 84%; max-width: 420px; scroll-snap-align: center; background: var(--verde); color: var(--papel); border-radius: 16px; padding: 16px 16px 14px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .ev::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,134,43,.55); border-radius: 12px; pointer-events: none; }
+  .ev .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .ev .tag { background: var(--oro); color: #1d2e22; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; }
+  .ev .cuando { font-size: 12.5px; color: #d9c79f; text-align: right; }
+  .ev .t { font-family: Georgia, serif; font-size: 23px; line-height: 1.15; margin-top: 12px; }
+  .ev .su { font-size: 12.5px; color: var(--oro); margin-top: 3px; letter-spacing: 0.04em; }
+  .ev .s { font-size: 14px; line-height: 1.45; color: #e9e1cf; margin-top: 8px; }
+  .ev .pr { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 15px; color: var(--papel); margin-top: 10px; }
+  .ev .urg { display: inline-block; margin-top: 10px; background: var(--barro); color: var(--papel); font-size: 12.5px; font-weight: 700; border-radius: 6px; padding: 4px 9px; }
+  .ev .btn { margin-top: auto; }
+  .ev .esp { flex: 1; min-height: 12px; }
+  .btn { display: block; text-align: center; text-decoration: none; background: var(--oro); color: #1d2e22; font-weight: 700; font-size: 15px; border-radius: 10px; padding: 11px 14px; }
+  .btn.verde { background: var(--verde); color: var(--papel); }
+  .hoy { background: var(--barro) !important; color: var(--papel) !important; }
+  .puntos { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+  .puntos i { width: 6px; height: 6px; border-radius: 50%; background: var(--linea); }
+
+  /* Promos, como en la carta física */
+  .promos { display: grid; gap: 10px; margin-top: 12px; }
+  .promo { display: flex; border: 2px solid var(--barro); border-radius: 14px; background: #fffaf0; overflow: hidden; min-height: 104px; }
+  .promo .pf { width: 104px; flex: none; display: flex; background: #ece2cd; position: relative; }
+  .promo .pf img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .promo .pf.dos img { height: 50%; } .promo .pf.dos img + img { top: 50%; }
+  .promo .pf.vacia { background: var(--crema2); align-items: center; justify-content: center; border-right: 1.5px dashed #d3bf95; }
+  .promo .tx { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .promo .tag { align-self: flex-start; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--papel); background: var(--barro); border-radius: 999px; padding: 2px 8px; }
+  .promo .t { font-family: Georgia, serif; font-size: 17px; line-height: 1.2; margin-top: 6px; }
+  .promo .t b { color: var(--barro); font-weight: 700; }
+  .promo .s { color: var(--gris); font-size: 13px; line-height: 1.35; margin-top: 3px; }
+  .promo .p { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 21px; color: var(--barro); margin-top: auto; padding-top: 6px; }
+  .promo.verde { border-color: var(--verde); } .promo.verde .tag { background: var(--verde); } .promo.verde .p, .promo.verde .t b { color: var(--verde); }
+  .promo.oro { border-color: var(--oro); background: #fbf3e2; } .promo.oro .tag { background: var(--oro); color: #1d2e22; } .promo.oro .p { color: #8a6416; }
+  .promo.destacada { flex-direction: column; border-color: var(--verde); background: var(--verde); color: var(--papel); }
+  .promo.destacada .pf { width: 100%; height: 150px; }
+  .promo.destacada .pf.dos img { height: 100%; width: 50%; } .promo.destacada .pf.dos img + img { top: 0; left: 50%; }
+  .promo.destacada .tx { padding: 12px 14px 14px; }
+  .promo.destacada .tag { background: var(--oro); color: #1d2e22; }
+  .promo.destacada .t { font-size: 22px; } .promo.destacada .t b { color: var(--oro); }
+  .promo.destacada .s { color: #e3dac6; }
+  .promo.destacada .p { color: var(--papel); font-size: 26px; }
+  .promo.cash { border-style: dashed; border-color: var(--verde); }
+  .promo.cash .pf { background: var(--verde); color: var(--oro); font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 30px; align-items: center; justify-content: center; }
+  .promo.cash .tx { justify-content: center; } .promo.cash .t { margin-top: 0; } .promo.cash .t b { color: var(--verde); }
+
+  /* La semana */
+  .semana { display: grid; gap: 10px; margin-top: 12px; }
+  .dia { display: flex; border: 2px solid var(--verde); border-radius: 12px; background: #fffaf0; overflow: hidden; }
+  .dia .cu { width: 92px; flex: none; background: var(--verde); color: var(--papel); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8px 6px; }
+  .dia .cu b { font-family: Bahnschrift, sans-serif; font-size: 15px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .dia .cu small { font-size: 11.5px; opacity: 0.85; margin-top: 3px; line-height: 1.25; }
+  .dia .tx { padding: 10px 12px; flex: 1; min-width: 0; }
+  .dia .t { font-family: Georgia, serif; font-size: 16.5px; line-height: 1.2; }
+  .dia .s { font-size: 13px; color: var(--gris); margin-top: 3px; line-height: 1.35; }
+  .dia .pr { font-family: Bahnschrift, sans-serif; font-weight: 700; color: var(--verde); font-size: 17px; margin-top: 5px; }
+  .dia .pr small { font-family: "Segoe UI", sans-serif; font-weight: 400; font-size: 12px; color: var(--gris); margin-left: 4px; }
+  .dia .estreno { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--barro); color: var(--papel); border-radius: 999px; padding: 2px 8px; margin-bottom: 4px; }
+  .dia.oro { border-color: var(--oro); } .dia.oro .cu { background: var(--oro); color: #1d2e22; }
+  .dia.barro { border-color: var(--barro); } .dia.barro .cu { background: var(--barro); }
+
+  .clubbanner { display: flex; align-items: center; gap: 12px; margin-top: 14px; text-decoration: none; background: var(--verde); color: var(--papel); border-radius: 14px; padding: 12px 14px; border: 1.5px solid var(--oro); }
+  .clubbanner .tr { font-size: 28px; color: var(--oro); line-height: 1; }
+  .clubbanner b { font-family: Georgia, serif; font-weight: 400; font-size: 17px; display: block; }
+  .clubbanner span { font-size: 13px; color: #d9c79f; }
+  .clubbanner .fl { margin-left: auto; color: var(--oro); font-size: 20px; }
+
+  /* Recuadros dentro de categorías */
+  .vermut { border: 2px solid var(--barro); border-radius: 12px; background: #fffaf0; padding: 10px 12px 8px; margin-top: 12px; }
+  .vermut .vt { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .vermut .tag { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--papel); background: var(--barro); border-radius: 999px; padding: 3px 9px; }
+  .vermut .desde { font-size: 12px; color: var(--barro); font-weight: 600; }
+  .vermut table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+  .vermut th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gris); text-align: right; padding: 0 0 4px 8px; }
+  .vermut th.mar, .vermut td.mar { color: var(--barro); }
+  .vermut td { padding: 6px 0; border-top: 1px dotted #cdbd9f; vertical-align: top; }
+  .vermut td:not(:first-child) { text-align: right; font-family: Bahnschrift, sans-serif; font-weight: 700; white-space: nowrap; padding-left: 8px; color: var(--verde); }
+  .vermut td i { display: block; color: var(--gris); font-size: 12.5px; font-style: normal; }
+  .vermut td.solo { font-family: "Segoe UI", sans-serif; font-weight: 400; font-size: 12px; color: var(--gris); white-space: normal; }
+  .avisovinos { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 12px 0 4px; border-radius: 12px; background: var(--verde); padding: 12px 14px; color: var(--papel); text-decoration: none; font-size: 14px; }
+  .avisovinos b { font-family: Georgia, serif; font-weight: 400; font-size: 17px; display: block; }
+  .avisovinos span { color: #d9c79f; font-size: 13px; }
+  .avisovinos .fl { color: var(--oro); font-size: 20px; }
+
+  /* Empanadas en mosaico */
+  .emp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .emp .e { background: #fffaf0; border: 1px solid var(--linea); border-radius: 10px; overflow: hidden; text-align: center; }
+  .emp .e .ft { width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; }
+  .emp .e .ft.vacia { border: none; border-bottom: 1.5px dashed #d3bf95; }
+  .emp .e .n { font-size: 12.5px; font-weight: 600; line-height: 1.2; padding: 6px 4px 7px; min-height: 2.4em; display: flex; align-items: center; justify-content: center; }
+  .emp .e .n small { display: block; font-weight: 400; color: var(--gris); }
+  .emp .e.star .n::after { content: " ★"; color: var(--oro); }
+  .emp .e.prc { background: var(--verde); color: var(--papel); border-color: var(--verde); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px; }
+  .emp .e.prc b { font-family: Bahnschrift, sans-serif; font-size: 22px; color: var(--oro); }
+  .emp .e.prc span { font-size: 12.5px; }
+  .emp .e .tp { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--oro); padding-top: 2px; }
+
+  /* Club */
+  .club { background: var(--verde); color: var(--papel); border-radius: 18px; padding: 22px 16px 18px; margin-top: 12px; position: relative; overflow: hidden; }
+  .club::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(184,134,43,.55); border-radius: 13px; pointer-events: none; }
+  .club .k { text-align: center; font-size: 11.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--oro); }
+  .club h3 { text-align: center; font-family: Georgia, serif; font-weight: 400; font-size: 27px; margin-top: 6px; }
+  .club .bajada { text-align: center; font-size: 14.5px; color: #d9c79f; font-style: italic; font-family: Georgia, serif; margin-top: 4px; }
+  .club .previa { margin: 14px 0 0; background: var(--barro); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; line-height: 1.4; text-align: center; }
+  .club .bens { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .club .ben { background: rgba(246,240,228,.07); border: 1px solid rgba(184,134,43,.45); border-radius: 12px; padding: 10px; }
+  .club .ben .ic { font-size: 22px; }
+  .club .ben b { display: block; font-size: 14px; line-height: 1.2; margin-top: 4px; }
+  .club .ben span { display: block; font-size: 12px; line-height: 1.35; color: #d9c79f; margin-top: 4px; }
+  .club .pasos-t { text-align: center; font-family: Georgia, serif; font-size: 18px; margin-top: 18px; }
+  .club .pasos-t small { display: block; font-family: "Segoe UI", sans-serif; font-size: 12.5px; color: var(--oro); letter-spacing: 0.06em; margin-top: 2px; }
+  .club ol { list-style: none; margin-top: 10px; display: grid; gap: 8px; counter-reset: p; }
+  .club li { counter-increment: p; display: flex; gap: 10px; align-items: center; background: var(--papel); color: var(--tinta); border-radius: 10px; padding: 9px 12px; font-size: 14px; line-height: 1.35; }
+  .club li::before { content: counter(p); flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--oro); color: #1d2e22; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .club li a { color: var(--verde); font-weight: 700; }
+  .club .btn { margin-top: 14px; }
+  .club .letra { text-align: center; font-size: 11.5px; color: #bfb39a; margin-top: 10px; line-height: 1.4; }
+
   .vacio { text-align: center; color: var(--gris); padding: 40px 0; display: none; }
-  footer { text-align: center; padding: 22px 16px 34px; color: var(--gris); font-size: 13.5px; line-height: 1.7; border-top: 2px solid var(--oro); margin: 18px 16px 0; }
+  footer { text-align: center; padding: 22px 16px 34px; color: var(--gris); font-size: 13.5px; line-height: 1.7; border-top: 2px solid var(--oro); margin: 22px 16px 0; }
   footer .sl { font-family: Georgia, serif; font-style: italic; color: var(--oro); font-size: 20px; margin-bottom: 6px; }
   footer a { color: var(--verde); font-weight: 600; text-decoration: none; }
   footer small { display: block; margin-top: 8px; font-size: 12px; }
+  body.buscando .noBusca { display: none; }
 </style>
 </head>
 <body>
@@ -72,59 +198,229 @@
 <p class="vacio" id="vacio">No encontramos nada con esa búsqueda.</p>
 <footer>
   <div class="sl">¡Gracias por venir!</div>
-  <span class="stc" style="margin:0">S/TACC</span> Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.<br><br>
-  Martes a domingo de 10 a 01 h · lunes cerrado, salvo feriados<br>
+  <span class="stc" style="margin:0">S/TACC</span> Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.<br>
+  <span style="color:var(--oro)">★</span> Los preferidos de la casa.<br><br>
+  Martes a domingo de 10 a 01 h · cocina hasta las 00:30<br>Lunes cerrado, salvo feriados<br>
   Av. Victorica 708, Tigre · <a href="https://instagram.com/laserenadelrio">@laserenadelrio</a><br>
   Reservas y takeaway: <a href="https://wa.me/5491153349375">+54 9 11 5334-9375</a>
   <small id="act"></small>
 </footer>
 <script src="datos/fudo.js"></script>
 <script src="datos/ajustes.js"></script>
+<script src="datos/carta.js"></script>
+<script src="datos/eventos.js"></script>
 <script>
-  function slug(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-"); }
+  function sinAcento(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function norm(s) { return sinAcento(s).toUpperCase().replace(/\s+/g, " ").trim(); }
+  function slug(s) { return sinAcento(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  var nav = "", html = "";
+  function wa(msg) { return "https://wa.me/" + WHATSAPP + (msg ? "?text=" + encodeURIComponent(msg) : ""); }
+  var CABANA = '<svg width="30" height="26" viewBox="0 0 64 52" aria-hidden="true"><path d="M6 46 L32 6 L58 46" fill="none" stroke="#c9ad74" stroke-width="3" stroke-linejoin="round"/><rect x="27" y="26" width="10" height="12" fill="none" stroke="#c9ad74" stroke-width="2.5"/></svg>';
+
+  // Hoy, en formato año-mes-día (para comparar con las fechas de eventos.js).
+  var d0 = new Date(), HOY = d0.getFullYear() + "-" + ("0" + (d0.getMonth() + 1)).slice(-2) + "-" + ("0" + d0.getDate()).slice(-2);
+  var d1 = new Date(d0.getTime() + 864e5), MANANA = d1.getFullYear() + "-" + ("0" + (d1.getMonth() + 1)).slice(-2) + "-" + ("0" + d1.getDate()).slice(-2);
+  function ddmm(f) { var p = f.split("-"); return (+p[2]) + "/" + (+p[1]); }
+
+  // Todos los productos de Fudo, por nombre normalizado.
+  var P = {}, usados = {}, catDe = {};
   FUDO.categorias.forEach(function (c) {
-    var nom = nombreCategoria(c), id = slug(nom), esPromo = /PROMO/i.test(c.nombre), esVino = /vino/i.test(c.nombre);
-    var items = c.productos.map(function (p) { return producto(c.nombre, p); }).filter(Boolean);
-    if (!items.length) return;
-    nav += '<a href="#' + id + '">' + nom + '</a>';
-    html += '<section id="' + id + '"><h2>' + nom + '</h2>';
-    if (esVino) html += '<a class="avisovinos" href="vinos/"><b>Mirá la carta de vinos completa</b><span>→</span></a>';
-    if (esPromo) html += '<div class="promos">';
-    items.forEach(function (v) {
-      var buscar = esc((v.nombre + " " + v.desc + " " + nom).toLowerCase());
-      var pr = v.precio ? '$' + precio(v.precio) : '';
-      var stc = v.stacc ? '<span class="stc">S/TACC</span>' : '';
-      var nota = v.nota || v.desc;
-      if (esPromo) {
-        html += '<div class="promo" data-b="' + buscar + '">' + (v.foto ? '<img loading="lazy" alt="" src="' + v.foto + '">' : '') +
-          '<div class="tx"><div class="n">' + esc(v.nombre) + '</div>' + (nota ? '<div class="d">' + esc(nota) + '</div>' : '') + (pr ? '<div class="p">' + pr + '</div>' : '') + '</div></div>';
-      } else {
-        html += '<div class="it" data-b="' + buscar + '">' + (v.foto ? '<img class="ft" loading="lazy" alt="" src="' + v.foto + '">' : '') +
-          '<div class="tx"><div class="n">' + esc(v.nombre) + stc + '</div>' + (nota ? '<div class="d">' + esc(nota) + '</div>' : '') + '</div><div class="p">' + pr + '</div></div>';
-      }
-    });
-    if (esPromo) html += '</div>';
-    html += '</section>';
+    c.productos.forEach(function (p) { var k = norm(p.nombre); P[k] = { p: p, cat: c.nombre }; });
   });
+  function foto(k) { var x = P[norm(k)]; return x && x.p.foto; }
+  function marcoFoto(src, clase) { return src ? '<div class="ft ' + (clase || "") + '"><img loading="lazy" alt="" src="' + esc(src) + '"></div>' : '<div class="ft vacia ' + (clase || "") + '">' + CABANA + '</div>'; }
+  function plata(lista) {
+    var u = lista.filter(function (n) { return n > 0; });
+    if (!u.length) return "";
+    var iguales = u.every(function (n) { return n === u[0]; });
+    return "$" + (iguales ? precio(u[0]) : u.map(precio).join(" · "));
+  }
+
+  // Una fila de la carta, a partir de uno o más productos de Fudo.
+  function fila(f, cat) {
+    var pres = [];
+    f.items.forEach(function (it) {
+      var k = norm(it[1]), x = P[k];
+      usados[k] = 1;
+      if (!x || !producto(x.cat, x.p)) return;
+      pres.push({ lab: it[0], k: k, x: x });
+    });
+    if (!pres.length) return "";
+    var nombre = f.t || pres.map(function (i) { return i.lab; }).join(f.sep || " · ");
+    var desc = [f.lista ? pres.map(function (i) { return i.lab; }).join(", ") : "", f.d || ""].filter(Boolean).join(" · ");
+    if (f.lista) desc = desc.charAt(0).toUpperCase() + desc.slice(1);
+    var src = (f.foto && foto(f.foto)) || (pres.filter(function (i) { return i.x.p.foto; })[0] || { x: { p: {} } }).x.p.foto;
+    var stc = pres.some(function (i) { return sinTacc(norm(i.x.cat), i.k); });
+    return item(nombre, desc, plata(pres.map(function (i) { return i.x.p.precio; })), src, stc, f.star, cat);
+  }
+  function item(nombre, desc, pr, src, stc, star, cat) {
+    var b = esc(sinAcento((nombre + " " + desc + " " + cat).toLowerCase()));
+    return '<div class="it' + (star ? ' star' : '') + '" data-b="' + b + '">' + marcoFoto(src) + '<div class="tx"><div class="n">' + esc(nombre) +
+      (stc ? '<span class="stc">S/TACC</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p">' + pr + '</div></div>';
+  }
+  function corto(s) { return s.length > 90 ? s.slice(0, 88).replace(/\s+\S*$/, "") + "…" : s; }
+
+  var nav = "", html = "";
+  function seccion(id, titulo, cuerpo, nota, especial) {
+    nav += '<a href="#' + id + '"' + (especial ? ' class="esp"' : '') + '>' + titulo + '</a>';
+    html += '<section id="' + id + '"' + (especial ? ' class="noBusca"' : '') + '><h2>' + titulo + (nota ? '<small>' + nota + '</small>' : '') + '</h2>' + cuerpo + '</section>';
+  }
+
+  // 1. Lo que se viene
+  var evs = EVENTOS.filter(function (e) { return e.mostrar <= HOY && HOY <= e.hasta; }).sort(function (a, b) { return a.dia < b.dia ? -1 : 1; });
+  if (evs.length) {
+    var h = '<div class="eventos" id="evs">';
+    evs.forEach(function (e) {
+      var hoy = e.dia <= HOY && HOY <= e.hasta, man = e.dia === MANANA, cerrado = e.cierre && HOY > e.cierre;
+      h += '<div class="ev"><div class="top"><span class="tag' + (hoy || man ? ' hoy' : '') + '">' + (hoy ? "¡Hoy!" : man ? "¡Mañana!" : esc(e.tag)) + '</span><span class="cuando">' + esc(e.fecha) + '</span></div>' +
+        '<div class="t">' + esc(e.t) + '</div>' + (e.sub ? '<div class="su">' + esc(e.sub) + '</div>' : '') + '<div class="s">' + esc(e.s) + '</div>' +
+        (e.precio ? '<div class="pr">' + esc(e.precio) + '</div>' : '') + (e.urgente && !cerrado ? '<div><span class="urg">' + esc(e.urgente) + '</span></div>' : '') +
+        '<div class="esp"></div>' + (cerrado ? '<div class="s"><b>Inscripción cerrada. ¡Vení a alentar!</b></div>' : '<a class="btn" href="' + wa(e.wa) + '">' + esc(e.boton) + '</a>') + '</div>';
+    });
+    h += '</div>' + (evs.length > 1 ? '<div class="puntos">' + evs.map(function () { return '<i></i>'; }).join("") + '</div>' : '');
+    seccion("se-viene", "Se viene", h, "deslizá para ver más", 1);
+  }
+
+  // 2. Promos
+  var promoCat = FUDO.categorias.filter(function (c) { return /PROMO/i.test(c.nombre); })[0];
+  if (promoCat) {
+    var orden = Object.keys(PROMOS), ps = promoCat.productos.filter(function (p) { return producto(promoCat.nombre, p); });
+    ps.sort(function (a, b) { var i = orden.indexOf(norm(a.nombre)), j = orden.indexOf(norm(b.nombre)); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); });
+    var h = '<div class="promos">';
+    ps.forEach(function (p) {
+      var k = norm(p.nombre), c = PROMOS[k] || {}, v = producto(promoCat.nombre, p);
+      usados[k] = 1;
+      var fs = (c.fotos || []).map(foto).filter(Boolean);
+      if (!fs.length && p.foto) fs = [p.foto];
+      var pf = c.estilo === "cash" ? '<div class="pf">10%</div>' : fs.length ? '<div class="pf' + (fs.length > 1 ? ' dos' : '') + '">' + fs.map(function (s) { return '<img loading="lazy" alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '<div class="pf vacia">' + CABANA + '</div>';
+      var s = c.s !== undefined ? c.s : corto(p.desc || "");
+      var b = esc(sinAcento((v.nombre + " " + (c.t || "") + " " + s + " promo").toLowerCase()));
+      h += '<div class="promo ' + (c.estilo || "") + '" data-b="' + b + '">' + pf + '<div class="tx">' + (c.tag ? '<span class="tag">' + c.tag + '</span>' : '') +
+        '<div class="t">' + (c.t || esc(v.nombre)) + '</div>' + (s ? '<div class="s">' + esc(s) + '</div>' : '') + (p.precio ? '<div class="p">$' + precio(p.precio) + '</div>' : '') + '</div></div>';
+    });
+    h += '</div>';
+    seccion("promos", "Promos", h, "para aprovechar");
+  }
+
+  // 3. La semana en La Serena + aviso del Club
+  var h = '<div class="semana">';
+  SEMANA.forEach(function (s) {
+    h += '<div class="dia ' + (s.estilo || "") + '" data-b="' + esc(sinAcento((s.t + " " + s.s + " " + s.dia).toLowerCase())) + '"><div class="cu"><b>' + s.dia + '</b><small>' + s.hora + '</small></div><div class="tx">' +
+      (s.desde && HOY < s.desde ? '<span class="estreno">Arranca el ' + ddmm(s.desde) + '</span>' : '') + '<div class="t">' + esc(s.t) + '</div><div class="s">' + esc(s.s) + '</div>' +
+      (s.precio ? '<div class="pr">' + s.precio + (s.chico ? '<small>' + esc(s.chico) + '</small>' : '') + '</div>' : '') + '</div></div>';
+  });
+  h += '</div><a class="clubbanner" href="#club"><span class="tr">☘</span><span><b>Hacete socio del Club La Serena</b><span>Café de cortesía, cartón de lluvia y más. Es gratis.</span></span><span class="fl">→</span></a>';
+  seccion("la-semana", "La semana", h, "martes a viernes, siempre hay un motivo");
+
+  // 4. La carta, categoría por categoría
+  var hechas = {};
+  function renderCat(c, conf) {
+    var nom = nombreCategoria(c), id = slug(nom), h = "", cn = norm(c.nombre);
+    hechas[cn] = 1;
+    if (conf.vinos) h += '<a class="avisovinos" href="vinos/"><span><b>Carta de vinos</b><span>Tintos, blancos, rosados, dulces y espumantes, con fotos</span></span><span class="fl">→</span></a>';
+    if (conf.vermut) {
+      var vf = P[norm(VERMUT.vasoFudo)], otros = vf ? vf.p.precio : 0;
+      (conf.usa || []).forEach(function (k) { usados[norm(k)] = 1; });
+      h += '<div class="vermut" data-b="vermut martes bandeja vermutera picadita carpano"><div class="vt"><span class="tag">Martes de vermut · de 17 h al cierre</span>' + (HOY < VERMUT.desde ? '<span class="desde">Arranca el martes ' + ddmm(VERMUT.desde) + '</span>' : '') + '</div><table>' +
+        '<tr><th></th><th class="mar">Martes</th><th>Otros días</th></tr>' +
+        '<tr><td><b>Vaso de vermut</b><i>Carpano rosso o bianco, con soda</i></td><td class="mar">' + precio(VERMUT.vasoMartes) + '</td><td>' + (otros ? precio(otros) : '') + '</td></tr>' +
+        '<tr><td><b>Bandeja vermutera</b><i>Para compartir: botella, sifones, hielo y cítricos</i></td><td class="mar">' + precio(VERMUT.bandejaMartes) + '</td><td>' + precio(VERMUT.bandeja) + '</td></tr>' +
+        '<tr><td><b>Bandeja + picadita</b></td><td class="mar">' + precio(VERMUT.bandejaPicadita) + '</td><td class="solo">solo los martes</td></tr></table></div>';
+    }
+    if (conf.modo === "empanadas") {
+      var ps = c.productos.filter(function (p) { return producto(c.nombre, p); }), pr = ps.length && ps.every(function (p) { return p.precio === ps[0].precio; }) ? ps[0].precio : 0;
+      var cer = ps.filter(function (p) { return !/canastita/i.test(p.desc); }), can = ps.filter(function (p) { return /canastita/i.test(p.desc); });
+      h += '<div class="emp">';
+      cer.concat(can).forEach(function (p) {
+        var k = norm(p.nombre), n = lindo(p.nombre).replace(/^Empanada (de )?/i, "").replace("Carne Cuchillo", "Carne a cuchillo");
+        n = n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
+        usados[k] = 1;
+        h += '<div class="e' + ((conf.estrellas || []).indexOf(k) >= 0 ? ' star' : '') + '" data-b="' + esc(sinAcento(("empanada " + n + " " + p.desc).toLowerCase())) + '">' + marcoFoto(p.foto) +
+          '<span class="tp">' + (/canastita/i.test(p.desc) ? "Canastita" : "Cerrada") + '</span><div class="n"><span>' + esc(n) + (pr ? '' : '<small>$' + precio(p.precio) + '</small>') + '</span></div></div>';
+      });
+      if (pr) h += '<div class="e prc"><b>$' + precio(pr) + '</b><span>cada una</span></div>';
+      h += '</div>';
+      seccion(id, nom, h, pr ? "cerradas y canastitas" : "");
+      return;
+    }
+    (conf.filas || []).forEach(function (f) {
+      if (f.sub) { h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
+      if (f.auto) {
+        // Agrupa por precio los productos que empiezan con el prefijo (las pizzas, por ejemplo).
+        var fuera = (f.fuera || []).map(norm), grupos = {}, orden = [];
+        c.productos.forEach(function (p) {
+          var k = norm(p.nombre);
+          if (k.indexOf(norm(f.auto)) !== 0 || fuera.indexOf(k) >= 0 || !producto(c.nombre, p)) return;
+          usados[k] = 1;
+          var star = (f.star || []).indexOf(k) >= 0, g = star ? "s" + k : String(p.precio);
+          if (!grupos[g]) { grupos[g] = []; orden.push(g); }
+          grupos[g].push(p);
+        });
+        orden.sort(function (a, b) { return grupos[a][0].precio - grupos[b][0].precio; });
+        orden.forEach(function (g) {
+          var gp = grupos[g], n = gp.map(function (p) { var t = lindo(p.nombre.slice(f.auto.length)); return (t.charAt(0) + t.slice(1).toLowerCase()).replace(/^Rucula/, "Rúcula"); }).join(f.sep || " · ");
+          var src = (gp.filter(function (p) { return p.foto; })[0] || {}).foto;
+          h += item(n, "", plata([gp[0].precio]), src, false, g.charAt(0) === "s", nom);
+        });
+        return;
+      }
+      h += fila(f, nom);
+    });
+    if (!conf.soloFilas) c.productos.forEach(function (p) {
+      var k = norm(p.nombre), v = producto(c.nombre, p);
+      if (usados[k] || !v) return;
+      h += item(v.nombre, corto(v.nota || v.desc || ""), plata([p.precio]), p.foto, v.stacc, false, nom);
+    });
+    if (h) seccion(id, nom, h, conf.nota);
+  }
+  CARTA.forEach(function (conf) {
+    var c = FUDO.categorias.filter(function (x) { return norm(x.nombre) === norm(conf.fudo); })[0];
+    if (c) renderCat(c, conf);
+  });
+  // Categorías nuevas de Fudo que todavía no están en carta.js: se muestran tal cual.
+  FUDO.categorias.forEach(function (c) { if (!hechas[norm(c.nombre)] && !/PROMO/i.test(c.nombre)) renderCat(c, {}); });
+
+  // 5. Club La Serena
+  var previa = HOY < CLUB.lanzamiento;
+  var h = '<div class="club"><div class="k">☘ Club La Serena ☘</div><h3>Hacete Sereno</h3><div class="bajada">Los de la casa tienen sus beneficios</div>' +
+    (previa ? '<div class="previa">' + esc(CLUB.previa) + '</div>' : '') + '<div class="bens">' +
+    CLUB.beneficios.map(function (b) { return '<div class="ben"><div class="ic">' + b.ic + '</div><b>' + esc(b.t) + '</b><span>' + esc(b.s) + '</span></div>'; }).join("") +
+    '</div><div class="pasos-t">Asociarte es muy fácil<small>ES GRATIS · EN UN MINUTO</small></div><ol>' +
+    '<li><span>Seguinos en Instagram: <a href="' + INSTAGRAM + '">@laserenadelrio</a></span></li>' +
+    '<li><span>Seguí nuestro Canal de WhatsApp: ' + (CANAL_WHATSAPP ? '<a href="' + CANAL_WHATSAPP + '">La Serena del Río</a>' : '<b>La Serena del Río</b>') + '</span></li>' +
+    '<li><span>Mandanos un WhatsApp con tu nombre y te llega tu <b>credencial digital</b>.</span></li></ol>' +
+    '<a class="btn" href="' + wa(CLUB.wa) + '">' + (previa ? 'Quiero anotarme' : 'Quiero ser Sereno') + '</a>' +
+    '<div class="letra">Los beneficios son con consumo en el local. Los premios son en productos, no en descuentos.</div></div>';
+  seccion("club", "Club La Serena", h, "", 1);
+
   document.getElementById("nav").innerHTML = nav;
   document.getElementById("carta").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
 
   // Buscador: filtra productos y esconde las categorías que quedan vacías.
   document.getElementById("q").addEventListener("input", function () {
-    var q = this.value.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""), hay = false;
+    var q = sinAcento(this.value.trim().toLowerCase()), hay = false;
+    document.body.classList.toggle("buscando", !!q);
     document.querySelectorAll("#carta section").forEach(function (s) {
+      if (s.classList.contains("noBusca")) return;
       var alguno = false;
       s.querySelectorAll("[data-b]").forEach(function (el) {
-        var ok = !q || el.getAttribute("data-b").normalize("NFD").replace(/[̀-ͯ]/g, "").indexOf(q) >= 0;
+        var ok = !q || el.getAttribute("data-b").indexOf(q) >= 0;
         el.style.display = ok ? "" : "none"; if (ok) alguno = true;
       });
+      s.querySelectorAll(".sub").forEach(function (el) { el.style.display = q ? "none" : ""; });
       s.style.display = alguno ? "" : "none"; if (alguno) hay = true;
     });
     document.getElementById("vacio").style.display = hay ? "none" : "block";
   });
+
+  // Puntitos del carrusel de eventos.
+  var evc = document.getElementById("evs");
+  if (evc) {
+    var pts = document.querySelectorAll(".puntos i");
+    function marcar() { var i = Math.round(evc.scrollLeft / (evc.scrollWidth / pts.length)); pts.forEach(function (p, j) { p.style.background = j === i ? "var(--oro)" : ""; }); }
+    evc.addEventListener("scroll", marcar, { passive: true }); marcar();
+  }
 
   // Marca en la barra la categoría que se está viendo.
   var links = document.querySelectorAll("#nav a");
