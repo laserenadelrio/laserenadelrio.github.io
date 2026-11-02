@@ -151,6 +151,24 @@
   .emp .e.prc { background: var(--verde); color: var(--papel); border-color: var(--verde); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px; }
   .emp .e.prc b { font-family: Bahnschrift, sans-serif; font-size: 22px; color: var(--oro); }
   .emp .e.prc span { font-size: 12.5px; }
+  .emp.mos .e { display: flex; flex-direction: column; }
+  .emp.mos .e .n { flex: 1; padding-bottom: 2px; }
+  .emp .e .pe { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 14px; color: var(--verde); padding: 0 4px 8px; }
+  .guarn { margin-top: 12px; border: 1.5px dashed var(--oro); border-radius: 10px; background: var(--crema2); padding: 9px 12px; font-size: 13px; line-height: 1.4; color: var(--gris); }
+  .guarn b { display: block; color: var(--verde); font-size: 13.5px; }
+  details.desp > summary { list-style: none; cursor: pointer; }
+  details.desp > summary::-webkit-details-marker { display: none; }
+  .promo .ver { align-self: flex-start; margin-top: 6px; font-size: 12.5px; font-weight: 700; color: var(--verde); border-bottom: 1px solid var(--oro); }
+  .promo .ver::after { content: " ▾"; color: var(--oro); }
+  details.desp[open] .promo .ver::after { content: " ▴"; }
+  details.desp[open] .promo { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .menudia { border: 2px solid var(--verde); border-top: none; border-radius: 0 0 14px 14px; background: #fffaf0; padding: 6px 12px 10px; margin-top: -2px; }
+  .menudia .md { padding: 7px 0; border-bottom: 1px dotted #cdbd9f; font-size: 13.5px; line-height: 1.35; }
+  .menudia .md b { display: block; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--oro); }
+  .menudia .md b small { background: var(--barro); color: var(--papel); border-radius: 999px; padding: 0 6px; letter-spacing: 0.06em; margin-left: 4px; }
+  .menudia .md.hoy span { font-weight: 600; }
+  .menudia .md i { color: var(--gris); font-style: italic; margin: 0 6px; }
+  .menudia .mdn { font-size: 12px; color: var(--gris); padding-top: 7px; }
   .emp .e .tp { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--oro); padding-top: 2px; }
 
   /* Club */
@@ -233,7 +251,7 @@
     var u = lista.filter(function (n) { return n > 0; });
     if (!u.length) return "";
     var iguales = u.every(function (n) { return n === u[0]; });
-    return "$" + (iguales ? precio(u[0]) : u.map(precio).join(" · "));
+    return iguales ? precio(u[0]) : u.map(precio).join(" · ");
   }
 
   // Una fila de la carta, a partir de uno o más productos de Fudo.
@@ -295,8 +313,18 @@
       var pf = c.estilo === "cash" ? '<div class="pf">10%</div>' : fs.length ? '<div class="pf' + (fs.length > 1 ? ' dos' : '') + '">' + fs.map(function (s) { return '<img loading="lazy" alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '<div class="pf vacia">' + CABANA + '</div>';
       var s = c.s !== undefined ? c.s : corto(p.desc || "");
       var b = esc(sinAcento((v.nombre + " " + (c.t || "") + " " + s + " promo").toLowerCase()));
-      h += '<div class="promo ' + (c.estilo || "") + '" data-b="' + b + '">' + pf + '<div class="tx">' + (c.tag ? '<span class="tag">' + c.tag + '</span>' : '') +
-        '<div class="t">' + (c.t || esc(v.nombre)) + '</div>' + (s ? '<div class="s">' + esc(s) + '</div>' : '') + (p.precio ? '<div class="p">$' + precio(p.precio) + '</div>' : '') + '</div></div>';
+      var menu = k === "MENU DEL DIA" && typeof MENU_DIA !== "undefined" && MENU_DIA.length;
+      var tarjeta = '<div class="promo ' + (c.estilo || "") + '"' + (menu ? '' : ' data-b="' + b + '"') + '>' + pf + '<div class="tx">' + (c.tag ? '<span class="tag">' + c.tag + '</span>' : '') +
+        '<div class="t">' + (c.t || esc(v.nombre)) + '</div>' + (s ? '<div class="s">' + esc(s) + '</div>' : '') +
+        (menu ? '<span class="ver">Ver qué hay cada día</span>' : '') + (p.precio ? '<div class="p">' + precio(p.precio) + '</div>' : '') + '</div></div>';
+      if (menu) {
+        // El menú del día se despliega al tocarlo, con los platos de cada día; hoy queda marcado.
+        var hoyDia = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"][d0.getDay()];
+        tarjeta = '<details class="desp" data-b="' + b + ' ' + esc(sinAcento(MENU_DIA.map(function (m) { return m.platos.join(" "); }).join(" ").toLowerCase())) + '"><summary>' + tarjeta + '</summary><div class="menudia">' +
+          MENU_DIA.map(function (m) { return '<div class="md' + (m.dia === hoyDia ? ' hoy' : '') + '"><b>' + m.dia + (m.dia === hoyDia ? ' <small>hoy</small>' : '') + '</b>' + m.platos.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('<i>o</i>') + '</div>'; }).join("") +
+          '<div class="mdn">Con bebida y café o postre. Hasta las 17 h.</div></div></details>';
+      }
+      h += tarjeta;
     });
     h += '</div>';
     seccion("promos", "Promos", h, "para aprovechar");
@@ -336,13 +364,30 @@
         n = n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
         usados[k] = 1;
         h += '<div class="e' + ((conf.estrellas || []).indexOf(k) >= 0 ? ' star' : '') + '" data-b="' + esc(sinAcento(("empanada " + n + " " + p.desc).toLowerCase())) + '">' + marcoFoto(p.foto) +
-          '<span class="tp">' + (/canastita/i.test(p.desc) ? "Canastita" : "Cerrada") + '</span><div class="n"><span>' + esc(n) + (pr ? '' : '<small>$' + precio(p.precio) + '</small>') + '</span></div></div>';
+          '<span class="tp">' + (/canastita/i.test(p.desc) ? "Canastita" : "Cerrada") + '</span><div class="n"><span>' + esc(n) + (pr ? '' : '<small>' + precio(p.precio) + '</small>') + '</span></div></div>';
       });
-      if (pr) h += '<div class="e prc"><b>$' + precio(pr) + '</b><span>cada una</span></div>';
+      if (pr) h += '<div class="e prc"><b>' + precio(pr) + '</b><span>cada una</span></div>';
       h += '</div>';
       seccion(id, nom, h, pr ? "cerradas y canastitas" : "");
       return;
     }
+    if (conf.modo === "mosaico") {
+      // Mosaico de fotos con nombre y precio (las pizzas).
+      h += '<div class="emp mos">';
+      c.productos.forEach(function (p) {
+        var k = norm(p.nombre), v = producto(c.nombre, p);
+        if (!v) return;
+        usados[k] = 1;
+        var n = v.nombre.replace(/^Pizza (?!individual)/i, ""), nota = (conf.notas || {})[k] || "";
+        n = (n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()).replace(/^Rucula/, "Rúcula");
+        h += '<div class="e' + ((conf.estrellas || []).indexOf(k) >= 0 ? ' star' : '') + '" data-b="' + esc(sinAcento(("pizza " + n + " " + nota).toLowerCase())) + '">' + marcoFoto(p.foto) +
+          '<div class="n"><span>' + esc(n) + (nota ? '<small>' + esc(nota) + '</small>' : '') + '</span></div><div class="pe">' + plata([p.precio]) + '</div></div>';
+      });
+      h += '</div>';
+      seccion(id, nom, h, conf.nota);
+      return;
+    }
+    if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.</span></div>';
     (conf.filas || []).forEach(function (f) {
       if (f.sub) { h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
       if (f.auto) {
