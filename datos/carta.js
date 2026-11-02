@@ -2,6 +2,8 @@
 // Cada fila junta uno o más productos de Fudo: ["texto", "NOMBRE EN FUDO"].
 //   t: título fijo de la fila · d: descripción corta · lista: muestra los textos como variedades
 //   sep: separador de los textos (" · " si no se dice) · star: preferido de la casa · foto: producto del que se toma la foto
+//   cols: en una fila de títulos, los nombres de las columnas de precio (ej. Simple · Doble); en las filas de abajo, cols: 1
+//         pone cada producto en su columna, en el mismo orden
 // Si un producto se saca de Fudo, desaparece solo de su fila. Si se agrega uno nuevo, aparece al final de su categoría.
 
 // Tarjetas de promos (la clave es el nombre en Fudo). Una promo nueva en Fudo aparece sola con su texto de Fudo.
@@ -10,7 +12,7 @@ var PROMOS = {
     s: "Pizza muzzarella o napolitana al horno de barro, para compartir.", fotos: ["PIZZA MUZZARELLA", "CERVEZA HEINEKEN DE LITRO"] },
   "MENU DEL DIA": { estilo: "verde", tag: "Martes a viernes · hasta las 17 h", t: "Menú del día", s: "Un plato distinto cada día, con bebida y café o postre." },
   "PROMO CAFE": { estilo: "verde", tag: "Promo café", t: "Café + 2 medialunas, budín, pastelito o tostaditas", s: "" },
-  "HAPPY HOUR TRAGOS": { estilo: "oro", tag: "Happy hour · 17 a 20 h", t: "2 tragos", s: "Combiná fernet, gin tonic o Campari." },
+  "HAPPY HOUR TRAGOS": { estilo: "oro", tag: "Happy hour · 17 a 20 h", t: "2 tragos", s: "Combiná Fernet, Gin Tonic o Campari." },
   "HAPPY HOUR CERVEZA": { estilo: "oro", tag: "Happy hour · 17 a 20 h", t: "2 latas de Imperial", s: "De 473 ml." },
   "PROMO CERVEZA + FRITAS": { tag: "Para picar", t: "Papas fritas + 2 latas de Imperial", s: "Latas de 473 ml.", fotos: ["CERVEZA IMPERIAL LAGER 473ML"] },
   "PROMO CERVEZA + FRITAS CHEDDAR Y BACON": { tag: "Para picar", t: "Papas con cheddar y bacon + 2 latas de Imperial", s: "Latas de 473 ml.", fotos: ["PAPAS FRITAS CON CHEDDAR Y BACON", "CERVEZA IMPERIAL LAGER 473ML"] },
@@ -65,23 +67,23 @@ var CARTA = [
   { fudo: "EMPANADAS", modo: "empanadas", estrellas: ["EMPANADA CARNE CUCHILLO"] },
   { fudo: "MILANESAS", nota: "Con guarnición a elección", guarnicion: 1, filas: [
     { items: [["Mila La Serena", "MILA LA SERENA"]], d: "Nuestra especialidad: de ternera, con fideos a la crema y parmesano", star: 1 },
-    { sub: "De ternera · de pollo" },
-    { t: "Milanesa", items: [["", "MILANESA DE TERNERA"], ["", "MILANESA DE POLLO"]] },
-    { t: "Napolitana", items: [["", "MILANESA NAPOLITANA"], ["", "MILANESA DE POLLO NAPOLITANA"]], star: 1 },
-    { t: "A caballo", items: [["", "MILANESA A CABALLO"], ["", "MILANESA DE POLLO A CABALLO"]] },
-    { t: "Olivia", items: [["", "MILANESA OLIVIA"], ["", "MILANESA DE POLLO OLIVIA"]], d: "Acelga a la crema y muzzarella" },
-    { t: "Milanga del Viejo", items: [["", "MILANGA DEL VIEJO"], ["", "MILANGA DEL VIEJO (DE POLLO)"]], d: "Cuatro quesos, con puré" },
+    { cols: ["Ternera", "Pollo"] },
+    { t: "Milanesa", items: [["", "MILANESA DE TERNERA"], ["", "MILANESA DE POLLO"]], cols: 1 },
+    { t: "Napolitana", items: [["", "MILANESA NAPOLITANA"], ["", "MILANESA DE POLLO NAPOLITANA"]], star: 1, cols: 1 },
+    { t: "A caballo", items: [["", "MILANESA A CABALLO"], ["", "MILANESA DE POLLO A CABALLO"]], cols: 1 },
+    { t: "Olivia", items: [["", "MILANESA OLIVIA"], ["", "MILANESA DE POLLO OLIVIA"]], d: "Acelga a la crema y muzzarella", cols: 1 },
+    { t: "Milanga del Viejo", items: [["", "MILANGA DEL VIEJO"], ["", "MILANGA DEL VIEJO (DE POLLO)"]], d: "Cuatro quesos, con puré", cols: 1 },
     { sub: "Al pan" },
     { items: [["Sándwich de milanesa completo", "SANDWICH DE MILANESA COMPLETO"]], d: "Lechuga, tomate, jamón, queso y huevo" }
   ] },
   { fudo: "HAMBURGUESAS", nota: "En pan de papa, con papas fritas", filas: [
-    { sub: "Simple · doble" },
-    { t: "Cheeseburger", items: [["", "CHEESEBURGER SIMPLE"], ["", "CHEESEBURGER DOBLE"]], d: "Cheddar fundido" },
-    { t: "Classic", items: [["", "CLASSIC BURGER SIMPLE"], ["", "CLASSIC BURGER DOBLE"]], d: "Jamón, queso, lechuga y tomate" },
-    { t: "BBQ", items: [["", "BBQ BURGER SIMPLE"], ["", "BBQ BURGER DOBLE"]], d: "Cheddar, bacon y barbacoa" },
-    { t: "Cebollita", items: [["", "CEBOLLITA BURGER SIMPLE"], ["", "CEBOLLITA BURGER DOBLE"]], d: "Queso, cebolla caramelizada y huevo frito" },
-    { t: "Blue", items: [["", "BLUE BURGER SIMPLE"], ["", "BLUE BURGER DOBLE"]], d: "Queso azul, muzzarella y cebolla caramelizada" },
-    { t: "Cochiloca", items: [["", "COCHILOCA BURGER SIMPLE"], ["", "COCHILOCA BURGER DOBLE"]], d: "Bondiola braseada, cheddar, bacon y ketchup", star: 1 },
+    { cols: ["Simple", "Doble"] },
+    { t: "Cheeseburger", items: [["", "CHEESEBURGER SIMPLE"], ["", "CHEESEBURGER DOBLE"]], d: "Cheddar fundido", cols: 1 },
+    { t: "Classic", items: [["", "CLASSIC BURGER SIMPLE"], ["", "CLASSIC BURGER DOBLE"]], d: "Jamón, queso, lechuga y tomate", cols: 1 },
+    { t: "BBQ", items: [["", "BBQ BURGER SIMPLE"], ["", "BBQ BURGER DOBLE"]], d: "Cheddar, bacon y barbacoa", cols: 1 },
+    { t: "Cebollita", items: [["", "CEBOLLITA BURGER SIMPLE"], ["", "CEBOLLITA BURGER DOBLE"]], d: "Queso, cebolla caramelizada y huevo frito", cols: 1 },
+    { t: "Blue", items: [["", "BLUE BURGER SIMPLE"], ["", "BLUE BURGER DOBLE"]], d: "Queso azul, muzzarella y cebolla caramelizada", cols: 1 },
+    { t: "Cochiloca", items: [["", "COCHILOCA BURGER SIMPLE"], ["", "COCHILOCA BURGER DOBLE"]], d: "Bondiola braseada, cheddar, bacon y ketchup", star: 1, cols: 1 },
     { items: [["Medallón adicional", "ADICIONAL MEDALLON"]], d: "Solo para valientes" }
   ] },
   { fudo: "WRAPS", nota: "Con guarnición a elección", guarnicion: 1, filas: [
@@ -169,7 +171,7 @@ var CARTA = [
     { items: [["Miller", "CERVEZA MILLER 473ML"], ["Warsteiner", "CERVEZA WARSTEINER 473ML"]] }
   ] },
   { fudo: "TRAGOS", vermut: 1, filas: [
-    { items: [["Fernet", "FERNET CON COCA"], ["Campari", "CAMPARI CON NARANJA"], ["Aperol", "APEROL SPRITZ"], ["gin tonic", "GIN TONIC"], ["Gancia", "GANCIA"]], sep: ", " },
+    { items: [["Fernet", "FERNET CON COCA"], ["Campari", "CAMPARI CON NARANJA"], ["Aperol", "APEROL SPRITZ"], ["Gin Tonic", "GIN TONIC"], ["Gancia", "GANCIA"]], sep: ", " },
     { items: [["Caipiroska", "CAIPIROSKA"], ["Caipirinha", "CAIPIRINHA"]] },
     { items: [["Daiquiri de frutilla", "DAIQUIRI DE FRUTILLA"], ["Negroni", "NEGRONI"], ["Jungle juice con vodka", "JUNGLE JUICE CON VODKA"]], sep: ", " },
     { items: [["Whiskey Johnnie Walker Red Label", "WHISKEY JOHNNIE WALKER RED LABEL"]], d: "Medida" }
