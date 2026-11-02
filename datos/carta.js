@@ -21,6 +21,9 @@ var PROMOS = {
 // Martes de vermut: recuadro al principio de Tragos. El precio de "otros días" del vaso sale de Fudo.
 var VERMUT = { desde: "2026-11-17", vasoMartes: 7000, vasoFudo: "VERMUT ROSSO CON SODA", bandejaMartes: 25000, bandeja: 30000, bandejaPicadita: 50000 };
 
+// Guarniciones a elección (recuadro al principio de Milanesas y Wraps). Por defecto salen con papas fritas.
+var GUARNICIONES = "Papas fritas, puré de papas, calabazas asadas, ensalada mixta o coleslaw";
+
 var CARTA = [
   { fudo: "ENTRADAS", filas: [
     { items: [["Tabla de picada", "TABLA DE PICADA"]], d: "Fiambres y quesos. Comen 2, pican 4", star: 1 },
@@ -52,20 +55,16 @@ var CARTA = [
   { fudo: "PASTAS CASERAS", filas: [
     { items: [["Sorrentinos de jamón y queso", "SORRENTINOS CASEROS"]], d: "Con salsa rosa" },
     { items: [["Raviolones de verdura y ricota", "RAVIOLONES DE VERDURA"]], d: "Con fileto o mixta" },
-    { items: [["Canelones de verdura y muzzarella", "CANELONES DE VERDURA Y MUZZARELLA"]] },
+    { items: [["Canelones de verdura y muzzarella", "CANELONES DE VERDURA Y MUZZARELLA"]], d: "Fileto, crema o rosa" },
     { items: [["Fideos cinta", "FIDEOS CINTA CASEROS"]], d: "Fileto, crema o rosa" },
     { items: [["Fideos cinta especiales", "FIDEOS CINTA ESPECIALES"]], d: "Champis, bolognesa, cuatro quesos o parisienne", star: 1 },
     { items: [["Ñoquis", "ÑOQUIS"]], d: "Bolognesa, fileto, crema o rosa" }
   ] },
-  { fudo: "PIZZA", nota: "Al horno de barro", filas: [
-    { auto: "PIZZA ", sep: " / ", star: ["PIZZA RUCULA Y JAMON CRUDO"], fuera: ["PIZZA MITAD Y MITAD", "PIZZA INDIVIDUAL"] },
-    { items: [["Mitad y mitad", "PIZZA MITAD Y MITAD"]], d: "Dos gustos en una" },
-    { items: [["Pizza individual", "PIZZA INDIVIDUAL"]] },
-    { t: "Calzone", items: [["napolitano", "CALZONE NAPOLITANO"], ["capresse", "CALZONE CAPRESSE"]], lista: 1 }
-  ] },
+  { fudo: "PIZZA", nota: "Al horno de barro", modo: "mosaico", estrellas: ["PIZZA RUCULA Y JAMON CRUDO"],
+    notas: { "PIZZA MITAD Y MITAD": "Dos gustos en una", "CALZONE NAPOLITANO": "Queso, tomate, morrón y huevo", "CALZONE CAPRESSE": "Queso, tomate y albahaca" } },
   { fudo: "EMPANADAS", modo: "empanadas", estrellas: ["EMPANADA CARNE CUCHILLO"] },
-  { fudo: "MILANESAS", nota: "Con papas fritas", filas: [
-    { items: [["Mila La Serena", "MILA LA SERENA"]], d: "Nuestra especialidad: con fideos a la crema y parmesano", star: 1 },
+  { fudo: "MILANESAS", nota: "Con guarnición a elección", guarnicion: 1, filas: [
+    { items: [["Mila La Serena", "MILA LA SERENA"]], d: "Nuestra especialidad: de ternera, con fideos a la crema y parmesano", star: 1 },
     { sub: "De ternera · de pollo" },
     { t: "Milanesa", items: [["", "MILANESA DE TERNERA"], ["", "MILANESA DE POLLO"]] },
     { t: "Napolitana", items: [["", "MILANESA NAPOLITANA"], ["", "MILANESA DE POLLO NAPOLITANA"]], star: 1 },
@@ -85,14 +84,14 @@ var CARTA = [
     { t: "Cochiloca", items: [["", "COCHILOCA BURGER SIMPLE"], ["", "COCHILOCA BURGER DOBLE"]], d: "Bondiola braseada, cheddar, bacon y ketchup", star: 1 },
     { items: [["Medallón adicional", "ADICIONAL MEDALLON"]], d: "Solo para valientes" }
   ] },
-  { fudo: "WRAPS", nota: "Con papas fritas", filas: [
+  { fudo: "WRAPS", nota: "Con guarnición a elección", guarnicion: 1, filas: [
     { items: [["Bondiola", "WRAP DE BONDIOLA"]], d: "Cebolla caramelizada, barbacoa y muzzarella", star: 1 },
     { items: [["Pollo", "WRAP DE POLLO"]], d: "Suprema, morrón, cebolla, verdeo y muzzarella" },
     { items: [["Caesar", "WRAP CAESAR"]], d: "Suprema, lechuga, parmesano y aderezo caesar" },
     { items: [["Carne", "WRAP DE CARNE"]], d: "Tapa de nalga, morrón, cebolla y muzzarella" },
     { items: [["De la Vieja", "WRAP DE LA VIEJA"]], d: "Pollo, queso azul, morrón y muzzarella" },
     { items: [["Vegetariano", "WRAP VEGETARIANO"]], d: "Acelga, morrón, zanahoria y muzzarella" },
-    { items: [["Vegetales salteados", "WRAP DE VEGETALES SALTEADOS"]], d: "Zucchini, berenjena, zanahoria y morrón" }
+    { items: [["Vegano", "WRAP VEGANO"]], d: "Zucchini, berenjena, zanahoria, morrón y cebolla" }
   ] },
   { fudo: "ENSALADAS", nota: "Sin TACC en sus ingredientes, salvo la Caesar", filas: [
     { items: [["La Serena", "ENSALADA LA SERENA 🌱"]], d: "Rúcula, calabaza, sardo, cajú y mostaza dulce", star: 1 },
@@ -121,15 +120,18 @@ var CARTA = [
     { items: [["Exprimido de naranja", "EXPRIMIDO DE NARANJA"]] },
     { t: "Licuado", items: [["banana", "LICUADO DE BANANA"], ["frutilla", "LICUADO DE FRUTILLA"]], lista: 1 },
     { t: "Licuado especial", items: [["frutilla y naranja", "LICUADO DE FRUTILLA CON JUGO DE NARANJA"], ["maracuyá y naranja", "LICUADO DE MARACUYA Y NARANJA"], ["frutos rojos", "LICUADO DE FRUTOS ROJOS"]], lista: 1 },
-    { items: [["Agua caliente pal mate", "AGUA CALIENTE PAL MATE"], ["Yerba", "YERBA PRIMICIA"]] }
+    { items: [["Agua caliente pal mate", "AGUA CALIENTE PAL MATE"]] },
+    { items: [["Yerba Primicia", "YERBA PRIMICIA"]], d: "El paquete. Si la comprás, el agua caliente va de regalo" }
   ] },
   { fudo: "COSAS SALADAS", filas: [
     { items: [["Medialuna", "MEDIALUNA"], ["con jamón y queso", "MEDIALUNA CON JAMON Y QUESO"]] },
     { items: [["Tostaditas", "TOSTADITAS"]], d: "Mermelada casera y queso crema" },
     { items: [["Huevos revueltos", "HUEVOS REVUELTOS"]], d: "Con tostadas y queso crema" },
     { items: [["Avocado toast", "AVOCADO TOAST"]], d: "Huevos revueltos, tostadas, queso crema y palta", star: 1 },
-    { t: "Tostado XL", items: [["queso y tomate", "TOSTADO XL DE QUESO Y TOMATE"], ["jamón y queso", "TOSTADO XL DE JAMON Y QUESO"], ["jamón, queso, tomate y huevo", "TOSTADO XL DE JAMON, QUESO, TOMATE Y HUEVO"]], lista: 1, d: "En pan ciabattiggia", foto: "TOSTADO XL DE JAMON Y QUESO" },
-    { items: [["Tostado de pan árabe", "TOSTADO DE PAN ARABE"]] }
+    { sub: "Tostados: elegí pan ciabattiggia XL o pan árabe" },
+    { t: "Tostado de queso y tomate", items: [["", "TOSTADO XL DE QUESO Y TOMATE"], ["", "TOSTADO ARABE DE QUESO Y TOMATE"]] },
+    { t: "Tostado de jamón y queso", items: [["", "TOSTADO XL DE JAMON Y QUESO"], ["", "TOSTADO ARABE DE JAMON Y QUESO"]], foto: "TOSTADO ARABE DE JAMON Y QUESO" },
+    { t: "Tostado completo", items: [["", "TOSTADO XL DE JAMON, QUESO, TOMATE Y HUEVO"]], d: "Jamón, queso, tomate y huevo · solo en pan ciabattiggia XL" }
   ] },
   { fudo: "COSAS DULCES Y POSTRES", filas: [
     { items: [["Pastelito", "PASTELITOS"]], d: "Membrillo o batata" },
@@ -137,6 +139,7 @@ var CARTA = [
     { items: [["Flan con dulce de leche", "FLAN CON DULCE DE LECHE"]], star: 1 },
     { items: [["Chocotorta", "COCHOTORTA"], ["media", "MEDIA CHOCOTORTA"]], d: "La de la casa, para compartir", star: 1 },
     { items: [["Panqueques de dulce de leche", "PANQUEQUES DE DULCE DE LECHE"]] },
+    { items: [["Apple crumble", "APPLE CRUMBLE"], ["con helado", "APPLE CRUMBLE CON HELADO"]] },
     { items: [["Brownie", "BROWNIE"], ["con helado", "BROWNIE CON HELADO"]] },
     { items: [["Bocha de helado", "BOCHA DE HELADO"]], d: "Crema americana" }
   ] },
@@ -146,7 +149,7 @@ var CARTA = [
     { items: [["Vaso de naranjada", "VASO DE NARANJADA"]] },
     { items: [["Jungle juice", "JUNGLE JUICE"]], d: "Naranja, maracuyá, menta y almíbar" },
     { t: "Línea Coca-Cola · 600 ml", items: [["Coca-Cola", "COCA-COLA ORIGINAL 600ML"], ["Zero", "COCA-COLA ZERO 600ML"], ["Light", "COCA-COLA LIGHT 600ML"], ["Sprite", "SPRITE 600ML"], ["Sprite Zero", "SPRITE ZERO 600ML"], ["Fanta", "FANTA 600ML"]], lista: 1 },
-    { t: "Aquarius · 600 ml", items: [["manzana", "AQUARIUS MANZANA 600ML"], ["uva verde", "AQUARIUS UVA VERDE 600ML"], ["pera", "AQUARIUS PERA 600ML"], ["pomelo rosado", "AQUARIUS POMELO ROSADO 600ML"]], lista: 1 },
+    { t: "Aquarius · 600 ml", items: [["manzana", "AQUARIUS MANZANA 600ML"], ["uva verde", "AQUARIUS UVA VERDE 600ML"], ["pera", "AQUARIUS PERA 600ML"], ["pomelo", "AQUARIUS POMELO 600ML"], ["pomelo rosado", "AQUARIUS POMELO ROSADO 600ML"]], lista: 1 },
     { t: "Powerade · 500 ml", items: [["manzana", "POWERADE MANZANA 500ML"], ["cool citrus", "POWERADE COOL CITRUS 500ML"]], lista: 1 },
     { items: [["7UP Free", "7UP FREE BOTELLA 500ML"]], d: "500 ml" },
     { items: [["Levité", "AGUA SABORIZADA LEVITE 500ML"]], d: "Manzana · 500 ml" },
@@ -163,7 +166,7 @@ var CARTA = [
     { t: "Antares", items: [["Session IPA", "CERVEZA ANTARES SESSION IPA 473CC"], ["IPA lupulada", "CERVEZA ANTARES IPA LUPULADA 473CC"], ["Honey", "CERVEZA ANTARES HONEY 473CC"], ["XPA", "CERVEZA ANTARES XPA 473CC"]], lista: 1 },
     { items: [["Heineken", "CERVEZA HEINEKEN 473ML"], ["Grolsch", "CERVEZA GROLSCH 473ML"]] },
     { t: "Línea Imperial", items: [["Lager", "CERVEZA IMPERIAL LAGER 473ML"], ["Golden", "CERVEZA IMPERIAL GOLDEN 473ML"], ["Roja", "CERVEZA IMPERIAL ROJA 473ML"], ["IPA", "CERVEZA IMPERIAL IPA 473ML"], ["APA", "CERVEZA IMPERIAL APA 473ML"], ["Stout", "CERVEZA IMPERIAL STOUT 473ML"]], lista: 1 },
-    { items: [["Warsteiner", "CERVEZA WARSTEINER 473ML"]] }
+    { items: [["Miller", "CERVEZA MILLER 473ML"], ["Warsteiner", "CERVEZA WARSTEINER 473ML"]] }
   ] },
   { fudo: "TRAGOS", vermut: 1, filas: [
     { items: [["Fernet", "FERNET CON COCA"], ["Campari", "CAMPARI CON NARANJA"], ["Aperol", "APEROL SPRITZ"], ["gin tonic", "GIN TONIC"], ["Gancia", "GANCIA"]], sep: ", " },
