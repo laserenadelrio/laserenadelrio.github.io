@@ -70,11 +70,11 @@
     html += '<section id="' + id + '"><h2>' + g.grupo + '</h2>';
     g.items.forEach(function (v) {
       html += '<div class="vino">' + (v.foto ? '<img class="ft" loading="lazy" alt="" src="' + v.foto + '">' : '') +
-        '<div class="tx"><div class="n">' + v.nombre + '</div>' + (v.nota ? '<div class="d">' + v.nota + '</div>' : '') + '</div><div class="p">$' + precio(v.precio) + '</div></div>';
+        '<div class="tx"><div class="n">' + v.nombre + '</div>' + (v.nota ? '<div class="d">' + v.nota + '</div>' : '') + '</div><div class="p">' + precio(v.precio) + '</div></div>';
     });
     html += '</section>';
   });
-  if (DESCORCHE) html += '<div class="descorche"><span>¿Traés tu vino? Descorche</span><b>$' + precio(DESCORCHE) + '</b></div>';
+  if (DESCORCHE) html += '<div class="descorche"><span>¿Traés tu vino? Descorche</span><b>' + precio(DESCORCHE) + '</b></div>';
   document.getElementById("nav").innerHTML = nav;
   document.getElementById("lista").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + ACTUALIZADA.split(" ")[0] + ".";
