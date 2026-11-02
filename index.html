@@ -52,6 +52,11 @@
   .it .d { color: var(--gris); font-size: 13px; line-height: 1.35; margin-top: 2px; }
   .it .p { font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; font-size: 15.5px; color: var(--verde); text-align: right; flex: none; max-width: 42%; line-height: 1.25; }
   .it.star .n::after { content: " ★"; color: var(--oro); font-size: 13px; }
+  .it .p.cols { display: flex; max-width: none; }
+  .it .p.cols span, .colh b { width: 64px; text-align: right; }
+  .colh { display: flex; align-items: flex-end; margin-top: 14px; }
+  .colh .sub { flex: 1; margin: 0; }
+  .colh b { flex: none; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--oro); }
   .stc { display: inline-block; vertical-align: 2px; margin-left: 6px; color: var(--verde); font-size: 10px; font-weight: 700; border: 1px solid var(--verde); border-radius: 4px; padding: 0 4px; letter-spacing: 0.02em; }
 
   /* Lo que se viene */
@@ -74,6 +79,69 @@
   .hoy { background: var(--barro) !important; color: var(--papel) !important; }
   .puntos { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
   .puntos i { width: 6px; height: 6px; border-radius: 50%; background: var(--linea); }
+  .ev { cursor: pointer; }
+  .ev .tag, .hoja .tag { white-space: nowrap; flex: none; }
+  .ev .im { margin: -16px -16px 12px; height: 128px; overflow: hidden; display: flex; background: #ece2cd; }
+  .ev .im img { flex: 1; min-width: 0; height: 100%; object-fit: cover; display: block; }
+  .ev .mas { font-size: 13px; font-weight: 600; color: var(--oro); margin: 10px 0 10px; }
+  .vercal { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 10px; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--verde); background: var(--crema2); border: 1.5px solid var(--verde); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
+
+  /* Hoja que sube desde abajo: detalle de un evento y calendario */
+  .velo { position: fixed; inset: 0; z-index: 10; background: rgba(20,32,25,.6); display: none; align-items: flex-end; justify-content: center; }
+  .velo.on { display: flex; }
+  .hoja { background: var(--papel); width: 100%; max-width: 640px; max-height: 92vh; overflow-y: auto; border-radius: 18px 18px 0 0; position: relative; padding-bottom: 22px; animation: sube .22s ease-out; overscroll-behavior: contain; }
+  @keyframes sube { from { transform: translateY(40px); opacity: .5; } }
+  .hoja .x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(31,58,43,.88); color: var(--papel); font-size: 22px; line-height: 1; cursor: pointer; }
+  .hoja .volver { font: inherit; font-size: 14px; font-weight: 600; color: var(--papel); background: rgba(31,58,43,.88); border: none; border-radius: 999px; padding: 8px 14px; position: absolute; top: 10px; left: 10px; z-index: 2; cursor: pointer; }
+  .hoja .im { display: flex; height: 250px; background: #ece2cd; border-radius: 18px 18px 0 0; overflow: hidden; }
+  .hoja .im img { flex: 1; min-width: 0; height: 100%; object-fit: cover; display: block; }
+  .hoja .im.vacia { height: 96px; background: var(--verde); align-items: center; justify-content: center; }
+  .hoja .cu { padding: 14px 16px 0; }
+  .hoja .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .hoja .tag { background: var(--oro); color: #1d2e22; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; }
+  .hoja .cuando { font-size: 13px; color: var(--gris); text-align: right; }
+  .hoja h3 { font-family: Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.15; color: var(--verde); margin-top: 12px; }
+  .hoja .su { font-size: 13px; color: var(--oro); margin-top: 3px; letter-spacing: 0.03em; }
+  .hoja .s { font-size: 15px; line-height: 1.5; margin-top: 8px; }
+  .hoja .pr { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 18px; color: var(--verde); margin-top: 10px; }
+  .hoja .urg { display: inline-block; margin-top: 10px; background: var(--barro); color: var(--papel); font-size: 13px; font-weight: 700; border-radius: 6px; padding: 4px 9px; }
+  .hoja ul { list-style: none; margin-top: 14px; border-top: 1px dotted #cdbd9f; }
+  .hoja li { position: relative; padding: 8px 0 8px 18px; border-bottom: 1px dotted #cdbd9f; font-size: 14px; line-height: 1.4; }
+  .hoja li::before { content: ""; position: absolute; left: 3px; top: 15px; width: 6px; height: 6px; border-radius: 50%; background: var(--oro); }
+  .hoja .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .hoja .acciones .btn:first-child { grid-column: 1 / -1; }
+  .btn.lin { background: transparent; color: var(--verde); border: 1.5px solid var(--verde); font-size: 14px; padding: 10px 8px; font-family: inherit; cursor: pointer; }
+  .aviso { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 11; background: var(--verde); color: var(--papel); border-radius: 999px; padding: 9px 16px; font-size: 14px; display: none; }
+
+  /* Calendario */
+  .cal { padding: 18px 16px 0; }
+  .cal h3 { margin-top: 0; padding-right: 44px; }
+  .calnav { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--verde); }
+  .calnav button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--linea); background: var(--crema2); color: var(--verde); font-size: 20px; line-height: 1; cursor: pointer; }
+  .calnav button:disabled { opacity: 0.3; cursor: default; }
+  .grilla { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
+  .grilla .dn { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gris); padding-bottom: 2px; }
+  .grilla button { min-height: 54px; border: 1px solid var(--linea); background: #fffaf0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; padding: 4px 0 3px; font: inherit; color: var(--tinta); cursor: pointer; min-width: 0; }
+  .grilla button b { font-family: Bahnschrift, sans-serif; font-size: 14px; font-weight: 600; }
+  .grilla button b small { font-size: 9.5px; color: var(--gris); font-weight: 400; }
+  .grilla button .ics { font-size: 13px; line-height: 1.15; margin-top: 2px; letter-spacing: -1px; }
+  .grilla button.cer { background: transparent; border-style: dashed; color: #b3a68e; }
+  .grilla button.cer .ics { font-size: 9px; letter-spacing: 0; text-transform: uppercase; }
+  .grilla button.pas { opacity: 0.4; }
+  .grilla button.hoyc { border: 2px solid var(--barro); }
+  .grilla button.sel { background: var(--verde); border-color: var(--verde); color: var(--papel); }
+  .grilla button.sel b small { color: #d9c79f; }
+  .ley { font-size: 12px; color: var(--gris); margin-top: 8px; line-height: 1.6; }
+  .diasel { margin-top: 12px; border: 2px solid var(--verde); border-radius: 12px; background: #fffaf0; padding: 10px 12px 6px; }
+  .diasel .dt { font-family: Georgia, serif; font-size: 18px; color: var(--verde); }
+  .diasel .ab { font-size: 13px; color: var(--gris); margin-top: 2px; }
+  .ag { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-top: 1px dotted #cdbd9f; margin-top: 8px; }
+  .ag + .ag { margin-top: 0; }
+  .ag .ic { font-size: 20px; line-height: 1.2; flex: none; width: 24px; text-align: center; }
+  .ag .tx { flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; }
+  .ag .tx b { display: block; font-size: 15px; }
+  .ag .tx span { color: var(--gris); font-size: 13px; }
+  .ag button { flex: none; align-self: center; font: inherit; font-size: 13px; font-weight: 700; color: #1d2e22; background: var(--oro); border: none; border-radius: 999px; padding: 6px 11px; cursor: pointer; }
 
   /* Promos, como en la carta física */
   .promos { display: grid; gap: 10px; margin-top: 12px; }
@@ -223,6 +291,8 @@
   Reservas y takeaway: <a href="https://wa.me/5491153349375">+54 9 11 5334-9375</a>
   <small id="act"></small>
 </footer>
+<div class="velo" id="velo"><div class="hoja" id="hoja" role="dialog" aria-modal="true"></div></div>
+<div class="aviso" id="aviso"></div>
 <script src="datos/fudo.js"></script>
 <script src="datos/ajustes.js"></script>
 <script src="datos/carta.js"></script>
@@ -255,7 +325,7 @@
   }
 
   // Una fila de la carta, a partir de uno o más productos de Fudo.
-  function fila(f, cat) {
+  function fila(f, cat, ncols) {
     var pres = [];
     f.items.forEach(function (it) {
       var k = norm(it[1]), x = P[k];
@@ -269,12 +339,21 @@
     if (f.lista) desc = desc.charAt(0).toUpperCase() + desc.slice(1);
     var src = (f.foto && foto(f.foto)) || (pres.filter(function (i) { return i.x.p.foto; })[0] || { x: { p: {} } }).x.p.foto;
     var stc = pres.some(function (i) { return sinTacc(norm(i.x.cat), i.k); });
+    if (f.cols && ncols) {
+      // Cada producto en su columna (Simple · Doble, por ejemplo). Si falta uno, la columna queda vacía.
+      var celdas = [];
+      for (var j = 0; j < ncols; j++) {
+        var it = f.items[j], x = it && P[norm(it[1])];
+        celdas.push('<span>' + (x && producto(x.cat, x.p) && x.p.precio > 0 ? precio(x.p.precio) : '') + '</span>');
+      }
+      return item(nombre, desc, celdas.join(""), src, stc, f.star, cat, "cols");
+    }
     return item(nombre, desc, plata(pres.map(function (i) { return i.x.p.precio; })), src, stc, f.star, cat);
   }
-  function item(nombre, desc, pr, src, stc, star, cat) {
+  function item(nombre, desc, pr, src, stc, star, cat, clasePrecio) {
     var b = esc(sinAcento((nombre + " " + desc + " " + cat).toLowerCase()));
     return '<div class="it' + (star ? ' star' : '') + '" data-b="' + b + '">' + marcoFoto(src) + '<div class="tx"><div class="n">' + esc(nombre) +
-      (stc ? '<span class="stc">S/TACC</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p">' + pr + '</div></div>';
+      (stc ? '<span class="stc">S/TACC</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p' + (clasePrecio ? ' ' + clasePrecio : '') + '">' + pr + '</div></div>';
   }
   function corto(s) { return s.length > 90 ? s.slice(0, 88).replace(/\s+\S*$/, "") + "…" : s; }
 
@@ -286,16 +365,27 @@
 
   // 1. Lo que se viene
   var evs = EVENTOS.filter(function (e) { return e.mostrar <= HOY && HOY <= e.hasta; }).sort(function (a, b) { return a.dia < b.dia ? -1 : 1; });
+  // Fotos de un evento: los productos de Fudo que tengan foto (hasta dos).
+  function fotosEv(e) { return (e.foto || []).map(foto).filter(Boolean).slice(0, 2); }
+  function etiqueta(e) {
+    var hoy = e.dia <= HOY && HOY <= e.hasta, man = e.dia === MANANA;
+    return '<span class="tag' + (hoy || man ? ' hoy' : '') + '">' + (hoy ? "¡Hoy!" : man ? "¡Mañana!" : esc(e.tag)) + '</span>';
+  }
+  function botonEv(e) {
+    return e.cierre && HOY > e.cierre ? '<div class="s"><b>Inscripción cerrada. ¡Vení a alentar!</b></div>' : '<a class="btn" href="' + wa(e.wa) + '">' + esc(e.boton) + '</a>';
+  }
   if (evs.length) {
     var h = '<div class="eventos" id="evs">';
     evs.forEach(function (e) {
-      var hoy = e.dia <= HOY && HOY <= e.hasta, man = e.dia === MANANA, cerrado = e.cierre && HOY > e.cierre;
-      h += '<div class="ev"><div class="top"><span class="tag' + (hoy || man ? ' hoy' : '') + '">' + (hoy ? "¡Hoy!" : man ? "¡Mañana!" : esc(e.tag)) + '</span><span class="cuando">' + esc(e.fecha) + '</span></div>' +
+      var cerrado = e.cierre && HOY > e.cierre, fs = fotosEv(e);
+      h += '<div class="ev" role="button" tabindex="0" data-ev="' + EVENTOS.indexOf(e) + '">' + (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img loading="lazy" alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '') +
+        '<div class="top">' + etiqueta(e) + '<span class="cuando">' + esc(e.fecha) + '</span></div>' +
         '<div class="t">' + esc(e.t) + '</div>' + (e.sub ? '<div class="su">' + esc(e.sub) + '</div>' : '') + '<div class="s">' + esc(e.s) + '</div>' +
         (e.precio ? '<div class="pr">' + esc(e.precio) + '</div>' : '') + (e.urgente && !cerrado ? '<div><span class="urg">' + esc(e.urgente) + '</span></div>' : '') +
-        '<div class="esp"></div>' + (cerrado ? '<div class="s"><b>Inscripción cerrada. ¡Vení a alentar!</b></div>' : '<a class="btn" href="' + wa(e.wa) + '">' + esc(e.boton) + '</a>') + '</div>';
+        '<div class="esp"></div><div class="mas">Tocá para ver más ›</div>' + botonEv(e) + '</div>';
     });
-    h += '</div>' + (evs.length > 1 ? '<div class="puntos">' + evs.map(function () { return '<i></i>'; }).join("") + '</div>' : '');
+    h += '</div>' + (evs.length > 1 ? '<div class="puntos">' + evs.map(function () { return '<i></i>'; }).join("") + '</div>' : '') +
+      '<button class="vercal" type="button" id="vercal">📅 Ver el calendario de las próximas semanas</button>';
     seccion("se-viene", "Se viene", h, "deslizá para ver más", 1);
   }
 
@@ -388,8 +478,14 @@
       return;
     }
     if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.</span></div>';
+    var ncols = 0;
     (conf.filas || []).forEach(function (f) {
-      if (f.sub) { h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
+      if (f.cols && f.cols.length) {
+        ncols = f.cols.length;
+        h += '<div class="colh sub"><span class="sub">' + esc(f.sub || "") + '</span>' + f.cols.map(function (c) { return '<b>' + esc(c) + '</b>'; }).join("") + '</div>';
+        return;
+      }
+      if (f.sub) { ncols = 0; h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
       if (f.auto) {
         // Agrupa por precio los productos que empiezan con el prefijo (las pizzas, por ejemplo).
         var fuera = (f.fuera || []).map(norm), grupos = {}, orden = [];
@@ -409,7 +505,7 @@
         });
         return;
       }
-      h += fila(f, nom);
+      h += fila(f, nom, ncols);
     });
     if (!conf.soloFilas) c.productos.forEach(function (p) {
       var k = norm(p.nombre), v = producto(c.nombre, p);
@@ -466,6 +562,153 @@
     function marcar() { var i = Math.round(evc.scrollLeft / (evc.scrollWidth / pts.length)); pts.forEach(function (p, j) { p.style.background = j === i ? "var(--oro)" : ""; }); }
     evc.addEventListener("scroll", marcar, { passive: true }); marcar();
   }
+
+  // Hoja de detalle y calendario. Se abre con un #enlace propio, así el botón "atrás" del celular la cierra
+  // y se puede compartir el link de un evento (#evento-...) o del calendario (#calendario).
+  var velo = document.getElementById("velo"), hoja = document.getElementById("hoja");
+  var LINK = location.origin + location.pathname, pila = 0; // pila: cuántos #enlaces de la hoja se agregaron al historial
+  function idEv(e) { return "evento-" + slug(e.t) + "-" + ddmm(e.dia).replace("/", "-"); }
+  function mostrarHoja(html, hash) {
+    hoja.innerHTML = '<button class="x" type="button" aria-label="Cerrar">×</button>' + html;
+    hoja.scrollTop = 0;
+    velo.classList.add("on");
+    document.body.style.overflow = "hidden";
+    if (location.hash !== "#" + hash) { history.pushState(null, "", "#" + hash); pila++; }
+  }
+  function cerrarHoja() {
+    velo.classList.remove("on");
+    document.body.style.overflow = "";
+  }
+  function pedirCierre() {
+    if (pila > 0) { var n = pila; pila = 0; history.go(-n); } else { cerrarHoja(); history.replaceState(null, "", LINK); }
+  }
+  velo.addEventListener("click", function (ev) { if (ev.target === velo || ev.target.closest(".x")) pedirCierre(); });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && velo.classList.contains("on")) pedirCierre(); });
+  window.addEventListener("popstate", function () { if (pila > 0) pila--; abrirDesdeHash(); });
+
+  function aviso(t) {
+    var a = document.getElementById("aviso"); a.textContent = t; a.style.display = "block";
+    clearTimeout(aviso.t); aviso.t = setTimeout(function () { a.style.display = "none"; }, 2200);
+  }
+  // Link para agendar el evento en Google Calendar (desde el celular también lo toma la app de calendario).
+  function agendar(e) {
+    var f = function (iso) { return iso.replace(/-/g, ""); }, fechas;
+    var sig = function (iso) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + 1); return isoDe(d); };
+    if (e.hora) {
+      var fin = e.hora[1] <= e.hora[0] ? sig(e.dia) : e.dia;
+      fechas = f(e.dia) + "T" + e.hora[0].replace(":", "") + "00/" + f(fin) + "T" + e.hora[1].replace(":", "") + "00";
+    } else fechas = f(e.dia) + "/" + f(sig(e.hasta));
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(e.t + " · La Serena") + "&dates=" + fechas +
+      "&ctz=America/Argentina/Buenos_Aires&location=" + encodeURIComponent("La Serena, Av. Victorica 708, Tigre") + "&details=" + encodeURIComponent(e.s + "\n\n" + LINK + "#" + idEv(e));
+  }
+  var volverAlCal = false;
+  function abrirEvento(i, desdeCal) {
+    var e = EVENTOS[i]; if (!e) return;
+    volverAlCal = !!desdeCal;
+    var fs = fotosEv(e), cerrado = e.cierre && HOY > e.cierre;
+    var h = (desdeCal ? '<button class="volver" type="button" id="volver">‹ Calendario</button>' : '') +
+      (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '<div class="im vacia">' + CABANA.replace('width="30" height="26"', 'width="56" height="48"') + '</div>') +
+      '<div class="cu"><div class="top">' + etiqueta(e) + '<span class="cuando">' + esc(e.fecha) + '</span></div><h3>' + esc(e.t) + '</h3>' +
+      (e.sub ? '<div class="su">' + esc(e.sub) + '</div>' : '') + '<div class="s">' + esc(e.s) + '</div>' +
+      (e.precio ? '<div class="pr">' + esc(e.precio) + '</div>' : '') + (e.urgente && !cerrado ? '<div><span class="urg">' + esc(e.urgente) + '</span></div>' : '') +
+      (e.info ? '<ul>' + e.info.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '') +
+      '<div class="acciones">' + botonEv(e) + '<a class="btn lin" target="_blank" rel="noopener" href="' + agendar(e) + '">📅 Agendar</a><button class="btn lin" type="button" id="compartir">Compartir</button></div></div>';
+    mostrarHoja(h, idEv(e));
+    var v = document.getElementById("volver");
+    if (v) v.addEventListener("click", function () { if (pila > 0) history.back(); else abrirCalendario(calPag, calSel); });
+    document.getElementById("compartir").addEventListener("click", function () {
+      var url = LINK + "#" + idEv(e);
+      if (navigator.share) navigator.share({ title: e.t + " · La Serena", text: e.fecha + ". " + e.s, url: url }).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { aviso("Link copiado"); });
+    });
+  }
+  if (evc) {
+    evc.addEventListener("click", function (ev) {
+      var c = ev.target.closest(".ev"); if (!c || ev.target.closest("a")) return;
+      abrirEvento(+c.getAttribute("data-ev"));
+    });
+    evc.addEventListener("keydown", function (ev) { var c = ev.target.closest(".ev"); if (c && ev.key === "Enter") abrirEvento(+c.getAttribute("data-ev")); });
+  }
+
+  // Calendario: de a 4 semanas, empezando por el lunes de esta semana.
+  var DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  function isoDe(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  var lunes0 = new Date(HOY + "T12:00:00"); lunes0.setDate(lunes0.getDate() - (lunes0.getDay() + 6) % 7);
+  var calPag = 0, calSel = HOY;
+  function delDia(iso) {
+    var d = new Date(iso + "T12:00:00"), dow = d.getDay();
+    var cerrado = CERRAMOS.indexOf(iso) >= 0 || (dow === 1 && ABRIMOS.indexOf(iso) < 0);
+    if (cerrado) return { cerrado: true, motivo: dow === 1 ? "Los lunes cerramos" : "Cerramos: es el franco después del feriado" };
+    var evsDia = EVENTOS.filter(function (e) { return e.dia <= iso && iso <= e.hasta; });
+    var fijos = SEMANA.filter(function (s) { return s.dia === DIAS[dow] && (!s.desde || iso >= s.desde) && !evsDia.some(function (e) { return e.de === s.id; }); });
+    var menu = MENU_DIA.filter(function (m) { return m.dia === DIAS[dow]; })[0];
+    return { evs: evsDia, fijos: fijos, menu: menu, feriado: dow === 1 };
+  }
+  function abrirCalendario(pag, sel) {
+    calPag = pag; calSel = sel || calSel;
+    var ini = new Date(lunes0); ini.setDate(ini.getDate() + pag * 28);
+    var fin = new Date(ini); fin.setDate(fin.getDate() + 27);
+    var meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    var g = '<div class="grilla">' + ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"].map(function (x) { return '<div class="dn">' + x + '</div>'; }).join("");
+    for (var i = 0; i < 28; i++) {
+      var d = new Date(ini); d.setDate(d.getDate() + i);
+      var iso = isoDe(d), info = delDia(iso), ics = "";
+      if (info.cerrado) ics = "cerrado";
+      else {
+        var lista = info.evs.map(function (e) { return e.ic || "⭐"; }).concat(info.fijos.map(function (s) { return s.ic; }));
+        ics = lista.filter(function (x, j) { return x && lista.indexOf(x) === j; }).slice(0, 3).join("");
+      }
+      var cl = (info.cerrado ? " cer" : "") + (iso < HOY ? " pas" : "") + (iso === HOY ? " hoyc" : "") + (iso === calSel ? " sel" : "");
+      g += '<button type="button" class="' + cl + '" data-d="' + iso + '"><b>' + d.getDate() + (d.getDate() === 1 || i === 0 ? '<small>/' + (d.getMonth() + 1) + '</small>' : '') + '</b><span class="ics">' + ics + '</span></button>';
+    }
+    g += '</div>';
+    var ley = SEMANA.map(function (s) { return s.ic + ' ' + s.t; }).join(" · ") + ' · ⭐ fechas especiales';
+    var h = '<div class="cal"><h3>Calendario</h3><div class="calnav"><button type="button" id="calant" aria-label="Semanas anteriores"' + (pag <= 0 ? ' disabled' : '') + '>‹</button>' +
+      '<span>' + ini.getDate() + ' de ' + meses[ini.getMonth()] + ' al ' + fin.getDate() + ' de ' + meses[fin.getMonth()] + '</span>' +
+      '<button type="button" id="calsig" aria-label="Semanas siguientes"' + (pag >= 2 ? ' disabled' : '') + '>›</button></div>' + g +
+      '<div class="ley">' + ley + '. Tocá un día para ver qué hay.</div><div id="diasel"></div></div>';
+    mostrarHoja(h, "calendario");
+    volverAlCal = false;
+    document.getElementById("calant").addEventListener("click", function () { abrirCalendario(calPag - 1); });
+    document.getElementById("calsig").addEventListener("click", function () { abrirCalendario(calPag + 1); });
+    hoja.querySelector(".grilla").addEventListener("click", function (ev) {
+      var b = ev.target.closest("button[data-d]"); if (!b) return;
+      hoja.querySelectorAll(".grilla .sel").forEach(function (x) { x.classList.remove("sel"); });
+      b.classList.add("sel"); calSel = b.getAttribute("data-d"); verDia(calSel);
+    });
+    var enPag = hoja.querySelector('.grilla button[data-d="' + calSel + '"]');
+    if (enPag) verDia(calSel); else document.getElementById("diasel").innerHTML = "";
+  }
+  function verDia(iso) {
+    var d = new Date(iso + "T12:00:00"), info = delDia(iso);
+    var h = '<div class="diasel"><div class="dt">' + DIAS[d.getDay()] + ' ' + ddmm(iso) + (iso === HOY ? ' · hoy' : '') + '</div>';
+    if (info.cerrado) h += '<div class="ab">' + info.motivo + '.</div>';
+    else {
+      h += '<div class="ab">' + (info.feriado ? 'Feriado: abrimos de 10 a 01 h' : 'Abierto de 10 a 01 h') + ' · happy hour de 17 a 20 h</div>';
+      info.evs.forEach(function (e) {
+        h += '<div class="ag"><span class="ic">' + (e.ic || "⭐") + '</span><div class="tx"><b>' + esc(e.t) + '</b><span>' + esc(e.fecha) + '</span></div><button type="button" data-ev="' + EVENTOS.indexOf(e) + '">Ver más</button></div>';
+      });
+      info.fijos.forEach(function (s) {
+        h += '<div class="ag"><span class="ic">' + s.ic + '</span><div class="tx"><b>' + esc(s.t) + '</b><span>' + esc(s.hora) + (s.precio ? ' · ' + esc(s.precio) + ' ' + esc(s.chico || "") : '') + '</span></div></div>';
+      });
+      if (info.menu) h += '<div class="ag"><span class="ic">🍽</span><div class="tx"><b>Menú del día · hasta las 17 h</b><span>' + info.menu.platos.map(esc).join(" o ") + '</span></div></div>';
+    }
+    document.getElementById("diasel").innerHTML = h + '</div>';
+    document.querySelectorAll("#diasel button[data-ev]").forEach(function (b) {
+      b.addEventListener("click", function () { abrirEvento(+b.getAttribute("data-ev"), true); });
+    });
+  }
+  var vc = document.getElementById("vercal");
+  if (vc) vc.addEventListener("click", function () { abrirCalendario(0, HOY); });
+
+  // Si la página se abre con #evento-... o #calendario, se abre esa hoja.
+  function abrirDesdeHash() {
+    var h = location.hash.slice(1);
+    if (h === "calendario") { abrirCalendario(calPag); return; }
+    for (var i = 0; i < EVENTOS.length; i++) if (idEv(EVENTOS[i]) === h) { abrirEvento(i, volverAlCal); return; }
+    cerrarHoja();
+  }
+  if (/^#(evento-|calendario$)/.test(location.hash)) abrirDesdeHash();
 
   // Marca en la barra la categoría que se está viendo.
   var links = document.querySelectorAll("#nav a");
