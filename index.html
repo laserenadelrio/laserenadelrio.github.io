@@ -237,6 +237,29 @@
   .menudia .md.hoy span { font-weight: 600; }
   .menudia .md i { color: var(--gris); font-style: italic; margin: 0 6px; }
   .menudia .mdn { font-size: 12px; color: var(--gris); padding-top: 7px; }
+  .it, .emp .e[data-pd] { cursor: pointer; }
+  .emp.mos2 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  @media (min-width: 600px) { .emp.mos2 { grid-template-columns: repeat(3, 1fr); } }
+  .emp .sub { grid-column: 1 / -1; margin: 8px 0 -2px; }
+  .emp.mos2 .e .n { font-size: 14px; padding: 7px 6px 3px; }
+  .emp.mos2 .e .pe { font-size: 15px; }
+  .emp .e .stc { margin-left: 4px; vertical-align: 1px; }
+  .emp .e .pe .cp { display: inline-block; margin: 0 5px; }
+  .emp .e .pe .cp i { font-style: normal; font-family: "Segoe UI", sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--oro); margin-right: 4px; }
+  .tip { text-align: center; font-size: 13px; font-style: italic; color: var(--gris); margin: 20px 0 -6px; }
+  .hoja .im.pl { height: 300px; }
+  .hoja .im.pl .vacia { flex: 1; display: flex; align-items: center; justify-content: center; background: var(--verde); }
+  .hoja h3 .stc { font-family: "Segoe UI", sans-serif; vertical-align: 6px; }
+  .hoja .vars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .hoja .vars.de2 { grid-template-columns: repeat(2, 1fr); }
+  .hoja .va { display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1.5px solid var(--linea); border-radius: 10px; background: #fffaf0; font: inherit; color: var(--tinta); cursor: pointer; text-align: center; }
+  .hoja .va .ft { width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; }
+  .hoja .va b { font-size: 13px; line-height: 1.2; padding: 6px 4px 0; flex: 1; }
+  .hoja .va span { font-family: Bahnschrift, sans-serif; font-weight: 700; font-size: 14.5px; color: var(--verde); padding: 3px 4px 7px; }
+  .hoja .va.on { border-color: var(--oro); box-shadow: 0 0 0 1.5px var(--oro); }
+  .hoja .vl { margin-top: 12px; border-top: 1px dotted #cdbd9f; }
+  .hoja .vl div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dotted #cdbd9f; font-size: 15px; }
+  .hoja .vl span { font-family: Bahnschrift, sans-serif; font-weight: 700; color: var(--verde); }
   .emp .e .tp { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--oro); padding-top: 2px; }
 
   /* Club */
@@ -324,35 +347,54 @@
     return iguales ? precio(u[0]) : u.map(precio).join(" · ");
   }
 
-  // Una fila de la carta, a partir de uno o más productos de Fudo.
-  function fila(f, cat, ncols) {
+  // Fichas: lo que se abre al tocar un producto (foto grande, descripción completa, variedades con su precio).
+  var FICHAS = [];
+  function ficha(o) { o.id = "plato-" + slug(o.cat + " " + o.t); FICHAS.push(o); return FICHAS.length - 1; }
+  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  // Texto de Fudo para la ficha, sin lo que no va en la carta ("Opción sin TACC!" se dice con el sello S/TACC).
+  function descFudo(s) { return String(s || "").replace(/opci[oó]n sin tacc!?/i, "").replace(/\s*\n\s*-\s*/g, ", ").replace(/:,/g, ":").trim(); }
+
+  // Una fila de la carta, a partir de uno o más productos de Fudo. Devuelve los datos para dibujarla como renglón o como mosaico.
+  function datosFila(f, cat, conf, cols) {
     var pres = [];
-    f.items.forEach(function (it) {
+    f.items.forEach(function (it, j) {
       var k = norm(it[1]), x = P[k];
       usados[k] = 1;
-      if (!x || !producto(x.cat, x.p)) return;
-      pres.push({ lab: it[0], k: k, x: x });
+      var v = x && producto(x.cat, x.p);
+      if (!v) return;
+      pres.push({ lab: it[0], k: k, x: x, v: v, col: j });
     });
-    if (!pres.length) return "";
+    if (!pres.length) return null;
     var nombre = f.t || pres.map(function (i) { return i.lab; }).join(f.sep || " · ");
     var desc = [f.lista ? pres.map(function (i) { return i.lab; }).join(", ") : "", f.d || ""].filter(Boolean).join(" · ");
-    if (f.lista) desc = desc.charAt(0).toUpperCase() + desc.slice(1);
-    var src = (f.foto && foto(f.foto)) || (pres.filter(function (i) { return i.x.p.foto; })[0] || { x: { p: {} } }).x.p.foto;
-    var stc = pres.some(function (i) { return sinTacc(norm(i.x.cat), i.k); });
-    if (f.cols && ncols) {
-      // Cada producto en su columna (Simple · Doble, por ejemplo). Si falta uno, la columna queda vacía.
-      var celdas = [];
-      for (var j = 0; j < ncols; j++) {
-        var it = f.items[j], x = it && P[norm(it[1])];
-        celdas.push('<span>' + (x && producto(x.cat, x.p) && x.p.precio > 0 ? precio(x.p.precio) : '') + '</span>');
-      }
-      return item(nombre, desc, celdas.join(""), src, stc, f.star, cat, "cols");
-    }
-    return item(nombre, desc, plata(pres.map(function (i) { return i.x.p.precio; })), src, stc, f.star, cat);
+    if (f.lista) desc = cap(desc);
+    var fotos = pres.map(function (i) { return i.x.p.foto; }).filter(Boolean);
+    if (f.foto && foto(f.foto)) fotos.unshift(foto(f.foto));
+    var r = { nombre: nombre, desc: desc, src: fotos[0], star: f.star, n: pres.length, lista: f.lista,
+      stc: pres.some(function (i) { return sinTacc(norm(i.x.cat), i.k); }), pr: plata(pres.map(function (i) { return i.x.p.precio; })) };
+    if (f.cols && cols) r.celdas = cols.map(function (c, j) { var i = pres.filter(function (q) { return q.col === j; })[0]; return { n: c, pr: i && i.x.p.precio > 0 ? i.x.p.precio : 0 }; });
+    r.fi = ficha({ t: f.tf || nombre, d: desc, largo: f.largo || (pres.length === 1 && !f.d ? descFudo(pres[0].v.desc) : ""), cat: cat, conf: conf, stc: r.stc, star: f.star, foto: fotos[0], pr: r.pr,
+      vars: pres.length > 1 ? pres.map(function (i) { return { n: i.lab ? cap(i.lab) : cols ? cols[i.col] : i.v.nombre, pr: i.x.p.precio, foto: i.x.p.foto }; }) : [] });
+    return r;
   }
-  function item(nombre, desc, pr, src, stc, star, cat, clasePrecio) {
+  function fila(f, cat, conf, cols) {
+    var r = datosFila(f, cat, conf, cols);
+    if (!r) return "";
+    // Cada producto en su columna (Simple · Doble, por ejemplo). Si falta uno, la columna queda vacía.
+    if (r.celdas) return item(r.nombre, r.desc, r.celdas.map(function (c) { return '<span>' + (c.pr ? precio(c.pr) : '') + '</span>'; }).join(""), r.src, r.stc, r.star, cat, "cols", r.fi);
+    return item(r.nombre, r.desc, r.pr, r.src, r.stc, r.star, cat, "", r.fi);
+  }
+  // La misma fila, como baldosa del mosaico: foto, nombre y precio. El resto está en la ficha.
+  function baldosa(f, cat, conf, cols) {
+    var r = datosFila(f, cat, conf, cols);
+    if (!r) return "";
+    var pr = r.celdas ? r.celdas.filter(function (c) { return c.pr; }).map(function (c) { return '<span class="cp"><i>' + esc(c.n) + '</i>' + precio(c.pr) + '</span>'; }).join("") : r.pr;
+    return '<div class="e' + (r.star ? ' star' : '') + '" data-pd="' + r.fi + '" role="button" tabindex="0" data-b="' + esc(sinAcento((r.nombre + " " + r.desc + " " + cat).toLowerCase())) + '">' + marcoFoto(r.src) +
+      '<div class="n"><span>' + esc(r.nombre) + (r.stc ? '<span class="stc">S/TACC</span>' : '') + (r.lista && r.n > 1 ? '<small>' + r.n + ' variedades</small>' : '') + '</span></div><div class="pe">' + pr + '</div></div>';
+  }
+  function item(nombre, desc, pr, src, stc, star, cat, clasePrecio, fi) {
     var b = esc(sinAcento((nombre + " " + desc + " " + cat).toLowerCase()));
-    return '<div class="it' + (star ? ' star' : '') + '" data-b="' + b + '">' + marcoFoto(src) + '<div class="tx"><div class="n">' + esc(nombre) +
+    return '<div class="it' + (star ? ' star' : '') + '" data-pd="' + fi + '" role="button" tabindex="0" data-b="' + b + '">' + marcoFoto(src) + '<div class="tx"><div class="n">' + esc(nombre) +
       (stc ? '<span class="stc">S/TACC</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p' + (clasePrecio ? ' ' + clasePrecio : '') + '">' + pr + '</div></div>';
   }
   function corto(s) { return s.length > 90 ? s.slice(0, 88).replace(/\s+\S*$/, "") + "…" : s; }
@@ -429,6 +471,7 @@
   });
   h += '</div><a class="clubbanner" href="#club"><span class="tr">☘</span><span><b>Hacete socio del Club La Serena</b><span>Café de cortesía, cartón de lluvia y más. Es gratis.</span></span><span class="fl">→</span></a>';
   seccion("la-semana", "La semana", h, "martes a viernes, siempre hay un motivo");
+  html += '<p class="tip noBusca">Tocá cualquier plato o bebida para ver la foto grande y todos los detalles.</p>';
 
   // 4. La carta, categoría por categoría
   var hechas = {};
@@ -453,7 +496,8 @@
         var k = norm(p.nombre), n = lindo(p.nombre).replace(/^Empanada (de )?/i, "").replace("Carne Cuchillo", "Carne a cuchillo");
         n = n.charAt(0).toUpperCase() + n.slice(1).toLowerCase();
         usados[k] = 1;
-        h += '<div class="e' + ((conf.estrellas || []).indexOf(k) >= 0 ? ' star' : '') + '" data-b="' + esc(sinAcento(("empanada " + n + " " + p.desc).toLowerCase())) + '">' + marcoFoto(p.foto) +
+        var st = (conf.estrellas || []).indexOf(k) >= 0, fi = ficha({ t: "Empanada de " + n.toLowerCase(), largo: descFudo(p.desc), cat: nom, conf: conf, star: st, foto: p.foto, pr: plata([p.precio]) });
+        h += '<div class="e' + (st ? ' star' : '') + '" data-pd="' + fi + '" role="button" tabindex="0" data-b="' + esc(sinAcento(("empanada " + n + " " + p.desc).toLowerCase())) + '">' + marcoFoto(p.foto) +
           '<span class="tp">' + (/canastita/i.test(p.desc) ? "Canastita" : "Cerrada") + '</span><div class="n"><span>' + esc(n) + (pr ? '' : '<small>' + precio(p.precio) + '</small>') + '</span></div></div>';
       });
       if (pr) h += '<div class="e prc"><b>' + precio(pr) + '</b><span>cada una</span></div>';
@@ -470,7 +514,8 @@
         usados[k] = 1;
         var n = v.nombre.replace(/^Pizza (?!individual)/i, ""), nota = (conf.notas || {})[k] || "";
         n = (n.charAt(0).toUpperCase() + n.slice(1).toLowerCase()).replace(/^Rucula/, "Rúcula");
-        h += '<div class="e' + ((conf.estrellas || []).indexOf(k) >= 0 ? ' star' : '') + '" data-b="' + esc(sinAcento(("pizza " + n + " " + nota).toLowerCase())) + '">' + marcoFoto(p.foto) +
+        var st = (conf.estrellas || []).indexOf(k) >= 0, fi = ficha({ t: /^calzone|individual/i.test(v.nombre) ? n : "Pizza " + n.toLowerCase(), largo: nota || descFudo(p.desc), cat: nom, conf: conf, star: st, foto: p.foto, pr: plata([p.precio]) });
+        h += '<div class="e' + (st ? ' star' : '') + '" data-pd="' + fi + '" role="button" tabindex="0" data-b="' + esc(sinAcento(("pizza " + n + " " + nota).toLowerCase())) + '">' + marcoFoto(p.foto) +
           '<div class="n"><span>' + esc(n) + (nota ? '<small>' + esc(nota) + '</small>' : '') + '</span></div><div class="pe">' + plata([p.precio]) + '</div></div>';
       });
       h += '</div>';
@@ -478,14 +523,17 @@
       return;
     }
     if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.</span></div>';
-    var ncols = 0;
+    // mosaico: 1 dibuja las filas como baldosas con foto (de a dos por renglón en el celu).
+    var cols = null, dibujar = conf.mosaico ? baldosa : fila;
+    if (conf.mosaico) h += '<div class="emp mos mos2">';
     (conf.filas || []).forEach(function (f) {
       if (f.cols && f.cols.length) {
-        ncols = f.cols.length;
-        h += '<div class="colh sub"><span class="sub">' + esc(f.sub || "") + '</span>' + f.cols.map(function (c) { return '<b>' + esc(c) + '</b>'; }).join("") + '</div>';
+        cols = f.cols;
+        if (!conf.mosaico) h += '<div class="colh sub"><span class="sub">' + esc(f.sub || "") + '</span>' + f.cols.map(function (c) { return '<b>' + esc(c) + '</b>'; }).join("") + '</div>';
+        else if (f.sub) h += '<div class="sub">' + esc(f.sub) + '</div>';
         return;
       }
-      if (f.sub) { ncols = 0; h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
+      if (f.sub) { cols = null; h += '<div class="sub">' + esc(f.sub) + '</div>'; return; }
       if (f.auto) {
         // Agrupa por precio los productos que empiezan con el prefijo (las pizzas, por ejemplo).
         var fuera = (f.fuera || []).map(norm), grupos = {}, orden = [];
@@ -501,17 +549,19 @@
         orden.forEach(function (g) {
           var gp = grupos[g], n = gp.map(function (p) { var t = lindo(p.nombre.slice(f.auto.length)); return (t.charAt(0) + t.slice(1).toLowerCase()).replace(/^Rucula/, "Rúcula"); }).join(f.sep || " · ");
           var src = (gp.filter(function (p) { return p.foto; })[0] || {}).foto;
-          h += item(n, "", plata([gp[0].precio]), src, false, g.charAt(0) === "s", nom);
+          h += item(n, "", plata([gp[0].precio]), src, false, g.charAt(0) === "s", nom, "", ficha({ t: n, cat: nom, conf: conf, foto: src, pr: plata([gp[0].precio]), vars: [] }));
         });
         return;
       }
-      h += fila(f, nom, ncols);
+      h += dibujar(f, nom, conf, f.cols ? cols : null);
     });
+    // Productos nuevos de Fudo que no están en carta.js: aparecen al final, con su texto de Fudo.
     if (!conf.soloFilas) c.productos.forEach(function (p) {
       var k = norm(p.nombre), v = producto(c.nombre, p);
       if (usados[k] || !v) return;
-      h += item(v.nombre, corto(v.nota || v.desc || ""), plata([p.precio]), p.foto, v.stacc, false, nom);
+      h += dibujar({ items: [[v.nombre, p.nombre]], d: corto(v.nota || descFudo(v.desc)), largo: v.nota || descFudo(v.desc) }, nom, conf, null);
     });
+    if (conf.mosaico) h += '</div>';
     if (h) seccion(id, nom, h, conf.nota);
   }
   CARTA.forEach(function (conf) {
@@ -630,6 +680,50 @@
     evc.addEventListener("keydown", function (ev) { var c = ev.target.closest(".ev"); if (c && ev.key === "Enter") abrirEvento(+c.getAttribute("data-ev")); });
   }
 
+  // Ficha de un producto: foto grande, descripción completa, variedades con su precio y datos útiles de la categoría.
+  function abrirPlato(i) {
+    var o = FICHAS[i]; if (!o) return;
+    var c = o.conf || {}, vs = o.vars || [], conFoto = vs.some(function (v) { return v.foto; });
+    var datos = [];
+    if (c.nota && !/sin tacc/i.test(c.nota) && !c.guarnicion) datos.push(c.nota + ".");
+    var llevar = !/BEBIDAS|CERVEZA|TRAGOS|VINOS|CAFETERIA/.test(norm(c.fudo || ""));
+    if (c.guarnicion) datos.push("Guarnición a elección: " + GUARNICIONES.toLowerCase() + ". Si no nos decís, sale con papas fritas.");
+    if (o.stc) datos.push("Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.");
+    var h = '<div class="im pl">' + (o.foto ? '<img alt="" id="plfoto" src="' + esc(o.foto) + '">' : '<div class="vacia">' + CABANA.replace('width="30" height="26"', 'width="64" height="54"') + '</div>') + '</div>' +
+      '<div class="cu"><div class="top"><span class="tag">' + esc(o.cat) + '</span>' + (o.star ? '<span class="cuando">★ De los preferidos de la casa</span>' : '') + '</div>' +
+      '<h3>' + esc(o.t) + (o.stc ? ' <span class="stc">S/TACC</span>' : '') + '</h3>' +
+      (o.largo || o.d ? '<div class="s">' + esc(o.largo || o.d) + '</div>' : '');
+    if (vs.length) {
+      h += conFoto ? '<div class="vars' + (vs.length === 2 || vs.length === 4 ? ' de2' : '') + '">' + vs.map(function (v, j) {
+        return '<button type="button" class="va' + (v.foto && v.foto === o.foto ? ' on' : '') + '" data-f="' + esc(v.foto || "") + '">' + marcoFoto(v.foto) + '<b>' + esc(v.n) + '</b><span>' + (v.pr ? precio(v.pr) : '') + '</span></button>';
+      }).join("") + '</div>' : '<div class="vl">' + vs.map(function (v) { return '<div><b>' + esc(v.n) + '</b><span>' + (v.pr ? precio(v.pr) : '') + '</span></div>'; }).join("") + '</div>';
+    } else if (o.pr) h += '<div class="pr">' + o.pr + '</div>';
+    if (datos.length) h += '<ul>' + datos.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
+    h += '<div class="acciones">' + (llevar ? '<a class="btn" href="' + wa("¡Hola! Quiero pedir para llevar: " + o.t + ".") + '">Pedilo para llevar</a>' : '<a class="btn" href="' + wa("¡Hola! Quiero reservar una mesa.") + '">Reservá tu mesa</a>') +
+      '<button class="btn lin" type="button" id="compartir">Compartir</button>' + (llevar ? '<a class="btn lin" href="' + wa("¡Hola! Quiero reservar una mesa.") + '">Reservá tu mesa</a>' : '') + '</div></div>';
+    mostrarHoja(h, o.id);
+    // Al tocar una variedad con foto, la foto grande cambia a esa.
+    hoja.querySelectorAll(".va").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var f = b.getAttribute("data-f"), im = document.getElementById("plfoto");
+        hoja.querySelectorAll(".va.on").forEach(function (x) { x.classList.remove("on"); });
+        b.classList.add("on");
+        if (f && im) im.src = f;
+      });
+    });
+    document.getElementById("compartir").addEventListener("click", function () {
+      var url = LINK + "#" + o.id;
+      if (navigator.share) navigator.share({ title: o.t + " · La Serena", url: url }).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { aviso("Link copiado"); });
+    });
+  }
+  var carta = document.getElementById("carta");
+  carta.addEventListener("click", function (ev) {
+    var c = ev.target.closest("[data-pd]"); if (!c || ev.target.closest("a")) return;
+    abrirPlato(+c.getAttribute("data-pd"));
+  });
+  carta.addEventListener("keydown", function (ev) { var c = ev.target.closest("[data-pd]"); if (c && ev.key === "Enter") abrirPlato(+c.getAttribute("data-pd")); });
+
   // Calendario: de a 4 semanas, empezando por el lunes de esta semana.
   var DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
   function isoDe(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
@@ -706,9 +800,10 @@
     var h = location.hash.slice(1);
     if (h === "calendario") { abrirCalendario(calPag); return; }
     for (var i = 0; i < EVENTOS.length; i++) if (idEv(EVENTOS[i]) === h) { abrirEvento(i, volverAlCal); return; }
+    for (var i = 0; i < FICHAS.length; i++) if (FICHAS[i].id === h) { abrirPlato(i); return; }
     cerrarHoja();
   }
-  if (/^#(evento-|calendario$)/.test(location.hash)) abrirDesdeHash();
+  if (/^#(evento-|plato-|calendario$)/.test(location.hash)) abrirDesdeHash();
 
   // Marca en la barra la categoría que se está viendo.
   var links = document.querySelectorAll("#nav a");
