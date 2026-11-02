@@ -12,14 +12,14 @@ var EVENTOS = [
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el sábado 31/10." },
   { mostrar: "2026-10-30", dia: "2026-11-04", hasta: "2026-11-04", fecha: "Miércoles 4/11 · de 20 a 00 h", tag: "Se estrena",
     t: "Pizza libre al horno de barro", s: "Porciones de muzzarella, napolitana, fugazzeta y caprese que van saliendo del horno. Bebida aparte.",
-    precio: "$20.000 por persona", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para la pizza libre del miércoles 4/11." },
+    precio: "20.000 por persona", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para la pizza libre del miércoles 4/11." },
   { mostrar: "2026-10-30", dia: "2026-11-05", hasta: "2026-11-05", fecha: "Jueves 5/11 · desde las 20 h", tag: "Se estrena",
     t: "Jueves de truco", s: "Mesas con mazo y anotador, entrada libre. Traé a tu pareja de truco y jugá en la cabaña.",
-    precio: "Promo picada + 2 latas de Imperial $40.000", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para la noche de truco del jueves 5/11." },
+    precio: "Promo picada + 2 latas de Imperial 40.000", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para la noche de truco del jueves 5/11." },
   { mostrar: "2026-10-30", dia: "2026-11-19", hasta: "2026-11-19", cierre: "2026-11-18", fecha: "Jueves 19/11 · 20 h", tag: "Torneo",
     t: "Copa La Serena de truco", sub: "TBT · Torneo Bimestral de Truco · 1.ª edición",
     s: "Por parejas, sin flor y todo a un partido. Al menos un mayor de 18 por pareja. Inscripción del 5/11 al 18/11.",
-    precio: "$40.000 por pareja, con picada + 2 latas de Imperial", urgente: "Cupos limitados: solo 16 parejas",
+    precio: "40.000 por pareja, con picada + 2 latas de Imperial", urgente: "Cupos limitados: solo 16 parejas",
     boton: "Quiero anotar mi pareja", wa: "¡Hola! Quiero anotar a mi pareja en la Copa La Serena de truco del jueves 19/11." },
   // Confirmar el feriado del 9/11 antes de que aparezca (se muestra desde el 2/11).
   { mostrar: "2026-11-02", dia: "2026-11-09", hasta: "2026-11-09", fecha: "Lunes 9/11 · feriado", tag: "Abrimos",
@@ -27,7 +27,7 @@ var EVENTOS = [
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 9/11." },
   { mostrar: "2026-10-30", dia: "2026-11-17", hasta: "2026-11-17", fecha: "Martes 17/11 · de 17 h al cierre", tag: "Se estrena",
     t: "Martes de vermut", s: "Vermut Carpano con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos. Y la promo bandeja + picadita.",
-    precio: "Vaso $7.000 · Bandeja $25.000", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para el martes de vermut." },
+    precio: "Vaso 7.000 · Bandeja 25.000 · Promo bandeja + picada 50.000", boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para el martes de vermut." },
   { mostrar: "2026-11-16", dia: "2026-11-23", hasta: "2026-11-23", fecha: "Lunes 23/11 · feriado", tag: "Abrimos",
     t: "Abrimos el feriado", s: "El lunes 23/11 te esperamos como siempre, de 10 a 01 h. El martes 24 cerramos.",
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 23/11." },
@@ -41,9 +41,17 @@ var EVENTOS = [
 
 // La semana fija. "desde": si todavía no arrancó, se muestra la fecha de estreno.
 var SEMANA = [
-  { dia: "Martes", hora: "de 17 h al cierre", t: "Martes de vermut", s: "Vaso con soda $7.000 · Bandeja vermutera para compartir $25.000", desde: "2026-11-17", estilo: "barro" },
-  { dia: "Miércoles", hora: "de 20 a 00 h", t: "Pizza libre al horno de barro", s: "Porciones que van saliendo del horno. Bebida aparte.", precio: "$20.000", chico: "por persona", desde: "2026-11-04", estilo: "oro" },
-  { dia: "Jueves", hora: "desde las 20 h", t: "Noche de truco", s: "Mesas con mazo y anotador. Entrada libre.", precio: "$40.000", chico: "promo picada + 2 latas de Imperial", desde: "2026-11-05" }
+  { dia: "Martes", hora: "de 17 h al cierre", t: "Martes de vermut", s: "Vaso con soda 7.000 · Bandeja vermutera para compartir 25.000", precio: "50.000", chico: "promo bandeja + picada", desde: "2026-11-17", estilo: "barro" },
+  { dia: "Miércoles", hora: "de 20 a 00 h", t: "Pizza libre al horno de barro", s: "Van saliendo porciones de muzzarella, napolitana, fugazzeta y caprese. Bebida aparte.", precio: "20.000", chico: "por persona", desde: "2026-11-04", estilo: "oro" },
+  { dia: "Jueves", hora: "desde las 20 h", t: "Noche de truco", s: "Mesas con mazo y anotador. Entrada libre.", precio: "40.000", chico: "promo picada + 2 latas de Imperial", desde: "2026-11-05" }
+];
+
+// Menú del día (martes a viernes, hasta las 17 h): se despliega en la tarjeta de la promo. Dos platos por día.
+var MENU_DIA = [
+  { dia: "Martes", platos: ["Tallarines con salsa parisienne", "Bondiola a la mostaza con batatas fritas"] },
+  { dia: "Miércoles", platos: ["Arroz amarillo con pollo", "Carne al horno con papas españolas"] },
+  { dia: "Jueves", platos: ["Pollo caprese con papas rústicas", "Revuelto gramajo"] },
+  { dia: "Viernes", platos: ["Calzone napolitano", "Pollo al curry con papas bravas"] }
 ];
 
 // Club La Serena. Antes de "lanzamiento" se muestra como "se viene" y se anotan por WhatsApp.
@@ -51,8 +59,8 @@ var CLUB = {
   lanzamiento: "2026-12-05",
   previa: "Arranca el sábado 5/12, con el aniversario. Anotate ya y sé de los primeros Serenos: hay sorpresa para los primeros socios.",
   beneficios: [
-    { ic: "☕", t: "Café, té o limonada de cortesía", s: "En cada visita, si la mesa consume $25.000 por cada socio que lo pide (el mínimo puede actualizarse)." },
-    { ic: "🌧", t: "Cartón Sudestada", s: "Los días de lluvia, un sello y un pastelito por visita con consumo. Al quinto sello, pizza + Heineken de litro." },
+    { ic: "☕", t: "Café, té o limonada de cortesía", s: "En cada visita, cuando el socio consume $25.000 (el mínimo puede actualizarse)." },
+    { ic: "🌧", t: "Cartón Sudestada", s: "Te damos un cartoncito para sellar: los días de lluvia, un sello y un pastelito por visita con consumo. Al quinto sello, pizza + Heineken de litro." },
     { ic: "🎂", t: "Tu cumple en La Serena", s: "Postre con vela de regalo la semana de tu cumpleaños, con consumo en la mesa." },
     { ic: "🃏", t: "Primero en la Copa", s: "Prioridad para anotarte en el Torneo Bimestral de Truco." }
   ],
