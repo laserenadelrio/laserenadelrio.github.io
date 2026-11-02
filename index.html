@@ -312,6 +312,7 @@
   Martes a domingo de 10 a 01 h · cocina hasta las 00:30<br>Lunes cerrado, salvo feriados<br>
   Av. Victorica 708, Tigre · <a href="https://instagram.com/laserenadelrio">@laserenadelrio</a><br>
   Reservas y takeaway: <a href="https://wa.me/5491153349375">+54 9 11 5334-9375</a>
+  <span id="canal"></span>
   <small id="act"></small>
 </footer>
 <div class="velo" id="velo"><div class="hoja" id="hoja" role="dialog" aria-modal="true"></div></div>
@@ -587,6 +588,7 @@
   document.getElementById("nav").innerHTML = nav;
   document.getElementById("carta").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
+  if (CANAL_WHATSAPP) document.getElementById("canal").innerHTML = '<br>Novedades y promos: <a href="' + CANAL_WHATSAPP + '">Canal de WhatsApp</a>';
 
   // Buscador: filtra productos y esconde las categorías que quedan vacías.
   document.getElementById("q").addEventListener("input", function () {
