@@ -9,7 +9,7 @@
 
 var WHATSAPP = "5491153349375";
 var INSTAGRAM = "https://instagram.com/laserenadelrio";
-var CANAL_WHATSAPP = ""; // link del Canal de WhatsApp, cuando esté creado
+var CANAL_WHATSAPP = "https://whatsapp.com/channel/0029Vb9djBYDjiOZkeMTCH1S"; // link del Canal de WhatsApp (va en el Club y al pie)
 
 var EVENTOS = [
   { mostrar: "2026-10-24", dia: "2026-10-31", hasta: "2026-10-31", fecha: "Sábado 31/10 · todo el día", tag: "Para los chicos", ic: "🎃",
