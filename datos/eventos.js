@@ -28,8 +28,8 @@ var EVENTOS = [
   { mostrar: "2026-10-30", dia: "2026-11-19", hasta: "2026-11-19", cierre: "2026-11-18", fecha: "Jueves 19/11 · 20 h", tag: "Torneo", ic: "🏆", de: "truco",
     t: "Copa La Serena de truco", sub: "TBT · Torneo Bimestral de Truco · 1.ª edición",
     s: "Por parejas, sin flor y todo a un partido. Al menos un mayor de 18 por pareja. Inscripción del 5/11 al 18/11.",
-    precio: "40.000 por pareja, con picada + 2 latas de Imperial", urgente: "Cupos limitados: solo 16 parejas", foto: ["TABLA DE PICADA"], hora: ["20:00", "01:00"],
-    info: ["Inscripción del jueves 5/11 al miércoles 18/11, por WhatsApp. Se paga por transferencia al anotarte.", "40.000 por pareja, con picada + 2 latas de Imperial incluidas.", "16 parejas, adentro del salón. Sin flor y todo a un partido.", "Al menos un mayor de 18 por pareja.", "Campeones: un sixpack de Imperial para cada uno y un voucher por pizza + cerveza de litro. Subcampeones: el voucher.", "Se juega cada dos meses: la próxima, en enero."],
+    precio: "9.000 por pareja, con una lata de Imperial para cada uno", urgente: "Cupos limitados: solo 16 parejas", foto: ["CERVEZA IMPERIAL LAGER 473ML", "TABLA DE PICADA"], hora: ["20:00", "01:00"],
+    info: ["Inscripción del jueves 5/11 al miércoles 18/11, por WhatsApp. Se paga por transferencia al anotarte.", "9.000 por pareja, con una lata de Imperial para cada uno.", "16 parejas, adentro del salón. Sin flor y todo a un partido.", "Al menos un mayor de 18 por pareja.", "Campeones: un sixpack de Imperial para cada uno y un voucher por pizza + cerveza de litro. Subcampeones: el voucher.", "Se juega cada dos meses: la próxima, en enero."],
     boton: "Quiero anotar mi pareja", wa: "¡Hola! Quiero anotar a mi pareja en la Copa La Serena de truco del jueves 19/11." },
   // Confirmar el feriado del 9/11 antes de que aparezca (se muestra desde el 2/11).
   { mostrar: "2026-11-02", dia: "2026-11-09", hasta: "2026-11-09", fecha: "Lunes 9/11 · feriado", tag: "Abrimos", ic: "🧉",
