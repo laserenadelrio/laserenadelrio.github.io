@@ -15,16 +15,19 @@ var PROMOS = {
     s: "Pizza muzzarella o napolitana al horno de barro, para compartir.", fotos: ["PIZZA MUZZARELLA", "CERVEZA HEINEKEN DE LITRO"] },
   "MENU DEL DIA": { estilo: "verde", tag: "Martes a viernes · hasta las 17 h", t: "Menú del día", s: "Un plato distinto cada día, con bebida y café o postre." },
   "PROMO CAFE": { estilo: "verde", tag: "Promo café", t: "Café + 2 medialunas, budín, pastelito o tostaditas", s: "" },
-  "HAPPY HOUR TRAGOS": { estilo: "oro", tag: "Happy hour · 17 a 20 h", t: "2 tragos", s: "Combiná Fernet, Gin Tonic o Campari." },
-  "HAPPY HOUR CERVEZA": { estilo: "oro", tag: "Happy hour · 17 a 20 h", t: "2 latas de Imperial", s: "De 473 ml." },
+  // Las dos de happy hour (las que empiezan con "HAPPY HOUR") van juntas, una al lado de la otra.
+  "HAPPY HOUR TRAGOS": { t: "2 tragos", s: "Fernet, Gin Tonic o Campari" },
+  "HAPPY HOUR CERVEZA": { t: "2 latas de Imperial", s: "De 473 ml" },
   "PROMO CERVEZA + FRITAS": { tag: "Para picar", t: "Papas fritas + 2 latas de Imperial", s: "Latas de 473 ml.", fotos: ["CERVEZA IMPERIAL LAGER 473ML"] },
   "PROMO CERVEZA + FRITAS CHEDDAR Y BACON": { tag: "Para picar", t: "Papas con cheddar y bacon + 2 latas de Imperial", s: "Latas de 473 ml.", fotos: ["PAPAS FRITAS CON CHEDDAR Y BACON", "CERVEZA IMPERIAL LAGER 473ML"] },
   "PROMO RABAS + PAPAS + CERVEZA": { tag: "Pican 3", t: "Rabas + papas fritas + Imperial de litro", s: "" },
   "10% EN EFECTIVO": { estilo: "cash", t: "<b>10% off</b> pagando en efectivo", s: "En consumos desde $20.000. No acumulable con otras promos." }
 };
+// Productos de la categoría Promos de Fudo que no van en Promos (la pizza libre está en "Se viene", con las noches fijas).
+var PROMOS_FUERA = ["PIZZA LIBRE"];
 
 // Martes de vermut: recuadro al principio de Tragos. El precio de "otros días" del vaso sale de Fudo.
-var VERMUT = { desde: "2026-11-17", vasoMartes: 7000, vasoFudo: "VERMUT ROSSO CON SODA", bandejaMartes: 25000, bandeja: 30000, bandejaPicadita: 50000 };
+var VERMUT = { desde: "2026-11-17", vasoMartes: 7000, vasoFudo: "VERMUT ROSSO CON SODA", bandejaMartes: 25000, bandeja: 30000 };
 
 // Guarniciones a elección (recuadro al principio de Milanesas y Wraps). Por defecto salen con papas fritas.
 var GUARNICIONES = "Papas fritas, puré de papas, calabazas asadas, ensalada mixta o coleslaw";
