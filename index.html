@@ -39,6 +39,14 @@
   section { padding-top: 22px; scroll-margin-top: 112px; }
   h2 { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--verde); border-bottom: 2px solid var(--oro); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
   h2 small { font-family: "Segoe UI", system-ui, sans-serif; letter-spacing: 0; text-transform: none; font-size: 12.5px; color: var(--gris); font-style: italic; text-align: right; }
+  /* Categorías desplegables: una abierta a la vez (al buscar, se abren todas las que tienen resultados) */
+  section.pleg { padding-top: 10px; }
+  section.pleg h2 { cursor: pointer; padding: 10px 0 7px; user-select: none; }
+  section.pleg h2::after { content: "▾"; font-family: "Segoe UI", system-ui, sans-serif; letter-spacing: 0; color: var(--oro); font-size: 16px; display: inline-block; transition: transform .2s; margin-left: auto; }
+  section.pleg h2 small { margin-left: auto; }
+  section.pleg.abierta h2::after { transform: rotate(180deg); }
+  section.pleg .cuerpo { display: none; }
+  section.pleg.abierta .cuerpo, body.buscando section.pleg .cuerpo { display: block; }
   .sub { font-size: 11.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oro); margin: 14px 0 0; }
 
   /* Filas de la carta: todas con el mismo recuadro de foto */
@@ -403,7 +411,10 @@
   var nav = "", html = "";
   function seccion(id, titulo, cuerpo, nota, especial) {
     nav += '<a href="#' + id + '"' + (especial ? ' class="esp"' : '') + '>' + titulo + '</a>';
-    html += '<section id="' + id + '"' + (especial ? ' class="noBusca"' : '') + '><h2>' + titulo + (nota ? '<small>' + nota + '</small>' : '') + '</h2>' + cuerpo + '</section>';
+    // Las categorías de la carta son desplegables (de a una abierta); Se viene, Promos, La semana y el Club quedan siempre abiertos.
+    var pleg = !especial && id !== "promos" && id !== "la-semana";
+    html += '<section id="' + id + '"' + (especial ? ' class="noBusca"' : pleg ? ' class="pleg"' : '') + '><h2' + (pleg ? ' role="button" tabindex="0" aria-expanded="false"' : '') + '>' + titulo + (nota ? '<small>' + nota + '</small>' : '') + '</h2>' +
+      (pleg ? '<div class="cuerpo">' + cuerpo + '</div>' : cuerpo) + '</section>';
   }
 
   // 1. Lo que se viene
@@ -806,6 +817,27 @@
     cerrarHoja();
   }
   if (/^#(evento-|plato-|calendario$)/.test(location.hash)) abrirDesdeHash();
+
+  // Categorías desplegables: al abrir una se cierran las demás. Los botones de la barra abren la categoría.
+  function abrirCat(sec, irA) {
+    var abrir = !sec.classList.contains("abierta") || irA;
+    document.querySelectorAll("#carta section.pleg").forEach(function (s) {
+      var on = s === sec && abrir;
+      s.classList.toggle("abierta", on);
+      s.querySelector("h2").setAttribute("aria-expanded", on ? "true" : "false");
+    });
+    if (abrir) sec.scrollIntoView({ block: "start" });
+  }
+  document.querySelectorAll("#carta section.pleg h2").forEach(function (h) {
+    h.addEventListener("click", function () { abrirCat(h.parentNode); });
+    h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirCat(h.parentNode); } });
+  });
+  document.querySelectorAll("#nav a").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var s = document.querySelector(a.getAttribute("href"));
+      if (s && s.classList.contains("pleg")) { e.preventDefault(); abrirCat(s, true); }
+    });
+  });
 
   // Marca en la barra la categoría que se está viendo.
   var links = document.querySelectorAll("#nav a");
