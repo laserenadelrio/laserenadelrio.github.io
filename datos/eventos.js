@@ -16,14 +16,14 @@ var EVENTOS = [
     t: "Halloween en La Serena", s: "Caramelos para los chicos de la apertura al cierre. ¡Vengan disfrazados!",
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el sábado 31/10." },
   { mostrar: "2026-10-30", dia: "2026-11-04", hasta: "2026-11-04", fecha: "Miércoles 4/11 · de 20 a 00 h", tag: "Se estrena", ic: "🍕", de: "pizza",
-    t: "Pizza libre al horno de barro", s: "Porciones de muzzarella, napolitana, fugazzeta y caprese que van saliendo del horno. Bebida aparte.",
+    t: "PIZZA LIBRE", s: "Porciones de muzzarella, napolitana, fugazzeta y caprese que van saliendo del horno. Bebida aparte.",
     precio: "20.000 por persona", foto: ["PIZZA MUZZARELLA"], hora: ["20:00", "00:00"],
     info: ["Las porciones van saliendo del horno de barro y pasan por las mesas: comés hasta que digas basta.", "Muzzarella, napolitana, fugazzeta y caprese, al azar.", "La bebida va aparte.", "Después del estreno, todos los miércoles de 20 a 00 h."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para la pizza libre del miércoles 4/11." },
   { mostrar: "2026-10-30", dia: "2026-11-05", hasta: "2026-11-05", fecha: "Jueves 5/11 · desde las 20 h", tag: "Se estrena", ic: "🃏", de: "truco",
     t: "Jueves de truco", s: "Mesas con mazo y anotador, entrada libre. Traé a tu pareja de truco y jugá en la cabaña.",
-    precio: "Promo picada + 2 latas de Imperial 40.000", foto: ["TABLA DE PICADA"], hora: ["20:00", "01:00"],
-    info: ["Mazo y anotador en la mesa. La entrada es libre.", "Para acompañar, la promo picada + 2 latas de Imperial.", "Después del estreno, todos los jueves desde las 20 h.", "El jueves 19/11 es la Copa La Serena: anotá a tu pareja."],
+    precio: "Happy hour de latas toda la noche: 2 Imperial 9.000", foto: ["CERVEZA IMPERIAL LAGER 473ML"], hora: ["20:00", "01:00"],
+    info: ["Mazo y anotador en la mesa. La entrada es libre.", "Happy hour de latas toda la noche: 2 latas de Imperial 9.000.", "Después del estreno, todos los jueves desde las 20 h.", "El jueves 19/11 es la Copa La Serena: anotá a tu pareja."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para la noche de truco del jueves 5/11." },
   { mostrar: "2026-10-30", dia: "2026-11-19", hasta: "2026-11-19", cierre: "2026-11-18", fecha: "Jueves 19/11 · 20 h", tag: "Torneo", ic: "🏆", de: "truco",
     t: "Copa La Serena de truco", sub: "TBT · Torneo Bimestral de Truco · 1.ª edición",
@@ -38,9 +38,9 @@ var EVENTOS = [
     info: ["El lunes feriado abrimos de 10 a 01 h.", "Empanadas de carne a cuchillo y pastelitos de membrillo o batata.", "Mazos en las mesas para el truco.", "El martes 10 cerramos."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 9/11." },
   { mostrar: "2026-10-30", dia: "2026-11-17", hasta: "2026-11-17", fecha: "Martes 17/11 · de 17 h al cierre", tag: "Se estrena", ic: "🍷", de: "vermut",
-    t: "Martes de vermut", s: "Vermut Carpano con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos. Y la promo bandeja + picadita.",
-    precio: "Vaso 7.000 · Bandeja 25.000 · Promo bandeja + picada 50.000", foto: ["VERMUT ROSSO CON SODA", "TABLA DE PICADA"], hora: ["17:00", "01:00"],
-    info: ["Vaso de Carpano rosso o bianco con soda: 7.000.", "Bandeja vermutera para compartir, con botella, sifones, hielo y cítricos: 25.000.", "Promo bandeja + picada: 50.000.", "Después del estreno, todos los martes de 17 h al cierre (el martes 24/11 cerramos)."],
+    t: "Martes de vermut", s: "Vermut Carpano con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos.",
+    precio: "Vaso 7.000 · Bandeja 25.000", foto: ["VERMUT ROSSO CON SODA", "VERMUT BIANCO CON SODA"], hora: ["17:00", "01:00"],
+    info: ["Vaso de Carpano rosso o bianco con soda: 7.000.", "Bandeja vermutera para compartir, con botella, sifones, hielo y cítricos: 25.000.", "Después del estreno, todos los martes de 17 h al cierre (el martes 24/11 cerramos)."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para el martes de vermut." },
   { mostrar: "2026-11-16", dia: "2026-11-23", hasta: "2026-11-23", fecha: "Lunes 23/11 · feriado", tag: "Abrimos", ic: "⭐",
     t: "Abrimos el feriado", s: "El lunes 23/11 te esperamos como siempre, de 10 a 01 h. El martes 24 cerramos.",
@@ -62,19 +62,20 @@ var EVENTOS = [
 var ABRIMOS = ["2026-11-09", "2026-11-23", "2026-12-07"];
 var CERRAMOS = ["2026-11-10", "2026-11-24", "2026-12-09"];
 
-// La semana fija. "desde": si todavía no arrancó, se muestra la fecha de estreno.
+// La semana fija: va en "Se viene", una columna por día. "desde": si todavía no arrancó, se muestra la fecha de estreno.
+// precios: [texto chico, precio] (sin "$").
 var SEMANA = [
-  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Martes de vermut", s: "Vaso con soda 7.000 · Bandeja vermutera para compartir 25.000", precio: "50.000", chico: "promo bandeja + picada", desde: "2026-11-17", estilo: "barro" },
-  { id: "pizza", ic: "🍕", dia: "Miércoles", hora: "de 20 a 00 h", t: "Pizza libre al horno de barro", s: "Van saliendo porciones de muzzarella, napolitana, fugazzeta y caprese. Bebida aparte.", precio: "20.000", chico: "por persona", desde: "2026-11-04", estilo: "oro" },
-  { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Noche de truco", s: "Mesas con mazo y anotador. Entrada libre.", precio: "40.000", chico: "promo picada + 2 latas de Imperial", desde: "2026-11-05" }
+  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Vermut", s: "Carpano rosso o bianco", precios: [["Vaso con soda", "7.000"], ["Bandeja vermutera", "25.000"]], desde: "2026-11-17", estilo: "barro" },
+  { id: "pizza", ic: "🍕", dia: "Miércoles", hora: "de 20 a 00 h", t: "PIZZA LIBRE", s: "Porciones al horno de barro. Bebida aparte.", precios: [["Por persona", "20.000"]], desde: "2026-11-04", estilo: "oro" },
+  { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Truco", s: "Mazo y anotador en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-11-05" }
 ];
 
-// Menú del día (martes a viernes, hasta las 17 h): se despliega en la tarjeta de la promo. Dos platos por día.
+// Menú del día (martes a viernes, hasta las 17 h): se despliega en la tarjeta de la promo. Dos platos por día, cada uno con su foto (en fotos/menu-dia/).
 var MENU_DIA = [
-  { dia: "Martes", platos: ["Tallarines con salsa parisienne", "Bondiola a la mostaza con batatas fritas"] },
-  { dia: "Miércoles", platos: ["Arroz amarillo con pollo", "Carne al horno con papas españolas"] },
-  { dia: "Jueves", platos: ["Pollo caprese con papas rústicas", "Revuelto gramajo"] },
-  { dia: "Viernes", platos: ["Calzone napolitano", "Pollo al curry con papas bravas"] }
+  { dia: "Martes", platos: ["Tallarines con salsa parisienne", "Bondiola a la mostaza con batatas fritas"], fotos: ["fotos/menu-dia/tallarines-parisienne.jpg", "fotos/menu-dia/bondiola-mostaza.jpg"] },
+  { dia: "Miércoles", platos: ["Arroz amarillo con pollo", "Carne al horno con papas españolas"], fotos: ["fotos/menu-dia/arroz-amarillo-pollo.jpg", "fotos/menu-dia/carne-al-horno.jpg"] },
+  { dia: "Jueves", platos: ["Pollo caprese con papas rústicas", "Revuelto gramajo"], fotos: ["fotos/menu-dia/pollo-caprese.jpg", "fotos/menu-dia/revuelto-gramajo.jpg"] },
+  { dia: "Viernes", platos: ["Calzone napolitano", "Pollo al curry con papas bravas"], fotos: ["fotos/menu-dia/calzone-napolitano.jpg", "fotos/menu-dia/pollo-curry.jpg"] }
 ];
 
 // Club La Serena. Antes de "lanzamiento" se muestra como "se viene" y se anotan por WhatsApp.
