@@ -38,9 +38,9 @@ var EVENTOS = [
     info: ["El lunes feriado abrimos de 10 a 01 h.", "Empanadas de carne a cuchillo y pastelitos de membrillo o batata.", "Mazos en las mesas para el truco.", "El martes 10 cerramos."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 9/11." },
   { mostrar: "2026-10-30", dia: "2026-11-17", hasta: "2026-11-17", fecha: "Martes 17/11 · de 17 h al cierre", tag: "Se estrena", ic: "🍷", de: "vermut",
-    t: "Martes de vermut", s: "Vermut Carpano con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos.",
+    t: "Martes de vermut", s: "Vermut con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos.",
     precio: "Vaso 7.000 · Bandeja 25.000", foto: ["VERMUT ROSSO CON SODA", "VERMUT BIANCO CON SODA"], hora: ["17:00", "01:00"],
-    info: ["Vaso de Carpano rosso o bianco con soda: 7.000.", "Bandeja vermutera para compartir, con botella, sifones, hielo y cítricos: 25.000.", "Después del estreno, todos los martes de 17 h al cierre (el martes 24/11 cerramos)."],
+    info: ["Vaso de vermut con soda: 7.000.", "Bandeja vermutera para compartir, con botella, sifones, hielo y cítricos: 25.000.", "Después del estreno, todos los martes de 17 h al cierre (el martes 24/11 cerramos)."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para el martes de vermut." },
   { mostrar: "2026-11-16", dia: "2026-11-23", hasta: "2026-11-23", fecha: "Lunes 23/11 · feriado", tag: "Abrimos", ic: "⭐",
     t: "Abrimos el feriado", s: "El lunes 23/11 te esperamos como siempre, de 10 a 01 h. El martes 24 cerramos.",
@@ -65,7 +65,7 @@ var CERRAMOS = ["2026-11-10", "2026-11-24", "2026-12-09"];
 // La semana fija: va en "Se viene", una columna por día. "desde": si todavía no arrancó, se muestra la fecha de estreno.
 // precios: [texto chico, precio] (sin "$").
 var SEMANA = [
-  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Vermut", s: "Carpano rosso o bianco", precios: [["Vaso con soda", "7.000"], ["Bandeja vermutera", "25.000"]], desde: "2026-11-17", estilo: "barro" },
+  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Vermut", s: "Vaso o bandeja para compartir", precios: [["Vaso con soda", "7.000"], ["Bandeja vermutera", "25.000"]], desde: "2026-11-17", estilo: "barro" },
   { id: "pizza", ic: "🍕", dia: "Miércoles", hora: "de 20 a 00 h", t: "PIZZA LIBRE", s: "Porciones al horno de barro. Bebida aparte.", precios: [["Por persona", "20.000"]], desde: "2026-11-04", estilo: "oro" },
   { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Truco", s: "Mazo y anotador en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-11-05" }
 ];
