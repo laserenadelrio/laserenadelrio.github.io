@@ -526,7 +526,7 @@
       (conf.usa || []).forEach(function (k) { usados[norm(k)] = 1; });
       h += '<div class="vermut" data-b="vermut martes bandeja vermutera picadita carpano"><div class="vt"><span class="tag">Martes de vermut · de 17 h al cierre</span>' + (HOY < VERMUT.desde ? '<span class="desde">Arranca el martes ' + ddmm(VERMUT.desde) + '</span>' : '') + '</div><table>' +
         '<tr><th></th><th class="mar">Martes</th><th>Otros días</th></tr>' +
-        '<tr><td><b>Vaso de vermut</b><i>Carpano rosso o bianco, con soda</i></td><td class="mar">' + precio(VERMUT.vasoMartes) + '</td><td>' + (otros ? precio(otros) : '') + '</td></tr>' +
+        '<tr><td><b>Vaso de vermut</b><i>con soda</i></td><td class="mar">' + precio(VERMUT.vasoMartes) + '</td><td>' + (otros ? precio(otros) : '') + '</td></tr>' +
         '<tr><td><b>Bandeja vermutera</b><i>Para compartir: botella, sifones, hielo y cítricos</i></td><td class="mar">' + precio(VERMUT.bandejaMartes) + '</td><td>' + precio(VERMUT.bandeja) + '</td></tr></table></div>';
     }
     if (conf.modo === "empanadas") {
