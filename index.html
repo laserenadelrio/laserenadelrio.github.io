@@ -44,7 +44,10 @@
   section.pleg h2 small { margin-left: auto; }
   section.pleg.abierta h2::after { transform: rotate(180deg); }
   section.pleg .cuerpo { display: none; }
-  section.pleg.abierta .cuerpo, body.buscando section.pleg .cuerpo { display: block; }
+  section.pleg.abierta .cuerpo, body.buscando section.pleg:not(.noBusca) .cuerpo { display: block; }
+  /* Ícono de cada categoría, a la izquierda del título */
+  h2 .tt { display: inline-flex; align-items: center; white-space: nowrap; flex: none; }
+  h2 .ci { font-size: 19px; letter-spacing: 0; margin-right: 10px; line-height: 1; font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; }
   .sub { font-size: 11.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--oro); margin: 14px 0 0; }
 
   /* Filas de la carta: todas con el mismo recuadro de foto */
@@ -424,11 +427,20 @@
   function corto(s) { return s.length > 90 ? s.slice(0, 88).replace(/\s+\S*$/, "") + "…" : s; }
 
   var html = "";
+  // Ícono de cada categoría (por palabra del título; el orden importa: "ensaladas" antes que "saladas").
+  var ICONOS = [["SE VIENE", "📅"], ["PROMO", "🏷️"], ["CLUB", "☘️"], ["ENTRADA", "🧀"], ["PRINCIPAL", "🍖"], ["PASTA", "🍝"], ["PIZZA", "🍕"],
+    ["EMPANADA", "🥟"], ["MILANESA", "🥩"], ["HAMBURGUESA", "🍔"], ["WRAP", "🌯"], ["ENSALADA", "🥗"], ["INFANTIL", "🧒"], ["CAFE", "☕"],
+    ["SALADA", "🥐"], ["DULCE", "🍰"], ["POSTRE", "🍰"], ["BEBIDA", "🍋"], ["CERVEZA", "🍺"], ["TRAGO", "🍸"], ["VINO", "🍷"]];
+  function icono(titulo) {
+    var t = norm(titulo);
+    for (var i = 0; i < ICONOS.length; i++) if (t.indexOf(ICONOS[i][0]) >= 0) return ICONOS[i][1];
+    return "🍽️";
+  }
   function seccion(id, titulo, cuerpo, nota, especial) {
-    // Promos y las categorías de la carta son desplegables (de a una abierta); Se viene y el Club quedan siempre abiertos.
-    var pleg = !especial;
-    html += '<section id="' + id + '"' + (especial ? ' class="noBusca"' : pleg ? ' class="pleg"' : '') + '><h2' + (pleg ? ' role="button" tabindex="0" aria-expanded="false"' : '') + '>' + titulo + (nota ? '<small>' + nota + '</small>' : '') + '</h2>' +
-      (pleg ? '<div class="cuerpo">' + cuerpo + '</div>' : cuerpo) + '</section>';
+    // Todas las secciones son desplegables, de a una abierta (desde el 14/11 también Se viene y el Club).
+    // Se viene y el Club (especial) no entran en el buscador.
+    html += '<section id="' + id + '" class="pleg' + (especial ? ' noBusca' : '') + '"><h2 role="button" tabindex="0" aria-expanded="false"><span class="tt"><span class="ci" aria-hidden="true">' + icono(titulo) + '</span>' + titulo + '</span>' + (nota ? '<small>' + nota + '</small>' : '') + '</h2>' +
+      '<div class="cuerpo">' + cuerpo + '</div></section>';
   }
 
   // 1. Lo que se viene
@@ -847,19 +859,34 @@
   if (/^#(evento-|plato-|calendario$)/.test(location.hash)) abrirDesdeHash();
 
   // Categorías desplegables: al abrir una se cierran las demás.
+  // El título que se toca queda quieto en la pantalla (si se cierra otra categoría de más arriba, se compensa el corrimiento).
+  // irA: viene de un link (#club): se abre y se lleva la sección arriba.
   function abrirCat(sec, irA) {
+    var h2 = sec.querySelector("h2"), antes = h2.getBoundingClientRect().top;
     var abrir = !sec.classList.contains("abierta") || irA;
     document.querySelectorAll("#carta section.pleg").forEach(function (s) {
       var on = s === sec && abrir;
       s.classList.toggle("abierta", on);
       s.querySelector("h2").setAttribute("aria-expanded", on ? "true" : "false");
+      // El carrusel de Se viene marca su puntito recién cuando se ve.
+      if (on) s.querySelectorAll("#evs").forEach(function (e) { e.dispatchEvent(new Event("scroll")); });
     });
-    if (abrir) sec.scrollIntoView({ block: "start" });
+    if (irA) { sec.scrollIntoView({ block: "start" }); return; }
+    var d = h2.getBoundingClientRect().top - antes;
+    if (Math.abs(d) > 1) window.scrollTo({ top: window.scrollY + d, behavior: "instant" });
   }
   document.querySelectorAll("#carta section.pleg h2").forEach(function (h) {
     h.addEventListener("click", function () { abrirCat(h.parentNode); });
     h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirCat(h.parentNode); } });
   });
+  // Links a una sección (el botón "Club La Serena" de arriba): la abren y la llevan arriba.
+  function irASeccion(id) { var s = document.getElementById(id); if (s && s.classList.contains("pleg")) { abrirCat(s, true); return true; } return false; }
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute("href").slice(1);
+    if (!document.getElementById(id) || !document.getElementById(id).classList.contains("pleg")) return;
+    a.addEventListener("click", function (e) { e.preventDefault(); history.replaceState(null, "", "#" + id); irASeccion(id); });
+  });
+  if (location.hash && !/^#(evento-|plato-|calendario$)/.test(location.hash)) irASeccion(location.hash.slice(1));
 </script>
 </body>
 </html>
