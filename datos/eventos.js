@@ -37,11 +37,7 @@ var EVENTOS = [
     foto: ["EMPANADA CARNE CUCHILLO", "PASTELITOS"],
     info: ["El lunes feriado abrimos de 10 a 01 h.", "Empanadas de carne a cuchillo y pastelitos de membrillo o batata.", "Mazos en las mesas para el truco.", "El martes 10 cerramos."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 9/11." },
-  { mostrar: "2026-10-30", dia: "2026-11-17", hasta: "2026-11-17", fecha: "Martes 17/11 · de 17 h al cierre", tag: "Se estrena", ic: "🍷", de: "vermut",
-    t: "Martes de vermut", s: "Vermut con soda o la bandeja vermutera para compartir, con botella, sifones, hielo y cítricos.",
-    precio: "Vaso 7.000 · Bandeja 25.000", foto: ["VERMUT ROSSO CON SODA", "VERMUT BIANCO CON SODA"], hora: ["17:00", "01:00"],
-    info: ["Vaso de vermut con soda: 7.000.", "Bandeja vermutera para compartir, con botella, sifones, hielo y cítricos: 25.000.", "Después del estreno, todos los martes de 17 h al cierre (el martes 24/11 cerramos)."],
-    boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar para el martes de vermut." },
+  // El estreno del Martes de vermut (17/11) se sacó de Fechas especiales el 14/11 (pedido de Marcos): ya está en las noches fijas de la semana.
   { mostrar: "2026-11-16", dia: "2026-11-23", hasta: "2026-11-23", fecha: "Lunes 23/11 · feriado", tag: "Abrimos", ic: "⭐",
     t: "Abrimos el feriado", s: "El lunes 23/11 te esperamos como siempre, de 10 a 01 h. El martes 24 cerramos.",
     info: ["El lunes feriado abrimos de 10 a 01 h, con la carta completa.", "El martes 24 cerramos."],
