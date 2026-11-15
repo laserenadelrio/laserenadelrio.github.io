@@ -71,8 +71,10 @@ var CARTA = [
   { fudo: "PIZZA", nota: "Al horno de barro", modo: "mosaico", estrellas: ["PIZZA RUCULA Y JAMON CRUDO"],
     notas: { "PIZZA MITAD Y MITAD": "Dos gustos en una", "CALZONE NAPOLITANO": "Queso, tomate, morrón y huevo", "CALZONE CAPRESSE": "Queso, tomate y albahaca" } },
   { fudo: "EMPANADAS", modo: "empanadas", estrellas: ["EMPANADA CARNE CUCHILLO"] },
-  { fudo: "MILANESAS", nota: "Con guarnición a elección", guarnicion: 1, mosaico: 1, filas: [
-    { items: [["Mila La Serena", "MILA LA SERENA"]], d: "Nuestra especialidad: de ternera, con fideos a la crema y parmesano", star: 1, largo: "Nuestra especialidad: milanesa de ternera con fideos a la crema y queso parmesano." },
+  // sinGuarnicion: ese plato no entra en la guarnición a elección (la Mila La Serena ya viene con fideos; 14/11, Marcos).
+  { fudo: "MILANESAS", nota: "Con guarnición a elección", guarnicion: 1, guarnicionNota: "La Mila La Serena va con sus fideos a la crema, sin otra guarnición.", mosaico: 1, filas: [
+    { items: [["Mila La Serena", "MILA LA SERENA"]], d: "Nuestra especialidad: de ternera, con fideos a la crema y parmesano", star: 1, sinGuarnicion: 1,
+      largo: "Nuestra especialidad: milanesa de ternera con fideos a la crema y queso parmesano." },
     { cols: ["Ternera", "Pollo"] },
     { t: "Milanesa", items: [["", "MILANESA DE TERNERA"], ["", "MILANESA DE POLLO"]], cols: 1 },
     { t: "Napolitana", tf: "Milanesa napolitana", items: [["", "MILANESA NAPOLITANA"], ["", "MILANESA DE POLLO NAPOLITANA"]], star: 1, cols: 1 },
