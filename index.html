@@ -400,7 +400,7 @@
     var r = { nombre: nombre, desc: desc, src: fotos[0], star: f.star, n: pres.length, lista: f.lista,
       stc: pres.some(function (i) { return sinTacc(norm(i.x.cat), i.k); }), pr: plata(pres.map(function (i) { return i.x.p.precio; })) };
     if (f.cols && cols) r.celdas = cols.map(function (c, j) { var i = pres.filter(function (q) { return q.col === j; })[0]; return { n: c, pr: i && i.x.p.precio > 0 ? i.x.p.precio : 0 }; });
-    r.fi = ficha({ t: f.tf || nombre, d: desc, largo: f.largo || (pres.length === 1 && !f.d ? descFudo(pres[0].v.desc) : ""), cat: cat, conf: conf, stc: r.stc, star: f.star, foto: fotos[0], pr: r.pr,
+    r.fi = ficha({ sinGuarn: !!f.sinGuarnicion, t: f.tf || nombre, d: desc, largo: f.largo || (pres.length === 1 && !f.d ? descFudo(pres[0].v.desc) : ""), cat: cat, conf: conf, stc: r.stc, star: f.star, foto: fotos[0], pr: r.pr,
       vars: pres.length > 1 ? pres.map(function (i) { return { n: i.lab ? cap(i.lab) : cols ? cols[i.col] : i.v.nombre, pr: i.x.p.precio, foto: i.x.p.foto }; }) : [] });
     return r;
   }
@@ -575,7 +575,7 @@
       seccion(id, nom, h, conf.nota);
       return;
     }
-    if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.</span></div>';
+    if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.' + (conf.guarnicionNota ? ' ' + esc(conf.guarnicionNota) : '') + '</span></div>';
     // mosaico: 1 dibuja las filas como baldosas con foto (de a dos por renglón en el celu).
     var cols = null, dibujar = conf.mosaico ? baldosa : fila;
     if (conf.mosaico) h += '<div class="emp mos mos2">';
@@ -740,7 +740,8 @@
     var datos = [];
     if (c.nota && !/sin tacc/i.test(c.nota) && !c.guarnicion) datos.push(c.nota + ".");
     var llevar = !/BEBIDAS|CERVEZA|TRAGOS|VINOS|CAFETERIA/.test(norm(c.fudo || ""));
-    if (c.guarnicion) datos.push("Guarnición a elección: " + GUARNICIONES.toLowerCase() + ". Si no nos decís, sale con papas fritas.");
+    if (c.guarnicion && o.sinGuarn) datos.push("No lleva guarnición: va con sus fideos, sin papas fritas ni otra guarnición.");
+    else if (c.guarnicion) datos.push("Guarnición a elección: " + GUARNICIONES.toLowerCase() + ". Si no nos decís, sale con papas fritas.");
     if (o.stc) datos.push("Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.");
     var h = '<div class="im pl">' + (o.foto ? '<img alt="" id="plfoto" src="' + esc(o.foto) + '">' : '<div class="vacia">' + CABANA.replace('width="30" height="26"', 'width="64" height="54"') + '</div>') + '</div>' +
       '<div class="cu"><div class="top"><span class="tag">' + esc(o.cat) + '</span>' + (o.star ? '<span class="cuando">★ De los preferidos de la casa</span>' : '') + '</div>' +
