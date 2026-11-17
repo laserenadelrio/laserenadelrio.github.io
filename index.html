@@ -66,7 +66,7 @@
   .colh { display: flex; align-items: flex-end; margin-top: 14px; }
   .colh .sub { flex: 1; margin: 0; }
   .colh b { flex: none; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--oro); }
-  .stc { display: inline-block; vertical-align: 2px; margin-left: 6px; color: var(--verde); font-size: 10px; font-weight: 700; border: 1px solid var(--verde); border-radius: 4px; padding: 0 4px; letter-spacing: 0.02em; }
+  .stc { display: inline-block; vertical-align: super; line-height: 0; margin-left: 1px; color: var(--oro); font-size: 0.75em; font-weight: 700; }
 
   /* Lo que se viene */
   .eventos { display: flex; align-items: flex-start; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 12px -16px 0; padding: 0 16px 6px; scrollbar-width: none; }
@@ -333,7 +333,7 @@
 <p class="vacio" id="vacio">No encontramos nada con esa búsqueda.</p>
 <footer>
   <div class="sl">¡Gracias por venir!</div>
-  <span class="stc" style="margin:0">S/TACC</span> Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.<br>
+  <span class="stc" style="margin:0">*</span> Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.<br>
   <span style="color:var(--oro)">★</span> Los preferidos de la casa.<br><br>
   Martes a domingo de 10 a 01 h · cocina hasta las 00:30<br>Lunes cerrado, salvo feriados<br>
   Av. Victorica 708, Tigre · <a href="https://instagram.com/laserenadelrio">@laserenadelrio</a><br>
@@ -378,7 +378,7 @@
   var FICHAS = [];
   function ficha(o) { o.id = "plato-" + slug(o.cat + " " + o.t); FICHAS.push(o); return FICHAS.length - 1; }
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
-  // Texto de Fudo para la ficha, sin lo que no va en la carta ("Opción sin TACC!" se dice con el sello S/TACC).
+  // Texto de Fudo para la ficha, sin lo que no va en la carta ("Opción sin TACC!" se dice con el asterisco).
   function descFudo(s) { return String(s || "").replace(/opci[oó]n sin tacc!?/i, "").replace(/\s*\n\s*-\s*/g, ", ").replace(/:,/g, ":").trim(); }
 
   // Una fila de la carta, a partir de uno o más productos de Fudo. Devuelve los datos para dibujarla como renglón o como mosaico.
@@ -417,12 +417,12 @@
     if (!r) return "";
     var pr = r.celdas ? r.celdas.filter(function (c) { return c.pr; }).map(function (c) { return '<span class="cp"><i>' + esc(c.n) + '</i>' + precio(c.pr) + '</span>'; }).join("") : r.pr;
     return '<div class="e' + (r.star ? ' star' : '') + '" data-pd="' + r.fi + '" role="button" tabindex="0" data-b="' + esc(sinAcento((r.nombre + " " + r.desc + " " + cat).toLowerCase())) + '">' + marcoFoto(r.src) +
-      '<div class="n"><span>' + esc(r.nombre) + (r.stc ? '<span class="stc">S/TACC</span>' : '') + (r.lista && r.n > 1 ? '<small>' + r.n + ' variedades</small>' : '') + '</span></div><div class="pe">' + pr + '</div></div>';
+      '<div class="n"><span>' + esc(r.nombre) + (r.stc ? '<span class="stc">*</span>' : '') + (r.lista && r.n > 1 ? '<small>' + r.n + ' variedades</small>' : '') + '</span></div><div class="pe">' + pr + '</div></div>';
   }
   function item(nombre, desc, pr, src, stc, star, cat, clasePrecio, fi) {
     var b = esc(sinAcento((nombre + " " + desc + " " + cat).toLowerCase()));
     return '<div class="it' + (star ? ' star' : '') + '" data-pd="' + fi + '" role="button" tabindex="0" data-b="' + b + '">' + marcoFoto(src) + '<div class="tx"><div class="n">' + esc(nombre) +
-      (stc ? '<span class="stc">S/TACC</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p' + (clasePrecio ? ' ' + clasePrecio : '') + '">' + pr + '</div></div>';
+      (stc ? '<span class="stc">*</span>' : '') + '</div>' + (desc ? '<div class="d">' + esc(desc) + '</div>' : '') + '</div><div class="p' + (clasePrecio ? ' ' + clasePrecio : '') + '">' + pr + '</div></div>';
   }
   function corto(s) { return s.length > 90 ? s.slice(0, 88).replace(/\s+\S*$/, "") + "…" : s; }
 
@@ -456,7 +456,9 @@
   }
   // Se viene: las noches fijas de la semana (una columna por día) y, abajo, las fechas especiales.
   var h = '<div class="sub">Todas las semanas</div><div class="semana">';
-  SEMANA.forEach(function (s) {
+  // mostrar/ocultar: desde y hasta cuándo aparece la columna (así una noche nueva reemplaza a otra antes de su estreno).
+  function semanaVisible(s) { return (!s.mostrar || HOY >= s.mostrar) && (!s.ocultar || HOY < s.ocultar); }
+  SEMANA.filter(semanaVisible).forEach(function (s) {
     h += '<div class="dia ' + (s.estilo || "") + '"><div class="cu">' + s.dia + '</div><div class="tx">' +
       (s.desde && HOY < s.desde ? '<span class="estreno">Arranca el ' + ddmm(s.desde) + '</span>' : '') +
       '<div class="ic">' + s.ic + '</div><div class="t">' + esc(s.t) + '</div><div class="ho">' + esc(s.hora) + '</div>' +
@@ -539,7 +541,7 @@
       h += '<div class="vermut" data-b="vermut martes bandeja vermutera picadita carpano"><div class="vt"><span class="tag">Martes de vermut · de 17 h al cierre</span>' + (HOY < VERMUT.desde ? '<span class="desde">Arranca el martes ' + ddmm(VERMUT.desde) + '</span>' : '') + '</div><table>' +
         '<tr><th></th><th class="mar">Martes</th><th>Otros días</th></tr>' +
         '<tr><td><b>Vaso de vermut</b><i>con soda</i></td><td class="mar">' + precio(VERMUT.vasoMartes) + '</td><td>' + (otros ? precio(otros) : '') + '</td></tr>' +
-        '<tr><td><b>Bandeja vermutera</b><i>Para compartir: botella, sifones, hielo y cítricos</i></td><td class="mar">' + precio(VERMUT.bandejaMartes) + '</td><td>' + precio(VERMUT.bandeja) + '</td></tr></table></div>';
+        '<tr><td><b>Kit Vermutero</b><i>Botella, sifones, hielo y cítricos</i></td><td class="mar">' + precio(VERMUT.bandejaMartes) + '</td><td>' + precio(VERMUT.bandeja) + '</td></tr></table></div>';
     }
     if (conf.modo === "empanadas") {
       var ps = c.productos.filter(function (p) { return producto(c.nombre, p); }), pr = ps.length && ps.every(function (p) { return p.precio === ps[0].precio; }) ? ps[0].precio : 0;
@@ -575,6 +577,8 @@
       seccion(id, nom, h, conf.nota);
       return;
     }
+    // Los platos con * son sin TACC en sus ingredientes: la aclaración va siempre a la vista, arriba de la categoría.
+    if (/sin tacc/i.test(conf.nota || "")) h += '<div class="guarn"><b>* ' + esc(conf.nota.replace(/^\*\s*/, "")) + '</b><span>En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.</span></div>';
     if (conf.guarnicion) h += '<div class="guarn"><b>Guarnición a elección</b><span>' + esc(GUARNICIONES) + '. Si no nos decís, sale con papas fritas.' + (conf.guarnicionNota ? ' ' + esc(conf.guarnicionNota) : '') + '</span></div>';
     // mosaico: 1 dibuja las filas como baldosas con foto (de a dos por renglón en el celu).
     var cols = null, dibujar = conf.mosaico ? baldosa : fila;
@@ -742,10 +746,10 @@
     var llevar = !/BEBIDAS|CERVEZA|TRAGOS|VINOS|CAFETERIA/.test(norm(c.fudo || ""));
     if (c.guarnicion && o.sinGuarn) datos.push("No lleva guarnición: va con sus fideos, sin papas fritas ni otra guarnición.");
     else if (c.guarnicion) datos.push("Guarnición a elección: " + GUARNICIONES.toLowerCase() + ". Si no nos decís, sale con papas fritas.");
-    if (o.stc) datos.push("Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.");
+    if (o.stc) datos.push("* Sin TACC en sus ingredientes. En nuestra cocina se trabaja con harinas, por eso no podemos asegurar que no haya contaminación cruzada.");
     var h = '<div class="im pl">' + (o.foto ? '<img alt="" id="plfoto" src="' + esc(o.foto) + '">' : '<div class="vacia">' + CABANA.replace('width="30" height="26"', 'width="64" height="54"') + '</div>') + '</div>' +
       '<div class="cu"><div class="top"><span class="tag">' + esc(o.cat) + '</span>' + (o.star ? '<span class="cuando">★ De los preferidos de la casa</span>' : '') + '</div>' +
-      '<h3>' + esc(o.t) + (o.stc ? ' <span class="stc">S/TACC</span>' : '') + '</h3>' +
+      '<h3>' + esc(o.t) + (o.stc ? '<span class="stc">*</span>' : '') + '</h3>' +
       (o.largo || o.d ? '<div class="s">' + esc(o.largo || o.d) + '</div>' : '');
     if (vs.length) {
       h += conFoto ? '<div class="vars' + (vs.length === 2 || vs.length === 4 ? ' de2' : '') + '">' + vs.map(function (v, j) {
@@ -788,7 +792,7 @@
     var cerrado = CERRAMOS.indexOf(iso) >= 0 || (dow === 1 && ABRIMOS.indexOf(iso) < 0);
     if (cerrado) return { cerrado: true, motivo: dow === 1 ? "Los lunes cerramos" : "Cerramos: es el franco después del feriado" };
     var evsDia = EVENTOS.filter(function (e) { return e.dia <= iso && iso <= e.hasta; });
-    var fijos = SEMANA.filter(function (s) { return s.dia === DIAS[dow] && (!s.desde || iso >= s.desde) && !evsDia.some(function (e) { return e.de === s.id; }); });
+    var fijos = SEMANA.filter(function (s) { return s.dia === DIAS[dow] && (!s.desde || iso >= s.desde) && (!s.hasta || iso <= s.hasta) && !evsDia.some(function (e) { return e.de === s.id; }); });
     var menu = MENU_DIA.filter(function (m) { return m.dia === DIAS[dow]; })[0];
     return { evs: evsDia, fijos: fijos, menu: menu, feriado: dow === 1 };
   }
@@ -810,7 +814,7 @@
       g += '<button type="button" class="' + cl + '" data-d="' + iso + '"><b>' + d.getDate() + (d.getDate() === 1 || i === 0 ? '<small>/' + (d.getMonth() + 1) + '</small>' : '') + '</b><span class="ics">' + ics + '</span></button>';
     }
     g += '</div>';
-    var ley = SEMANA.map(function (s) { return s.ic + ' ' + s.t; }).join(" · ") + ' · ⭐ fechas especiales';
+    var ley = SEMANA.filter(function (s) { return (!s.mostrar || HOY >= s.mostrar) && (!s.ocultar || HOY < s.ocultar); }).map(function (s) { return s.ic + ' ' + s.t; }).join(" · ") + ' · ⭐ fechas especiales';
     var h = '<div class="cal"><h3>Calendario</h3><div class="calnav"><button type="button" id="calant" aria-label="Semanas anteriores"' + (pag <= 0 ? ' disabled' : '') + '>‹</button>' +
       '<span>' + ini.getDate() + ' de ' + meses[ini.getMonth()] + ' al ' + fin.getDate() + ' de ' + meses[fin.getMonth()] + '</span>' +
       '<button type="button" id="calsig" aria-label="Semanas siguientes"' + (pag >= 2 ? ' disabled' : '') + '>›</button></div>' + g +
