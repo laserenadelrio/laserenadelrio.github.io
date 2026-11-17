@@ -45,7 +45,7 @@ var CARTA = [
     { items: [["Papas fritas", "PAPAS FRITAS PORCION"], ["con provenzal", "PAPAS FRITAS CON PROVENZAL"]] },
     { items: [["Panera extra", "PANERA EXTRA"]], d: "Con salsita del día", largo: "Por si te gustaron los pancitos de la recepción: hay más. Sale con la salsita del día." }
   ] },
-  { fudo: "PRINCIPALES", nota: "Todos sin TACC en sus ingredientes", mosaico: 1, filas: [
+  { fudo: "PRINCIPALES", nota: "* Sin TACC en sus ingredientes", mosaico: 1, filas: [
     { sub: "Del horno de barro" },
     { items: [["Bondiola a la mostaza", "BONDIOLA A LA MOSTAZA"]], d: "Braseada a fuego lento, con batatas fritas", star: 1, largo: "Bondiola braseada a fuego lento en el horno de barro, con salsa de mostaza. Sale con batatas fritas." },
     { items: [["Tapa de nalga", "TAPA DE NALGA"]], d: "A fuego lento, con papas fritas y coleslaw", largo: "Tapa de nalga cocinada a fuego lento en el horno de barro. Sale con papas fritas y coleslaw." },
@@ -103,7 +103,7 @@ var CARTA = [
     { items: [["Wrap vegetariano", "WRAP VEGETARIANO"]], d: "Acelga, morrón, zanahoria y muzzarella", largo: "Acelga, morrón, cebolla, cebolla de verdeo, zanahoria y muzzarella." },
     { items: [["Wrap vegano", "WRAP VEGANO"]], d: "Zucchini, berenjena, zanahoria, morrón y cebolla" }
   ] },
-  { fudo: "ENSALADAS", nota: "Sin TACC en sus ingredientes, salvo la Caesar", mosaico: 1, filas: [
+  { fudo: "ENSALADAS", nota: "* Sin TACC en sus ingredientes, salvo la Caesar", mosaico: 1, filas: [
     { items: [["Ensalada La Serena", "ENSALADA LA SERENA 🌱"]], d: "Rúcula, calabaza, sardo, cajú y mostaza dulce", star: 1, largo: "Rúcula, calabaza, queso sardo, castañas de cajú y mostaza dulce." },
     { items: [["Pollos Hermanos", "ENSALADA POLLOS HERMANOS"]], d: "Verdes, cherry, rabanito, hinojo y chicken grill", largo: "Mix de verdes, tomates cherry, rabanito, hinojo y chicken grill." },
     { items: [["Vegetariana", "ENSALADA VEGETARIANA"]], d: "Verdes, calabaza, naranja, rabanitos y tomate", largo: "Mix de verdes, calabaza, naranja, rabanitos y tomate." },
