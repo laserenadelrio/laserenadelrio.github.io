@@ -23,14 +23,9 @@ var EVENTOS = [
   { mostrar: "2026-10-30", dia: "2026-11-05", hasta: "2026-11-05", fecha: "Jueves 5/11 · desde las 20 h", tag: "Se estrena", ic: "🃏", de: "truco",
     t: "Jueves de truco", s: "Mesas con mazo y anotador, entrada libre. Traé a tu pareja de truco y jugá en la cabaña.",
     precio: "Happy hour de latas toda la noche: 2 Imperial 9.000", foto: ["CERVEZA IMPERIAL LAGER 473ML"], hora: ["20:00", "01:00"],
-    info: ["Mazo y anotador en la mesa. La entrada es libre.", "Happy hour de latas toda la noche: 2 latas de Imperial 9.000.", "Después del estreno, todos los jueves desde las 20 h.", "El jueves 19/11 es la Copa La Serena: anotá a tu pareja."],
+    info: ["Mazo y anotador en la mesa. La entrada es libre.", "Happy hour de latas toda la noche: 2 latas de Imperial 9.000.", "Después del estreno, todos los jueves desde las 20 h."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para la noche de truco del jueves 5/11." },
-  { mostrar: "2026-10-30", dia: "2026-11-19", hasta: "2026-11-19", cierre: "2026-11-18", fecha: "Jueves 19/11 · 20 h", tag: "Torneo", ic: "🏆", de: "truco",
-    t: "Copa La Serena de truco", sub: "TBT · Torneo Bimestral de Truco · 1.ª edición",
-    s: "Por parejas, sin flor y todo a un partido. Al menos un mayor de 18 por pareja. Inscripción del 5/11 al 18/11.",
-    precio: "9.000 por pareja, con una lata de Imperial para cada uno", urgente: "Cupos limitados: solo 16 parejas", foto: ["CERVEZA IMPERIAL LAGER 473ML", "TABLA DE PICADA"], hora: ["20:00", "01:00"],
-    info: ["Inscripción del jueves 5/11 al miércoles 18/11, por WhatsApp. Se paga por transferencia al anotarte.", "9.000 por pareja, con una lata de Imperial para cada uno.", "16 parejas, adentro del salón. Sin flor y todo a un partido.", "Al menos un mayor de 18 por pareja.", "Campeones: un sixpack de Imperial para cada uno y un voucher por pizza + cerveza de litro. Subcampeones: el voucher.", "Se juega cada dos meses: la próxima, en enero."],
-    boton: "Quiero anotar mi pareja", wa: "¡Hola! Quiero anotar a mi pareja en la Copa La Serena de truco del jueves 19/11." },
+  // Copa La Serena de truco del 19/11: SUSPENDIDA el 17/11 (no se anotó nadie; se pasa para más adelante). El jueves 19 es noche de truco normal.
   // Confirmar el feriado del 9/11 antes de que aparezca (se muestra desde el 2/11).
   { mostrar: "2026-11-02", dia: "2026-11-09", hasta: "2026-11-09", fecha: "Lunes 9/11 · feriado", tag: "Abrimos", ic: "🧉",
     t: "Feriado criollo", s: "Adelantamos el Día de la Tradición con empanadas de carne a cuchillo, pastelitos y mazos en las mesas. El martes 10 cerramos.",
@@ -47,6 +42,11 @@ var EVENTOS = [
     foto: ["ÑOQUIS"],
     info: ["Ñoquis caseros con bolognesa, fileto, crema o rosa.", "No te olvides del billete bajo el plato."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el domingo 29/11." },
+  { mostrar: "2026-11-26", dia: "2026-12-03", hasta: "2026-12-03", fecha: "Jueves 3/12 · desde las 20 h", tag: "Se estrena", ic: "🎲", de: "juegos",
+    t: "Jueves de Juegos", s: "Truco, chinchón, podrida, carioca, generala y desconfío: cartas, dados, anotadores y reglamentos en la mesa.",
+    precio: "Happy hour de latas toda la noche: 2 Imperial 9.000", foto: ["CERVEZA IMPERIAL LAGER 473ML"], hora: ["20:00", "01:00"],
+    info: ["Cartas españolas y francesas, dados, anotadores y el reglamento de cada juego en la mesa.", "Truco, chinchón, podrida, carioca, generala y desconfío.", "Se juega por la gloria: nunca por plata.", "Happy hour de latas toda la noche: 2 latas de Imperial 9.000.", "Después del estreno, todos los jueves desde las 20 h."],
+    boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el Jueves de Juegos del 3/12." },
   { mostrar: "2026-11-20", dia: "2026-12-05", hasta: "2026-12-08", fecha: "Del sábado 5 al martes 8/12", tag: "Aniversario", ic: "🎉",
     t: "¡La Serena cumple 3 años!", s: "Brindis ¡Sláinte! a las 21 h, torta por mesa y empanadas de carne a $2.000, como en 2023, de 20 a 21 h. El lunes 7 abrimos.",
     foto: ["EMPANADA CARNE CUCHILLO"],
@@ -61,9 +61,11 @@ var CERRAMOS = ["2026-11-10", "2026-11-24", "2026-12-09"];
 // La semana fija: va en "Se viene", una columna por día. "desde": si todavía no arrancó, se muestra la fecha de estreno.
 // precios: [texto chico, precio] (sin "$").
 var SEMANA = [
-  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Vermut", s: "Vaso o bandeja para compartir", precios: [["Vaso con soda", "7.000"], ["Bandeja vermutera", "25.000"]], desde: "2026-11-17", estilo: "barro" },
+  { id: "vermut", ic: "🍷", dia: "Martes", hora: "de 17 h al cierre", t: "Vermut", s: "Vaso o Kit Vermutero", precios: [["Vaso con soda", "7.000"], ["Kit Vermutero", "25.000"]], desde: "2026-11-17", estilo: "barro" },
   { id: "pizza", ic: "🍕", dia: "Miércoles", hora: "de 20 a 00 h", t: "PIZZA LIBRE", s: "Porciones al horno de barro. Bebida aparte.", precios: [["Por persona", "20.000"]], desde: "2026-11-04", estilo: "oro" },
-  { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Truco", s: "Mazo y anotador en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-11-05" }
+  { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Truco", s: "Mazo y anotador en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-11-05", hasta: "2026-12-02", ocultar: "2026-11-26" },
+  // Desde el 3/12 los jueves pasan a ser "Jueves de Juegos" (aprobado por Marcos el 17/11). Aparece en la grilla desde el 26/11, con "Arranca el 3/12".
+  { id: "juegos", ic: "🎲", dia: "Jueves", hora: "desde las 20 h", t: "Jueves de Juegos", s: "Truco, chinchón, podrida, carioca, generala y desconfío. Cartas, dados y reglamentos en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-12-03", mostrar: "2026-11-26" }
 ];
 
 // Menú del día (martes a viernes, hasta las 17 h): se despliega en la tarjeta de la promo. Dos platos por día, cada uno con su foto (en fotos/menu-dia/).
