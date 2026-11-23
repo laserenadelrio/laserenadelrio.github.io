@@ -96,13 +96,42 @@
   .vercal { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 10px; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--verde); background: var(--crema2); border: 1.5px solid var(--verde); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
 
   /* Juegos para la mesa */
-  .juegos { display: grid; gap: 8px; margin-top: 12px; }
-  .jgo { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; font: inherit; color: var(--tinta); background: var(--crema2); border: 1px solid var(--linea); border-radius: 14px; padding: 12px 14px; cursor: pointer; }
-  .jgo .ic { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--verde); color: var(--oro); display: flex; align-items: center; justify-content: center; font-size: 24px; font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; }
-  .jgo .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .jgo .tx b { font-size: 15.5px; }
-  .jgo .tx span { font-size: 13px; color: var(--gris); line-height: 1.35; margin-top: 2px; }
-  .jgo .va { flex: none; font-size: 13.5px; font-weight: 700; color: var(--oro); }
+  /* Portada verde con los seis logos flotando */
+  .jhero { margin-top: 12px; position: relative; overflow: hidden; text-align: center; border-radius: 18px; padding: 18px 14px 16px; color: var(--papel);
+    background: radial-gradient(circle at 50% -10%, rgba(184,134,43,.35), transparent 60%), var(--verde); }
+  .jhero::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,134,43,.6); border-radius: 13px; pointer-events: none; }
+  .jlogos { display: flex; justify-content: center; gap: 6px; }
+  .jlogos span { width: 42px; height: 42px; flex: none; border-radius: 12px; background: #2b4a36; box-shadow: inset 0 0 0 1.5px rgba(184,134,43,.6); display: flex; align-items: center; justify-content: center;
+    animation: flota 3.2s ease-in-out infinite; animation-delay: calc(var(--i) * -0.53s); }
+  .jlogos svg { width: 34px; height: 34px; display: block; }
+  @keyframes flota { 50% { transform: translateY(-5px) rotate(-4deg); } }
+  .jhero .jt { font-family: Georgia, serif; font-size: 22px; line-height: 1.2; margin-top: 14px; }
+  .jhero .js { font-size: 13.5px; color: #d9c79f; margin-top: 6px; line-height: 1.4; }
+  /* Tarjetas de los juegos, de a dos */
+  .jgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .jcard { position: relative; display: flex; flex-direction: column; align-items: flex-start; text-align: left; font: inherit; color: var(--tinta); background: #fffaf0; border: 1px solid var(--linea);
+    border-radius: 16px; padding: 12px 12px 10px; cursor: pointer; box-shadow: 0 3px 10px rgba(31,58,43,.08); transition: transform .15s; -webkit-tap-highlight-color: transparent; min-width: 0; }
+  .jcard:active { transform: scale(.96); }
+  .jcard .ic { width: 58px; height: 58px; border-radius: 15px; background: var(--verde); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(184,134,43,.55); }
+  .jcard .ic svg { width: 46px; height: 46px; display: block; }
+  .jcard b { font-size: 15px; line-height: 1.2; margin-top: 10px; }
+  .jcard .jd { font-size: 12.5px; color: var(--gris); line-height: 1.3; margin-top: 3px; }
+  .jcard .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0 10px; }
+  .jcard .chips i { font-style: normal; font-size: 11px; font-weight: 600; color: var(--verde); background: #efe5cf; border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
+  .jcard .va { margin-top: auto; display: block; width: 100%; text-align: center; background: var(--oro); color: #1d2e22; font-weight: 700; font-size: 13.5px; border-radius: 10px; padding: 7px 0; }
+  section.pleg.abierta .jhero { animation: aparece .4s ease-out both; }
+  section.pleg.abierta .jcard { animation: aparece .45s ease-out both; animation-delay: calc(80ms + var(--i) * 60ms); }
+  @keyframes aparece { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+  /* Promo de los Jueves de Juegos al pie */
+  .jjue { display: flex; align-items: center; gap: 10px; margin-top: 12px; text-decoration: none; color: var(--papel); background: linear-gradient(90deg, var(--verde), #2f5a40); border-radius: 14px; padding: 10px 12px; font-size: 12.5px; line-height: 1.35; }
+  .jjue .ic { width: 42px; height: 42px; flex: none; border-radius: 11px; background: #2b4a36; box-shadow: inset 0 0 0 1.5px rgba(184,134,43,.6); display: flex; align-items: center; justify-content: center; }
+  .jjue .ic svg { width: 34px; height: 34px; display: block; }
+  .jjue b { display: block; color: var(--oro); font-family: Georgia, serif; font-weight: 400; font-size: 15.5px; }
+  .jjue em { font-style: normal; font-weight: 700; color: #1d2e22; background: var(--oro); border-radius: 999px; padding: 6px 10px; flex: none; font-size: 12.5px; }
+  @media (prefers-reduced-motion: reduce) { .jlogos span, section.pleg.abierta .jhero, section.pleg.abierta .jcard { animation: none; } }
+  /* Logo del juego arriba de su título, dentro de la hoja */
+  .jlogo { width: 68px; height: 68px; margin: 0 auto 8px; border-radius: 18px; background: var(--verde); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(184,134,43,.55), 0 4px 12px rgba(31,58,43,.2); }
+  .jlogo svg { width: 54px; height: 54px; display: block; }
 
   /* Hoja que sube desde abajo: detalle de un evento y calendario */
   .velo { position: fixed; inset: 0; z-index: 10; background: rgba(20,32,25,.6); display: none; align-items: flex-end; justify-content: center; }
@@ -654,17 +683,53 @@
   seccion("club", "Club La Serena", h, "", 1);
 
   // 6. Juegos para la mesa (23/11). Los juegos están en juegos/juegos.js, que se descarga recién al abrir uno.
+  // Logos de los juegos (SVG con la paleta de la casa). Se usan en la lista y arriba de cada juego.
+  var LOGO = (function () {
+    var O = "#b8862b", K = "#f6f0e4", V = "#23402e", B = "#a8502a";
+    function cab(c) { return '<path d="M4 34 L20 5 L36 34" fill="none" stroke="' + c + '" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="21" width="8" height="9" fill="none" stroke="' + c + '" stroke-width="3"/>'; }
+    function tet(c) { return '<g fill="' + c + '"><circle cx="20" cy="9.5" r="2.4"/><path d="M11.5 16.5 Q20 9.5 28.5 16.5 Z"/><ellipse cx="20" cy="24.5" rx="11.5" ry="9"/><rect x="12.5" y="32" width="15" height="3" rx="1.2"/></g><g fill="none" stroke="' + c + '" stroke-linecap="round"><path d="M9.5 23 C5.5 22.5 4 18 2.8 13.5" stroke-width="3.4"/><path d="M31 18.5 C38 18 38 31 30.5 30" stroke-width="2.8"/></g>'; }
+    function treb(c) { return '<g fill="' + c + '"><ellipse cx="13.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(-45 13.5 13.5)"/><ellipse cx="26.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(45 26.5 13.5)"/><ellipse cx="13.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(45 13.5 26.5)"/><ellipse cx="26.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(-45 26.5 26.5)"/></g><path d="M22 23 C25 28 27 32 28 37" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round"/>'; }
+    function en(x, y, s, g) { return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')">' + g + '</g>'; }
+    function svg(h) { return '<svg viewBox="0 0 48 48" aria-hidden="true">' + h + '</svg>'; }
+    var c4 = '<rect x="5" y="6" width="38" height="37" rx="6" fill="' + K + '"/>', oro = { "12,38": 1, "20,30": 1, "28,22": 1, "36,14": 1 }, bar = { "20,38": 1, "28,38": 1, "28,30": 1, "36,38": 1, "12,30": 1 };
+    [14, 22, 30, 38].forEach(function (y) { [12, 20, 28, 36].forEach(function (x) { var k = x + "," + y; c4 += '<circle cx="' + x + '" cy="' + y + '" r="3.4" fill="' + (oro[k] ? O : bar[k] ? B : "#2d4d38") + '"/>'; }); });
+    function pips(ps, c) { return ps.map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.3" fill="' + c + '"/>'; }).join(""); }
+    return {
+      tateti: svg('<g fill="none" stroke="' + K + '" stroke-width="2.6" stroke-linecap="round"><path d="M17.5 5 V43"/><path d="M30.5 5 V43"/><path d="M5 17.5 H43"/><path d="M5 30.5 H43"/></g>' +
+        en(6.2, 6.2, 0.24, cab(O)) + en(19.2, 19.4, 0.24, tet(K)) + en(32.3, 32.3, 0.24, cab(O)) + en(32.3, 6.4, 0.24, tet(K))),
+      ahorcado: svg('<g stroke="' + O + '" stroke-width="2.2" stroke-linecap="round"><path d="M14 29 V45"/><path d="M24 29 V45"/><path d="M34 29 V45"/></g><path d="M9 29 H39" stroke="' + O + '" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M11 27.5 L24 5 L37 27.5" fill="none" stroke="' + K + '" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/><rect x="21" y="15.5" width="6" height="7" fill="none" stroke="' + K + '" stroke-width="2"/>' +
+        '<path d="M1 37 q5.75 -3.2 11.5 0 t11.5 0 t11.5 0 t11.5 0 V48 H1 Z" fill="#7fb0c2" opacity=".92"/>'),
+      memotest: svg('<g transform="rotate(-12 16 25)"><rect x="5" y="11" width="21" height="29" rx="4" fill="' + O + '"/>' + en(9.5, 19.5, 0.3, treb(K)) + '</g>' +
+        '<g transform="rotate(10 32 23)"><rect x="22" y="8" width="21" height="29" rx="4" fill="' + K + '"/><path d="M26.5 14.5 L38.5 14.5 L32.5 31 Z" fill="#e9b949" stroke="' + B + '" stroke-width="1.5" stroke-linejoin="round"/><path d="M26.5 14.5 H38.5" stroke="#c07a2e" stroke-width="3" stroke-linecap="round"/>' +
+        '<circle cx="30.5" cy="18.5" r="1.7" fill="' + B + '"/><circle cx="34.6" cy="19.5" r="1.5" fill="' + B + '"/><circle cx="32.4" cy="24.5" r="1.5" fill="' + B + '"/></g>'),
+      cuatro: svg(c4),
+      plato: svg('<circle cx="19" cy="20" r="14" fill="' + K + '"/><circle cx="19" cy="20" r="9" fill="none" stroke="#d8ccb6" stroke-width="1.6"/><circle cx="16" cy="18" r="3" fill="' + B + '"/><circle cx="22" cy="22.5" r="2.6" fill="#6d8f4e"/><circle cx="21" cy="15.5" r="1.8" fill="#e9b949"/>' +
+        '<circle cx="31" cy="31" r="8.5" fill="rgba(246,240,228,.55)" stroke="' + O + '" stroke-width="3.2"/><path d="M37.2 37.2 L44 44" stroke="' + O + '" stroke-width="4.5" stroke-linecap="round"/>' +
+        '<text x="31" y="35.4" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="12" fill="' + V + '">?</text>'),
+      generala: svg('<g transform="rotate(-14 16 28)"><rect x="5" y="17" width="22" height="22" rx="5" fill="' + K + '"/>' + pips([[10, 22], [22, 22], [16, 28], [10, 34], [22, 34]], V) + '</g>' +
+        '<g transform="rotate(12 33 19)"><rect x="22" y="8" width="22" height="22" rx="5" fill="' + O + '"/>' + pips([[27, 13], [33, 19], [39, 25]], K) + '</g>')
+    };
+  })();
+  // Rediseño del 23/11: portada verde con los seis logos y tarjetas de a dos, con chips de jugadores.
   var JUEGOS_LISTA = [
-    { id: "tateti", ic: "⌗", t: "Ta-te-ti", s: "Cabaña contra tetera. De a dos o contra la casa." },
-    { id: "ahorcado", ic: "🌊", t: "Ahorcado de la sudestada", s: "Adiviná antes de que el río llegue a la cabaña." },
-    { id: "memotest", ic: "🍕", t: "Memotest", s: "Encontrá los pares de la carta, por turnos." },
-    { id: "cuatro", ic: "◉", t: "Cuatro en línea", s: "Cabañas contra teteras. De a dos o contra la casa." },
-    { id: "plato", ic: "🔍", t: "¿Qué plato es?", s: "Mirá la foto de cerca y adiviná el plato de la carta." },
-    { id: "generala", ic: "🎲", t: "Generala", s: "Con dados en pantalla, de 1 a 4 jugadores. ¡Y los jueves, en la mesa!" }
+    { id: "tateti", t: "Ta-te-ti", s: "Cabaña contra tetera.", ch: ["👥 2", "🏠 vs. la casa"] },
+    { id: "ahorcado", t: "Ahorcado de la sudestada", s: "Que el río no llegue a la cabaña.", ch: ["👤 1 o más"] },
+    { id: "memotest", t: "Memotest", s: "Pares de platos de la carta.", ch: ["👥 2", "📸 fotos"] },
+    { id: "cuatro", t: "Cuatro en línea", s: "Cabañas contra teteras.", ch: ["👥 2", "🏠 vs. la casa"] },
+    { id: "plato", t: "¿Qué plato es?", s: "Adiviná el plato de bien de cerca.", ch: ["👤 1 o más", "5 rondas"] },
+    { id: "generala", t: "Generala", s: "Con dados en pantalla.", ch: ["👥 1 a 4", "🎲 dados"] }
   ];
-  seccion("juegos", "Juegos para la mesa", '<div class="juegos">' + JUEGOS_LISTA.map(function (j) {
-    return '<button type="button" class="jgo" data-jg="' + j.id + '"><span class="ic">' + j.ic + '</span><span class="tx"><b>' + esc(j.t) + '</b><span>' + esc(j.s) + '</span></span><span class="va">Jugar ›</span></button>';
-  }).join("") + '</div>', "para la espera", 1);
+  var hj = '<div class="jhero"><div class="jlogos">' + JUEGOS_LISTA.map(function (j, i) { return '<span style="--i:' + i + '">' + LOGO[j.id] + '</span>'; }).join("") + '</div>' +
+    '<div class="jt">¿Una partida mientras sale la comida?</div>' +
+    '<div class="js">Seis juegos para jugar en la mesa desde el celu. De a uno, de a dos o contra la casa.</div></div>' +
+    '<div class="jgrid">' + JUEGOS_LISTA.map(function (j, i) {
+      return '<button type="button" class="jcard" data-jg="' + j.id + '" style="--i:' + i + '"><span class="ic">' + LOGO[j.id] + '</span><b>' + esc(j.t) + '</b><span class="jd">' + esc(j.s) + '</span>' +
+        '<span class="chips">' + j.ch.map(function (c) { return '<i>' + esc(c) + '</i>'; }).join("") + '</span><span class="va">Jugar ›</span></button>';
+    }).join("") + '</div>' +
+    '<a class="jjue" href="' + wa("¡Hola! Quiero reservar una mesa para el Jueves de Juegos") + '"><span class="ic">' + LOGO.generala + '</span><span><b>Jueves de Juegos</b>' +
+    (HOY < "2026-12-03" ? 'Desde el jueves 3/12, a las 20 h' : 'Todos los jueves, desde las 20 h') + ': truco, generala y más, con cartas y dados de verdad.</span><em>Reservá ›</em></a>';
+  seccion("juegos", "Juegos para la mesa", hj, "¡6 juegos!", 1);
 
   document.getElementById("carta").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
@@ -890,7 +955,11 @@
   // Juegos: la primera vez se descarga juegos/juegos.js y después se dibuja el juego en la hoja.
   function abrirJuego(id) {
     mostrarHoja('<div id="juego"><div class="jg" style="padding:40px 16px;text-align:center;color:var(--gris)">Cargando el juego…</div></div>', "juego-" + id);
-    function dibujarJuego() { var c = document.getElementById("juego"); if (c && window.JUEGOS) JUEGOS.abrir(id, c); }
+    function dibujarJuego() {
+      var c = document.getElementById("juego"); if (!c || !window.JUEGOS) return;
+      JUEGOS.abrir(id, c);
+      var h3 = c.querySelector("h3"); if (h3 && LOGO[id]) h3.insertAdjacentHTML("beforebegin", '<div class="jlogo">' + LOGO[id] + '</div>');
+    }
     if (window.JUEGOS) return dibujarJuego();
     var s = document.createElement("script");
     s.src = "juegos/juegos.js"; s.onload = dibujarJuego;
