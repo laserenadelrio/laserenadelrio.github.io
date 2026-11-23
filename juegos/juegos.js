@@ -17,7 +17,8 @@
     ".jg .modos button.on { background: var(--verde); color: var(--papel); }",
     ".jg .marc { display: flex; justify-content: center; gap: 18px; margin-top: 12px; font-family: Bahnschrift, sans-serif; font-size: 15px; color: var(--verde); }",
     ".jg .marc span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; }",
-    ".jg .marc span.turno { background: var(--oro); color: #1d2e22; }",
+    // El turno lo marca el cartel grande; el marcador queda solo con los puntos.
+    ".jg .marc span.turno { background: none; }",
     ".jg .marc svg { width: 20px; height: 20px; }",
     ".jg .msg { min-height: 24px; margin-top: 12px; font-family: Georgia, serif; font-size: 19px; color: var(--verde); }",
     ".jg .fin { margin-top: 10px; display: none; }",
@@ -25,10 +26,32 @@
     ".jg .fin .res { display: block; margin-top: 10px; font-size: 13.5px; color: var(--gris); }",
     ".jg .fin .res a { color: var(--verde); font-weight: 600; }",
     /* Ta-te-ti */
-    ".ttt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(300px, 86vw); margin: 14px auto 0; }",
-    ".ttt button { aspect-ratio: 1; border: 2px solid var(--linea); border-radius: 14px; background: #fffaf0; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 14%; }",
-    ".ttt button svg { width: 100%; height: 100%; }",
-    ".ttt button.gana { background: #f0e2bf; border-color: var(--oro); }",
+    // Ta-te-ti sobre el dibujo del "#". Las fichas van posicionadas encima de la celda: no pueden agrandarla.
+    ".ttt { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); width: min(290px, 80vw); aspect-ratio: 1; margin: 14px auto 0; }",
+    ".ttt .hash { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }",
+    ".ttt button { position: relative; min-width: 0; min-height: 0; border: none; background: transparent; padding: 0; margin: 0; cursor: pointer; border-radius: 12px; -webkit-tap-highlight-color: transparent; }",
+    ".ttt button svg { position: absolute; left: 17%; top: 17%; width: 66%; height: 66%; }",
+    ".ttt button.nueva svg { animation: pone .25s ease-out; }",
+    ".confeti i svg { width: 100%; height: 100%; display: block; }",
+    ".ttt button.gana::before { content: ''; position: absolute; inset: 9%; border-radius: 50%; background: rgba(184,134,43,.28); }",
+    ".ttt button.gana svg, .c4 button.gana svg { animation: late .55s ease-in-out 4; }",
+    "@keyframes pone { from { transform: scale(.3); opacity: 0; } }",
+    "@keyframes late { 50% { transform: scale(1.22); } }",
+    /* Cartel de turno: bien visible, cambia de color según a quién le toca */
+    ".tbw { margin-top: 12px; min-height: 44px; }",
+    ".turnob { display: inline-flex; align-items: center; gap: 9px; padding: 7px 16px 7px 8px; border-radius: 999px; font-size: 16px; font-weight: 700; background: var(--verde); color: var(--papel); box-shadow: 0 3px 10px rgba(31,58,43,.25); }",
+    ".turnob.oro { background: var(--oro); color: #1d2e22; }",
+    ".turnob.barro { background: var(--barro); }",
+    ".turnob.rio { background: #4a7a8c; }",
+    ".turnob.nada { visibility: hidden; }",
+    ".turnob .fi { width: 30px; height: 30px; border-radius: 50%; background: #fffaf0; display: flex; align-items: center; justify-content: center; flex: none; font-family: Bahnschrift, sans-serif; color: var(--verde); }",
+    ".turnob .fi svg { width: 22px; height: 22px; }",
+    ".turnob.cambia { animation: cambia .4s ease-out; }",
+    "@keyframes cambia { 0% { transform: scale(.7); opacity: .3; } 70% { transform: scale(1.08); } }",
+    /* Festejo al ganar: papelitos y tréboles que caen */
+    ".confeti { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }",
+    ".confeti i { position: absolute; top: -40px; display: block; animation: cae linear forwards; }",
+    "@keyframes cae { to { transform: translateY(110vh) rotate(720deg); } }",
     /* Ahorcado de la sudestada */
     ".ah svg.rio { width: min(280px, 80vw); height: auto; margin: 10px auto 0; display: block; }",
     ".ah .pal { font-family: Bahnschrift, 'Segoe UI', sans-serif; font-size: 25px; letter-spacing: 0.14em; color: var(--verde); margin-top: 8px; word-break: break-word; line-height: 1.5; }",
@@ -61,9 +84,11 @@
     // Cuando se encuentra el par, se ve el nombre del plato abajo de la foto.
     ".mm button.hecha { box-shadow: inset 0 0 0 3px var(--oro); }",
     /* Cuatro en línea */
-    ".c4 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--verde); padding: 7px; border-radius: 14px; width: min(350px, 92vw); margin: 14px auto 0; }",
-    ".c4 button { aspect-ratio: 1; border: none; border-radius: 50%; background: #fffaf0; padding: 14%; cursor: pointer; display: flex; align-items: center; justify-content: center; }",
-    ".c4 button svg { width: 100%; height: 100%; }",
+    ".c4 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; background: var(--verde); padding: 7px; border-radius: 14px; width: min(340px, 90vw); margin: 14px auto 0; }",
+    ".c4 button { position: relative; aspect-ratio: 1; min-width: 0; border: none; border-radius: 50%; background: #fffaf0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }",
+    ".c4 button svg { position: absolute; left: 15%; top: 15%; width: 70%; height: 70%; }",
+    ".c4 button.cae svg { animation: caeficha .35s ease-in; }",
+    "@keyframes caeficha { from { transform: translateY(-500%); } }",
     ".c4 button.gana { background: #f0e2bf; box-shadow: 0 0 0 3px var(--oro); }",
     /* ¿Qué plato es? */
     ".qp .marc { gap: 10px; }",
@@ -86,7 +111,10 @@
     ".ge .modos { align-items: center; }",
     ".ge .modos .ml { font-size: 14px; color: var(--gris); }",
     ".ge .modos button { padding: 6px 13px; }",
-    ".ge .gt { margin-top: 12px; font-size: 15px; color: var(--verde); min-height: 20px; }",
+    ".ge .gt { margin-top: 6px; font-size: 14px; color: var(--gris); min-height: 18px; }",
+    ".ge .plan th.yo.c0 { background: var(--verde); color: var(--papel); }",
+    ".ge .plan th.yo.c2 { background: var(--barro); color: var(--papel); }",
+    ".ge .plan th.yo.c3 { background: #4a7a8c; color: var(--papel); }",
     ".ge .dados { display: flex; justify-content: center; gap: 7px; margin-top: 10px; }",
     ".ge .dados button { width: 56px; border: none; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; }",
     ".ge .dados button svg { width: 56px; height: 56px; display: block; }",
@@ -119,6 +147,31 @@
       '<span class="res">¿La están pasando bien en la cabaña? <a href="' + RESENA + '" target="_blank" rel="noopener">Contalo en Google</a> ⭐</span></div>';
   }
 
+  // Cartel de turno: el texto, el ícono y el color de quien juega. Se anima solo cuando cambia el turno.
+  function turnoCartel(el, html, clase) {
+    var b = el.querySelector(".turnob"), nuevo = clase + "|" + html;
+    if (b.getAttribute("data-k") === nuevo) return;
+    b.setAttribute("data-k", nuevo);
+    b.className = "turnob " + clase; b.innerHTML = html;
+    if (clase !== "nada") { void b.offsetWidth; b.classList.add("cambia"); }
+  }
+  function cartelHTML() { return '<div class="tbw"><div class="turnob nada"></div></div>'; }
+  // Festejo: papelitos dorados, verdes y crema, y algunos tréboles, que caen por la pantalla.
+  function festejo() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var cont = document.createElement("div"), cols = ["#b8862b", "#23402e", "#f6f0e4", "#a8502a", "#d9b25a"], h = "";
+    cont.className = "confeti";
+    for (var i = 0; i < 44; i++) {
+      var x = Math.random() * 100, d = 1.6 + Math.random() * 1.6, r = Math.random() * 0.6, s = 7 + Math.random() * 9;
+      var esTrebol = i % 6 === 0;
+      h += '<i style="left:' + x + '%;animation-duration:' + d + 's;animation-delay:' + r + 's;' +
+        (esTrebol ? 'width:' + (s + 8) + 'px;height:' + (s + 8) + 'px">' + TRE : 'width:' + s + 'px;height:' + (s * 0.6) + 'px;background:' + cols[i % cols.length] + ';border-radius:2px">') + '</i>';
+    }
+    cont.innerHTML = h;
+    document.body.appendChild(cont);
+    setTimeout(function () { cont.remove(); }, 3600);
+  }
+
   // Fichas: la cabaña (techo alpino con ventanita) y la tetera gigante de la vereda. El trébol queda para el dorso del memotest.
   var TET = '<svg viewBox="0 0 40 40" aria-label="Tetera"><g fill="#b8862b"><circle cx="20" cy="9.5" r="2.4"/><path d="M11.5 16.5 Q20 9.5 28.5 16.5 Z"/><ellipse cx="20" cy="24.5" rx="11.5" ry="9"/><rect x="12.5" y="32" width="15" height="3" rx="1.2"/></g>' +
     '<g fill="none" stroke="#b8862b" stroke-linecap="round"><path d="M9.5 23 C5.5 22.5 4 18 2.8 13.5" stroke-width="3.4"/><path d="M31 18.5 C38 18 38 31 30.5 30" stroke-width="2.8"/></g></svg>';
@@ -126,33 +179,43 @@
   var TRE = '<svg viewBox="0 0 40 40" aria-label="Trébol"><g fill="#b8862b"><ellipse cx="13.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(-45 13.5 13.5)"/><ellipse cx="26.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(45 26.5 13.5)"/><ellipse cx="13.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(45 13.5 26.5)"/><ellipse cx="26.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(-45 26.5 26.5)"/></g><path d="M22 23 C25 28 27 32 28 37" fill="none" stroke="#b8862b" stroke-width="2.4" stroke-linecap="round"/></svg>';
 
   // ---------- TA-TE-TI: cabaña contra tetera ----------
+  // El "#" del ta-te-ti, con trazo a mano alzada.
+  var HASH = '<svg class="hash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#23402e" stroke-width="3.2" stroke-linecap="round">' +
+    '<path d="M33.5 3 C34.6 35 32.4 66 33.8 97"/><path d="M66.5 3 C65.4 36 67.6 64 66.2 97"/><path d="M3 33.5 C35 32.4 66 34.6 97 33.2"/><path d="M3 66.5 C36 67.6 64 65.4 97 66.8"/></g></svg>';
+  // Texto del cartel de turno en los juegos de cabaña contra tetera.
+  function cartelCT(turno, modo, plural) {
+    if (modo === "bot") return turno === "C" ? ['<span class="fi">' + CAB + '</span>Te toca a vos', ""] : ['<span class="fi">' + TET + '</span>Piensa la casa…', "oro"];
+    return turno === "C" ? ['<span class="fi">' + CAB + '</span>Le toca a ' + (plural ? "las cabañas" : "la cabaña"), ""] : ['<span class="fi">' + TET + '</span>Le toca a ' + (plural ? "las teteras" : "la tetera"), "oro"];
+  }
   function tateti(c) {
-    var modo = "dos", tablero, turno, fin, pts = { C: 0, T: 0 }, empieza = "C";
+    var modo = "dos", tablero, turno, fin, pts = { C: 0, T: 0 }, empieza = "C", ultima = -1;
     c.innerHTML = '<div class="jg"><h3>Ta-te-ti</h3><div class="bj">La cabaña contra la tetera. Tres en línea gana.</div>' +
       '<div class="modos"><button type="button" data-m="dos" class="on">De a dos</button><button type="button" data-m="bot">Contra la casa</button></div>' +
-      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' +
+      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' + cartelHTML() +
       '<div class="ttt"></div><div class="msg"></div>' + finHTML() + '</div>';
     var g = c.querySelector(".ttt"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
     var L = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     function ganador(t) { for (var i = 0; i < L.length; i++) { var a = L[i]; if (t[a[0]] && t[a[0]] === t[a[1]] && t[a[1]] === t[a[2]]) return a; } return null; }
     function dibujar() {
-      g.innerHTML = tablero.map(function (v, i) { return '<button type="button" data-i="' + i + '" aria-label="Casilla ' + (i + 1) + '">' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>'; }).join("");
+      g.innerHTML = HASH + tablero.map(function (v, i) { return '<button type="button" data-i="' + i + '" aria-label="Casilla ' + (i + 1) + '"' + (i === ultima ? ' class="nueva"' : '') + '>' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>'; }).join("");
       c.querySelectorAll(".marc span").forEach(function (s) { var j = s.getAttribute("data-j"); s.classList.toggle("turno", !fin && j === turno); s.querySelector("b").textContent = pts[j]; });
+      var ct = cartelCT(turno, modo); turnoCartel(c, ct[0], fin ? "nada" : ct[1]);
     }
-    function nueva() { tablero = ["", "", "", "", "", "", "", "", ""]; turno = empieza; fin = false; empieza = empieza === "C" ? "T" : "C"; msg.textContent = ""; f.classList.remove("on"); dibujar(); if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 450); }
+    function nueva() { tablero = ["", "", "", "", "", "", "", "", ""]; ultima = -1; turno = empieza; fin = false; empieza = empieza === "C" ? "T" : "C"; msg.textContent = ""; f.classList.remove("on"); dibujar(); if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 650); }
     function jugar(i) {
       if (fin || tablero[i]) return;
-      tablero[i] = turno;
+      tablero[i] = turno; ultima = i;
       var w = ganador(tablero);
       if (w) {
         fin = true; pts[turno]++; dibujar();
-        w.forEach(function (k) { g.children[k].classList.add("gana"); });
-        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganó la cabaña!" : "¡Ganó la tetera! ¡Sláinte!");
+        var cel = g.querySelectorAll("button"); w.forEach(function (k) { cel[k].classList.add("gana"); });
+        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganó la cabaña! 🎉" : "¡Ganó la tetera! ¡Sláinte! 🎉");
+        if (!(modo === "bot" && turno === "T")) festejo();
         f.classList.add("on"); return;
       }
       if (tablero.every(Boolean)) { fin = true; dibujar(); msg.textContent = "Empate. Como el río: tranqui."; f.classList.add("on"); return; }
       turno = turno === "C" ? "T" : "C"; dibujar();
-      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 450);
+      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 650);
     }
     // La casa juega bien pero no perfecto: gana si puede, tapa si hace falta y a veces se distrae.
     function jugadaBot() {
@@ -183,7 +246,13 @@
     ["EMPANADA DE CARNE", "La carta"], ["MILANESA NAPOLITANA", "La carta"], ["LIMONADA", "La carta"], ["PROVOLETA", "La carta"],
     ["FUGAZZETA", "La carta"], ["MUZZARELLA", "La carta"], ["CHOCOTORTA", "La carta"], ["MEDIALUNAS", "La carta"], ["SUBMARINO", "La carta"],
     ["TREBOL", "Suerte irlandesa"], ["SLAINTE", "Brindis irlandés"], ["CHINCHON", "Jueves de juegos"], ["GENERALA", "Jueves de juegos"],
-    ["LANCHA COLECTIVA", "Tigre"], ["REMO", "Tigre"], ["PUERTO DE FRUTOS", "Tigre"], ["MATE", "Clásico"], ["DECK", "La Serena"], ["TETERA", "En la vereda"]
+    ["LANCHA COLECTIVA", "Tigre"], ["REMO", "Tigre"], ["PUERTO DE FRUTOS", "Tigre"], ["MATE", "Clásico"], ["DECK", "La Serena"], ["TETERA", "En la vereda"],
+    // Más platos de la carta (23/11)
+    ["TORTILLA DE PAPA", "La carta"], ["RISOTTO DE CALABAZA", "La carta"], ["SORRENTINOS", "La carta"], ["RAVIOLONES", "La carta"], ["CHURRASQUITOS", "La carta"],
+    ["MATAMBRE A LA PIZZA", "La carta"], ["PANQUEQUES", "La carta"], ["FLAN CON DULCE DE LECHE", "La carta"], ["AVOCADO TOAST", "La carta"], ["CHICKEN FINGERS", "La carta"],
+    ["WRAP DE BONDIOLA", "La carta"], ["CALZONE", "La carta"], ["CAPUCCINO", "La carta"], ["BROWNIE CON HELADO", "La carta"], ["BONDIOLA A LA MOSTAZA", "La carta"],
+    ["MILANGA DEL VIEJO", "La carta"], ["PASTELITOS", "La carta"], ["TABLA DE PICADA", "La carta"], ["RABAS", "La carta"], ["CANELONES", "La carta"],
+    ["MILA LA SERENA", "La carta"], ["TOSTADO", "La carta"], ["EXPRIMIDO DE NARANJA", "La carta"], ["ÑOQUIS", "La carta"]
   ];
   var MAX = 6;
   function sinAcento(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
@@ -222,7 +291,8 @@
       '<div class="modos"><button type="button" data-m="casa" class="on">Palabras de la casa</button><button type="button" data-m="dos">Una de ustedes</button></div>' +
       '<div class="zona"></div><div class="msg"></div>' + finHTML() + '</div>';
     var z = c.querySelector(".zona"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
-    function limpia(s) { return sinAcento(s.toUpperCase()).replace(/[^A-ZÑ ]/g, "").replace(/\s+/g, " ").trim(); }
+    // Saca tildes pero deja la Ñ (CABAÑA, ÑOQUIS).
+    function limpia(s) { return sinAcento(s.toUpperCase().replace(/Ñ/g, "\u0001")).replace(/\u0001/g, "Ñ").replace(/[^A-ZÑ ]/g, "").replace(/\s+/g, " ").trim(); }
     function empezar(p, pi) {
       pal = limpia(p); pista = pi; usadas = {}; errores = 0; fin = false; msg.textContent = ""; f.classList.remove("on");
       var letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
@@ -243,7 +313,7 @@
       usadas[l] = 1; b.disabled = true;
       if (pal.indexOf(l) >= 0) b.classList.add("si"); else errores++;
       var completa = pal.replace(/ /g, "").split("").every(function (x) { return usadas[x]; });
-      if (completa) { fin = true; msg.textContent = "¡Bien ahí! La cabaña sigue seca ☀️"; f.classList.add("on"); }
+      if (completa) { fin = true; msg.textContent = "¡Bien ahí! La cabaña sigue seca ☀️"; f.classList.add("on"); festejo(); }
       else if (errores >= MAX) { fin = true; msg.textContent = "¡Sudestada! Era: " + pal; f.classList.add("on"); }
       pintar();
     }
@@ -264,15 +334,43 @@
   }
 
   // ---------- MEMOTEST de la carta: de a dos, por turnos ----------
-  // Los platos salen con su foto de Fudo (la misma de la carta). Cada partida toma 8 al azar de esta lista.
-  // Si un plato se saca de Fudo o no tiene foto, no entra. Si quedan menos de 8, se completa con emojis.
+  // Los platos salen con su foto de Fudo (la misma de la carta): [nombre en Fudo, cómo se muestra, familia].
+  // Si un plato se saca de Fudo o no tiene foto, no entra (ej.: si las pizzas están desactivadas, salen solas).
+  // La familia sirve para variar: en el memotest no van más de 2 de la misma y en ¿Qué plato es? las opciones son de familias distintas.
   var PLATOS = [
-    ["MILA LA SERENA", "Mila La Serena"], ["MILANESA NAPOLITANA", "Milanesa napolitana"], ["EMPANADA CARNE CUCHILLO", "Empanada de carne"],
-    ["PIZZA MUZZARELLA", "Pizza muzzarella"], ["PIZZA RUCULA, CHERRY Y PARMESANO", "Pizza rúcula y cherry"], ["WRAP DE BONDIOLA", "Wrap de bondiola"],
-    ["PROVOLETA LA SERENA", "Provoleta La Serena"], ["RABAS", "Rabas"], ["BARBECUE RIBS", "Ribs a la barbacoa"], ["JARRA DE LIMONADA", "Limonada"],
-    ["COCHOTORTA", "Chocotorta"], ["AVOCADO TOAST", "Avocado toast"], ["SUBMARINO", "Submarino"], ["SORRENTINOS CASEROS", "Sorrentinos caseros"],
-    ["BROWNIE CON HELADO", "Brownie con helado"], ["BONDIOLA A LA MOSTAZA", "Bondiola a la mostaza"], ["ENSALADA LA SERENA", "Ensalada La Serena"]
+    ["MILA LA SERENA", "Mila La Serena", "mila"], ["MILANESA NAPOLITANA", "Milanesa napolitana", "mila"], ["MILANESA A CABALLO", "Milanesa a caballo", "mila"],
+    ["MILANGA DEL VIEJO", "Milanga del viejo", "mila"], ["MILANESA OLIVIA", "Milanesa Olivia", "mila"],
+    ["EMPANADA CARNE CUCHILLO", "Empanada de carne", "empanada"], ["EMPANADA BONDIOLA", "Empanada de bondiola", "empanada"], ["EMPANADA CAPRESE", "Empanada caprese", "empanada"],
+    ["EMPANADA CEBOLLA CARAMELIZADA", "Empanada de cebolla caramelizada", "empanada"],
+    ["PIZZA MUZZARELLA", "Pizza muzzarella", "pizza"], ["PIZZA NAPOLITANA", "Pizza napolitana", "pizza"], ["PIZZA RUCULA, CHERRY Y PARMESANO", "Pizza rúcula y cherry", "pizza"],
+    ["PIZZA CUATRO QUESOS", "Pizza cuatro quesos", "pizza"], ["PIZZA CEBOLLA CARAMELIZADA Y QUESO AZUL", "Pizza de cebolla y queso azul", "pizza"], ["CALZONE NAPOLITANO", "Calzone napolitano", "pizza"],
+    ["WRAP DE BONDIOLA", "Wrap de bondiola", "wrap"], ["WRAP CAESAR", "Wrap Caesar", "wrap"], ["WRAP VEGETARIANO", "Wrap vegetariano", "wrap"],
+    ["PROVOLETA LA SERENA", "Provoleta La Serena", "provo"], ["PROVOLETA", "Provoleta", "provo"], ["RABAS", "Rabas", "rabas"], ["TORTILLA DE PAPA", "Tortilla de papa", "tortilla"],
+    ["CHICKEN FINGERS", "Chicken fingers", "fritos"], ["MUZZARELLITAS", "Muzzarellitas", "fritos"], ["PAPAS FRITAS CON CHEDDAR Y BACON", "Papas con cheddar y bacon", "fritos"],
+    ["TABLA DE PICADA", "Tabla de picada", "picada"],
+    ["BARBECUE RIBS", "Ribs a la barbacoa", "cerdo"], ["BONDIOLA A LA MOSTAZA", "Bondiola a la mostaza", "cerdo"], ["MATAMBRE A LA PIZZA", "Matambre a la pizza", "carne"],
+    ["BIFE DE CHORIZO", "Bife de chorizo", "carne"], ["CHURRASQUITOS DE CUADRIL", "Churrasquitos de cuadril", "carne"], ["TAPA DE NALGA", "Tapa de nalga", "carne"],
+    ["POLLO AL VERDEO CON PAPAS ESPAÑOLAS", "Pollo al verdeo", "pollo"], ["CHICKEN GRILL AL LIMON", "Chicken grill al limón", "pollo"],
+    ["RISOTTO DE CALABAZA", "Risotto de calabaza", "risotto"], ["RISOTTO CHAMPIGNON", "Risotto de champiñones", "risotto"], ["RISOTTO 4 QUESOS", "Risotto cuatro quesos", "risotto"],
+    ["SORRENTINOS CASEROS", "Sorrentinos caseros", "pasta"], ["RAVIOLONES DE VERDURA", "Raviolones de verdura", "pasta"], ["FIDEOS CINTA CASEROS", "Fideos cinta caseros", "pasta"],
+    ["CANELONES DE VERDURA Y MUZZARELLA", "Canelones de verdura", "pasta"], ["ÑOQUIS CUATRO QUESOS", "Ñoquis cuatro quesos", "pasta"],
+    ["ENSALADA LA SERENA", "Ensalada La Serena", "ensalada"], ["ENSALADA CAESAR CON POLLO", "Ensalada Caesar", "ensalada"], ["ENSALADA POLLOS HERMANOS", "Ensalada Pollos Hermanos", "ensalada"],
+    ["AVOCADO TOAST", "Avocado toast", "desayuno"], ["HUEVOS REVUELTOS", "Huevos revueltos", "desayuno"], ["TOSTADO XL DE JAMON Y QUESO", "Tostado de jamón y queso", "tostado"],
+    ["MEDIALUNA CON JAMON Y QUESO", "Medialuna de jamón y queso", "tostado"],
+    ["COCHOTORTA", "Chocotorta", "postre"], ["BROWNIE CON HELADO", "Brownie con helado", "postre"], ["FLAN CON DULCE DE LECHE", "Flan con dulce de leche", "postre"],
+    ["PANQUEQUES DE DULCE DE LECHE", "Panqueques con dulce de leche", "postre"], ["PASTELITOS", "Pastelitos", "postre"],
+    ["SUBMARINO", "Submarino", "cafe"], ["CAPUCCINO", "Capuccino", "cafe"], ["LICUADO DE FRUTILLA", "Licuado de frutilla", "jugo"], ["EXPRIMIDO DE NARANJA", "Exprimido de naranja", "jugo"],
+    ["JARRA DE LIMONADA", "Limonada", "jugo"], ["CAIPIROSKA", "Caipiroska", "trago"]
   ];
+  // Elige n platos al azar, con 2 como mucho de la misma familia.
+  function variados(lista, n) {
+    var out = [], cuenta = {};
+    var mezcla = azar(lista.slice());
+    mezcla.forEach(function (p) { if (out.length < n && (cuenta[p.fa] || 0) < 2) { out.push(p); cuenta[p.fa] = (cuenta[p.fa] || 0) + 1; } });
+    // Si no alcanza con esa regla (pocos platos con foto), se completa con los que quedan.
+    mezcla.forEach(function (p) { if (out.length < n && out.indexOf(p) < 0) out.push(p); });
+    return out;
+  }
   var EMOJIS = [["🍕", "Pizza"], ["🥟", "Empanada"], ["🍋", "Limonada"], ["🍺", "Cerveza"], ["☕", "Café"], ["🍰", "Postre"], ["🧉", "Mate"], ["🍔", "Hamburguesa"]];
   var PARES = 8;
   function fotosFudo() {
@@ -280,18 +378,21 @@
     ((window.FUDO && FUDO.categorias) || []).forEach(function (cat) {
       (cat.productos || []).forEach(function (p) { if (p.foto) mapa[p.nombre.replace(/[^\wÑ ,]/g, "").replace(/\s+/g, " ").trim().toUpperCase()] = p.foto; });
     });
-    return PLATOS.filter(function (p) { return mapa[p[0]]; }).map(function (p) { return { foto: mapa[p[0]], n: p[1] }; });
+    return PLATOS.filter(function (p) { return mapa[p[0]]; }).map(function (p) { return { foto: mapa[p[0]], n: p[1], fa: p[2] }; });
   }
   function memotest(c) {
     var cartas, abiertas, turno, pts, bloqueo, hechas, FICHAS;
     c.innerHTML = '<div class="jg"><h3>Memotest</h3><div class="bj">Por turnos: si encontrás el par, seguís jugando.</div>' +
-      '<div class="marc"><span data-j="0">Jugador 1 · <b>0</b></span><span data-j="1">Jugador 2 · <b>0</b></span></div>' +
+      '<div class="marc"><span data-j="0">Jugador 1 · <b>0</b></span><span data-j="1">Jugador 2 · <b>0</b></span></div>' + cartelHTML() +
       '<div class="mm"></div><div class="msg"></div>' + finHTML() + '</div>';
     var g = c.querySelector(".mm"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
-    function marcador() { c.querySelectorAll(".marc span").forEach(function (s) { var j = +s.getAttribute("data-j"); s.classList.toggle("turno", hechas < PARES && j === turno); s.querySelector("b").textContent = pts[j]; }); }
+    function marcador() {
+      c.querySelectorAll(".marc span").forEach(function (s) { var j = +s.getAttribute("data-j"); s.classList.toggle("turno", hechas < PARES && j === turno); s.querySelector("b").textContent = pts[j]; });
+      turnoCartel(c, '<span class="fi">' + (turno + 1) + '</span>Le toca al jugador ' + (turno + 1), hechas >= PARES ? "nada" : turno ? "oro" : "");
+    }
     function nueva() {
       // 8 platos al azar; si faltan fotos, se completa con emojis.
-      var fotos = azar(fotosFudo()).slice(0, PARES);
+      var fotos = variados(fotosFudo(), PARES);
       FICHAS = fotos.concat(EMOJIS.slice(0, PARES - fotos.length).map(function (e) { return { emoji: e[0], n: e[1] }; }));
       FICHAS.forEach(function (x) { if (x.foto) new Image().src = x.foto; }); // se precargan para que no aparezcan en blanco al dar vuelta
       cartas = azar(FICHAS.map(function (x, k) { return k; }).concat(FICHAS.map(function (x, k) { return k; })));
@@ -314,6 +415,7 @@
         msg.textContent = "¡Par! " + FICHAS[cartas[+a.getAttribute("data-i")]].n;
         if (hechas === PARES) {
           msg.textContent = pts[0] === pts[1] ? "¡Empate! Se pide otra ronda." : "¡Ganó el jugador " + (pts[0] > pts[1] ? 1 : 2) + "! 🎉";
+          if (pts[0] !== pts[1]) festejo();
           f.classList.add("on");
         }
       } else {
@@ -327,10 +429,10 @@
 
   // ---------- CUATRO EN LÍNEA: cabañas contra teteras ----------
   function cuatro(c) {
-    var FIL = 6, COL = 7, modo = "dos", t, turno, fin, pts = { C: 0, T: 0 }, empieza = "C";
+    var FIL = 6, COL = 7, modo = "dos", t, turno, fin, pts = { C: 0, T: 0 }, empieza = "C", ultima = null;
     c.innerHTML = '<div class="jg"><h3>Cuatro en línea</h3><div class="bj">Cabañas contra teteras. Tocá una columna y la ficha cae hasta abajo. Cuatro seguidas gana.</div>' +
       '<div class="modos"><button type="button" data-m="dos" class="on">De a dos</button><button type="button" data-m="bot">Contra la casa</button></div>' +
-      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' +
+      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' + cartelHTML() +
       '<div class="c4"></div><div class="msg"></div>' + finHTML() + '</div>';
     var g = c.querySelector(".c4"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
     function fila(tab, col) { for (var r = FIL - 1; r >= 0; r--) if (!tab[r][col]) return r; return -1; }
@@ -351,29 +453,32 @@
       var h = "";
       for (var r = 0; r < FIL; r++) for (var k = 0; k < COL; k++) {
         var v = t[r][k], esG = gana && gana.some(function (x) { return x[0] === r && x[1] === k; });
-        h += '<button type="button" data-c="' + k + '" aria-label="Columna ' + (k + 1) + '" class="' + (esG ? 'gana' : '') + '">' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>';
+        var cae = ultima && ultima[0] === r && ultima[1] === k;
+        h += '<button type="button" data-c="' + k + '" aria-label="Columna ' + (k + 1) + '" class="' + (esG ? 'gana' : '') + (cae ? ' cae' : '') + '">' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>';
       }
       g.innerHTML = h;
       c.querySelectorAll(".marc span").forEach(function (s) { var j = s.getAttribute("data-j"); s.classList.toggle("turno", !fin && j === turno); s.querySelector("b").textContent = pts[j]; });
+      var ct = cartelCT(turno, modo, true); turnoCartel(c, ct[0], fin ? "nada" : ct[1]);
     }
     function nueva() {
       t = []; for (var r = 0; r < FIL; r++) t.push(["", "", "", "", "", "", ""]);
-      turno = empieza; empieza = empieza === "C" ? "T" : "C"; fin = false; msg.textContent = ""; f.classList.remove("on"); dibujar();
-      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 500);
+      ultima = null; turno = empieza; empieza = empieza === "C" ? "T" : "C"; fin = false; msg.textContent = ""; f.classList.remove("on"); dibujar();
+      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 700);
     }
     function jugar(col) {
       if (fin) return;
       var r = fila(t, col); if (r < 0) return;
-      t[r][col] = turno;
+      t[r][col] = turno; ultima = [r, col];
       var w = linea(t, r, col);
       if (w) {
         fin = true; pts[turno]++; dibujar(w);
-        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganaron las cabañas!" : "¡Ganaron las teteras!");
+        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganaron las cabañas! 🎉" : "¡Ganaron las teteras! 🎉");
+        if (!(modo === "bot" && turno === "T")) festejo();
         f.classList.add("on"); return;
       }
       if (t[0].every(Boolean)) { fin = true; dibujar(); msg.textContent = "Empate: se llenó el tablero."; f.classList.add("on"); return; }
       turno = turno === "C" ? "T" : "C"; dibujar();
-      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 500);
+      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 700);
     }
     // La casa: gana si puede, tapa casi siempre, no regala una jugada ganadora y prefiere el centro.
     function jugadaBot() {
@@ -427,11 +532,20 @@
     function mostrar() {
       actual = rondas[ronda]; etapa = 0; listo = false;
       origen = (25 + Math.random() * 50) + "% " + (25 + Math.random() * 50) + "%";
-      img.src = actual.foto; foto(); marcador(); msg.textContent = ""; sig.style.display = "none";
-      var otras = azar(lista.filter(function (p) { return p.n !== actual.n; })).slice(0, 3);
+      // Sin destello: la foto nueva se esconde, se acerca y se borronea sin animación,
+      // y recién cuando terminó de cargar se muestra (ya de cerca).
+      img.style.transition = "none"; img.style.opacity = "0";
+      foto(); void img.offsetWidth;
+      img.onload = function () { img.style.opacity = "1"; setTimeout(function () { img.style.transition = ""; }, 50); };
+      img.src = actual.foto;
+      marcador(); msg.textContent = ""; sig.style.display = "none";
+      // Opciones de otras familias (no tres pizzas juntas), así se adivina por el plato y no por el detalle.
+      var otras = [], usadas = {}; usadas[actual.fa] = 1;
+      azar(lista.filter(function (p) { return p.n !== actual.n; })).forEach(function (p) { if (otras.length < 3 && !usadas[p.fa]) { otras.push(p); usadas[p.fa] = 1; } });
+      azar(lista.filter(function (p) { return p.n !== actual.n && otras.indexOf(p) < 0; })).forEach(function (p) { if (otras.length < 3) otras.push(p); });
       qo.innerHTML = azar(otras.concat([actual])).map(function (p) { return '<button type="button">' + p.n + '</button>'; }).join("");
     }
-    function nueva() { rondas = azar(lista.slice()).slice(0, RONDAS); ronda = 0; puntos = 0; f.classList.remove("on"); mostrar(); }
+    function nueva() { rondas = variados(lista, RONDAS); ronda = 0; puntos = 0; f.classList.remove("on"); mostrar(); }
     qo.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b || listo) return;
       listo = true;
@@ -442,7 +556,7 @@
       if (ronda + 1 < RONDAS) sig.style.display = "";
       else {
         var fr = puntos >= 13 ? "¡Sos de la casa!" : puntos >= 8 ? "¡Muy bien! Conocés la carta." : "Te faltan probar unos cuantos platos 😉";
-        setTimeout(function () { msg.textContent = "Sumaste " + puntos + " de " + (RONDAS * 3) + ". " + fr; f.classList.add("on"); }, 1300);
+        setTimeout(function () { msg.textContent = "Sumaste " + puntos + " de " + (RONDAS * 3) + ". " + fr; f.classList.add("on"); if (puntos >= 8) festejo(); }, 1300);
       }
     });
     alejar.addEventListener("click", function () { if (!listo && etapa < 2) { etapa++; foto(); } });
@@ -484,7 +598,7 @@
     var n = 2, plan, jug, dados, guard, tiro, fin;
     c.innerHTML = '<div class="jg ge"><h3>Generala</h3><div class="bj">Tres tiros por turno. Tocá los dados que querés guardar y volvé a tirar el resto.</div>' + promoJueves() +
       '<div class="modos"><span class="ml">Jugadores:</span>' + [1, 2, 3, 4].map(function (k) { return '<button type="button" data-n="' + k + '"' + (k === 2 ? ' class="on"' : '') + '>' + k + '</button>'; }).join("") + '</div>' +
-      '<div class="gt"></div><div class="dados"></div><button type="button" class="tirar">Tirar los dados</button>' +
+      cartelHTML() + '<div class="gt"></div><div class="dados"></div><button type="button" class="tirar">Tirar los dados</button>' +
       '<div class="msg"></div><div class="plan"></div>' + finHTML() + '</div>';
     var gt = c.querySelector(".gt"), gd = c.querySelector(".dados"), bt = c.querySelector(".tirar"), msg = c.querySelector(".msg"), gp = c.querySelector(".plan"), f = c.querySelector(".fin");
     function nombre(j) { return n === 1 ? "Tu" : "J" + (j + 1); }
@@ -495,10 +609,12 @@
     }
     function turnoNuevo() { dados = [0, 0, 0, 0, 0]; guard = [false, false, false, false, false]; tiro = 0; pintar(); }
     function pintar() {
-      gt.innerHTML = fin ? "" : (n === 1 ? "Tu turno" : "Turno del <b>jugador " + (jug + 1) + "</b>") + " · tiro " + tiro + " de 3";
+      // Cada jugador tiene su color en el cartel y en su columna de la planilla.
+      turnoCartel(c, '<span class="fi">' + (jug + 1) + '</span>' + (n === 1 ? "Tu turno" : "Le toca al jugador " + (jug + 1)), fin ? "nada" : ["", "oro", "barro", "rio"][jug]);
+      gt.innerHTML = fin ? "" : "Tiro <b>" + tiro + "</b> de 3";
       gd.innerHTML = dados.map(function (v, i) { return '<button type="button" data-i="' + i + '" class="' + (guard[i] ? 'gu' : '') + '"' + (!tiro || fin ? ' disabled' : '') + '>' + dado(v) + (guard[i] ? '<i>✔ guardado</i>' : '') + '</button>'; }).join("");
       bt.disabled = fin || tiro >= 3; bt.textContent = tiro === 0 ? "Tirar los dados" : tiro >= 3 ? "Anotá en la planilla" : "Tirar de nuevo (" + (3 - tiro) + ")";
-      var h = (tiro && !fin ? '<div class="ayuda">Tocá un casillero de la planilla para anotar' + (tiro < 3 ? ', o volvé a tirar' : '') + '.</div>' : '') + '<table><tr><th></th>' + plan.map(function (p, j) { return '<th class="' + (j === jug && !fin ? 'yo' : '') + '">' + nombre(j) + '</th>'; }).join("") + '</tr>';
+      var h = (tiro && !fin ? '<div class="ayuda">Tocá un casillero de la planilla para anotar' + (tiro < 3 ? ', o volvé a tirar' : '') + '.</div>' : '') + '<table><tr><th></th>' + plan.map(function (p, j) { return '<th class="' + (j === jug && !fin ? 'yo c' + j : '') + '">' + nombre(j) + '</th>'; }).join("") + '</tr>';
       CATS.forEach(function (k) {
         h += '<tr><td>' + k[1] + '</td>' + plan.map(function (p, j) {
           if (p[k[0]] !== undefined) return '<td class="' + (p[k[0]] ? '' : 'tacha') + '">' + (p[k[0]] || "✕") + '</td>';
@@ -510,7 +626,7 @@
       h += '<tr class="tt"><td>Total</td>' + plan.map(function (p, j) { return '<td>' + tot(j) + '</td>'; }).join("") + '</tr></table>';
       gp.innerHTML = h;
     }
-    function terminar(texto) { fin = true; msg.innerHTML = texto; f.classList.add("on"); pintar(); }
+    function terminar(texto, empate) { fin = true; msg.innerHTML = texto; f.classList.add("on"); pintar(); if (!empate) festejo(); }
     bt.addEventListener("click", function () {
       if (fin || tiro >= 3) return;
       dados = dados.map(function (v, i) { return guard[i] ? v : 1 + Math.floor(Math.random() * 6); });
@@ -529,7 +645,7 @@
       var completo = plan.every(function (p) { return CATS.every(function (x) { return p[x[0]] !== undefined; }); });
       if (completo) {
         var ts = plan.map(function (p, j) { return tot(j); }), max = Math.max.apply(null, ts), ganan = ts.map(function (v, j) { return v === max ? j + 1 : 0; }).filter(Boolean);
-        terminar(n === 1 ? "Hiciste <b>" + max + "</b> puntos. ¿Lo superás el jueves?" : ganan.length > 1 ? "¡Empate con " + max + " puntos!" : "¡Ganó el jugador " + ganan[0] + " con " + max + " puntos! 🎉");
+        terminar(n === 1 ? "Hiciste <b>" + max + "</b> puntos. ¿Lo superás el jueves?" : ganan.length > 1 ? "¡Empate con " + max + " puntos!" : "¡Ganó el jugador " + ganan[0] + " con " + max + " puntos! 🎉", n > 1 && ganan.length > 1);
         return;
       }
       jug = (jug + 1) % n; turnoNuevo();
