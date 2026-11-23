@@ -129,7 +129,7 @@ var CARTA = [
     { items: [["Submarino", "SUBMARINO"]] },
     { items: [["Exprimido de naranja", "EXPRIMIDO DE NARANJA"]] },
     { t: "Licuado", items: [["banana", "LICUADO DE BANANA"], ["frutilla", "LICUADO DE FRUTILLA"]], lista: 1 },
-    { t: "Licuado especial", items: [["frutilla y naranja", "LICUADO DE FRUTILLA CON JUGO DE NARANJA"], ["maracuyá y naranja", "LICUADO DE MARACUYA Y NARANJA"], ["frutos rojos", "LICUADO DE FRUTOS ROJOS"]], lista: 1 },
+    { t: "Licuado especial", items: [["frutilla con naranja", "LICUADO DE FRUTILLA CON JUGO DE NARANJA"], ["maracuyá con naranja", "LICUADO DE MARACUYA Y NARANJA"], ["frutos rojos", "LICUADO DE FRUTOS ROJOS"]], lista: 1, d: "Elegí un sabor: son tres licuados distintos" },
     { items: [["Agua caliente pal mate", "AGUA CALIENTE PAL MATE"]] },
     { items: [["Yerba Primicia", "YERBA PRIMICIA"]], d: "El paquete. Si la comprás, el agua caliente va de regalo" }
   ] },
