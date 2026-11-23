@@ -1,6 +1,7 @@
 // Juegos para la mesa (pedido de Marcos del 23/11/2026).
 // Este archivo se descarga recién cuando alguien abre un juego: no pesa en la carga de la carta.
-// Juegos: ta-te-ti (cabaña contra trébol), ahorcado versión sudestada y memotest de la carta.
+// Juegos: ta-te-ti (cabaña contra tetera), ahorcado versión sudestada, memotest de la carta (23/11),
+// cuatro en línea, ¿qué plato es? y generala con la promo del Jueves de Juegos (también del 23/11).
 // JUEGOS.abrir(id, contenedor) dibuja el juego dentro de la hoja que sube desde abajo.
 (function () {
   var RESENA = "https://g.page/r/CQ9DtrWkzZs1EAE/review";
@@ -31,6 +32,12 @@
     /* Ahorcado de la sudestada */
     ".ah svg.rio { width: min(280px, 80vw); height: auto; margin: 10px auto 0; display: block; }",
     ".ah .pal { font-family: Bahnschrift, 'Segoe UI', sans-serif; font-size: 25px; letter-spacing: 0.14em; color: var(--verde); margin-top: 8px; word-break: break-word; line-height: 1.5; }",
+    ".ah .vidas { margin-top: 8px; }",
+    ".ah .vidas .aros { display: flex; justify-content: center; gap: 6px; }",
+    ".ah .vidas .aros svg { width: 26px; height: 26px; }",
+    ".ah .vidas .vt { font-size: 15px; color: var(--verde); margin-top: 4px; }",
+    ".ah .vidas .vt b { font-family: Bahnschrift, sans-serif; font-size: 18px; }",
+    ".ah .vidas.poca .vt { color: var(--barro); font-weight: 600; }",
     ".ah .pal .w { display: inline-block; white-space: nowrap; margin: 0 0.45em; }",
     ".ah .pista { font-size: 13px; color: var(--oro); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-top: 4px; }",
     ".ah .teclas { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; margin: 12px auto 0; max-width: 420px; }",
@@ -42,14 +49,65 @@
     ".ah .secreta button { font: inherit; font-weight: 700; border: none; border-radius: 10px; background: var(--oro); color: #1d2e22; padding: 0 14px; cursor: pointer; }",
     /* Memotest */
     ".mm { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(340px, 90vw); margin: 14px auto 0; }",
-    ".mm button { aspect-ratio: 3 / 4; border: none; border-radius: 10px; cursor: pointer; font-size: 30px; background: var(--verde); color: var(--oro); position: relative; transition: transform .25s; font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif; }",
-    ".mm button .do { display: block; width: 46%; margin: 0 auto; opacity: .9; }",
+    ".mm button { aspect-ratio: 3 / 4; border: none; border-radius: 10px; cursor: pointer; font-size: 30px; background: var(--verde); color: var(--oro); position: relative; overflow: hidden; padding: 0; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif; }",
+    ".mm button .do { display: block; width: 46%; opacity: .9; }",
     ".mm button .do svg { width: 100%; height: auto; display: block; }",
-    ".mm button.vista, .mm button.hecha { background: #fffaf0; border: 2px solid var(--linea); transform: rotateY(180deg); }",
+    ".mm button img, .mm button span, .mm button em { display: none; }",
+    ".mm button.vista, .mm button.hecha { background: #fffaf0; box-shadow: inset 0 0 0 2px var(--linea); animation: gira .25s ease-out; }",
+    "@keyframes gira { from { transform: scaleX(0.1); } }",
     ".mm button.vista .do, .mm button.hecha .do { display: none; }",
-    ".mm button span { display: none; transform: rotateY(180deg); }",
+    ".mm button.vista img, .mm button.hecha img { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }",
     ".mm button.vista span, .mm button.hecha span { display: inline; }",
-    ".mm button.hecha { border-color: var(--oro); opacity: .85; }"
+    // Cuando se encuentra el par, se ve el nombre del plato abajo de la foto.
+    ".mm button.hecha { box-shadow: inset 0 0 0 3px var(--oro); }",
+    /* Cuatro en línea */
+    ".c4 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--verde); padding: 7px; border-radius: 14px; width: min(350px, 92vw); margin: 14px auto 0; }",
+    ".c4 button { aspect-ratio: 1; border: none; border-radius: 50%; background: #fffaf0; padding: 14%; cursor: pointer; display: flex; align-items: center; justify-content: center; }",
+    ".c4 button svg { width: 100%; height: 100%; }",
+    ".c4 button.gana { background: #f0e2bf; box-shadow: 0 0 0 3px var(--oro); }",
+    /* ¿Qué plato es? */
+    ".qp .marc { gap: 10px; }",
+    ".qp .qf { width: min(340px, 90vw); aspect-ratio: 4 / 3; margin: 12px auto 0; border-radius: 14px; overflow: hidden; background: #ece2cd; }",
+    ".qp .qf img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s, filter .5s; }",
+    ".qp .qv { font-size: 14px; color: var(--verde); margin-top: 8px; min-height: 20px; }",
+    ".qp .alejar, .qp .sig { font: inherit; font-size: 14px; font-weight: 600; margin-top: 8px; border-radius: 999px; padding: 7px 14px; border: 1.5px solid var(--verde); background: transparent; color: var(--verde); cursor: pointer; }",
+    ".qp .sig { background: var(--oro); border-color: var(--oro); color: #1d2e22; margin-top: 10px; }",
+    ".qp .qo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px auto 0; max-width: 380px; }",
+    ".qp .qo button { font: inherit; font-size: 14.5px; font-weight: 600; padding: 11px 8px; border-radius: 12px; border: 1.5px solid var(--linea); background: #fffaf0; color: var(--tinta); cursor: pointer; line-height: 1.25; }",
+    ".qp .qo button.si { background: var(--verde); color: var(--papel); border-color: var(--verde); }",
+    ".qp .qo button.no { background: var(--barro); color: var(--papel); border-color: var(--barro); }",
+    ".qp .qo button:disabled { cursor: default; }",
+    /* Generala */
+    ".ge .promoj { background: var(--verde); color: var(--papel); border-radius: 14px; padding: 12px 14px; margin: 12px auto 0; max-width: 420px; text-align: left; position: relative; }",
+    ".ge .promoj::before { content: ''; position: absolute; inset: 5px; border: 1px solid rgba(184,134,43,.55); border-radius: 10px; pointer-events: none; }",
+    ".ge .promoj .pt { font-family: Georgia, serif; font-size: 18px; color: var(--oro); }",
+    ".ge .promoj .ps { font-size: 13.5px; line-height: 1.45; color: #e9e1cf; margin-top: 4px; }",
+    ".ge .promoj .btn { margin-top: 10px; font-size: 14px; padding: 9px 12px; position: relative; }",
+    ".ge .modos { align-items: center; }",
+    ".ge .modos .ml { font-size: 14px; color: var(--gris); }",
+    ".ge .modos button { padding: 6px 13px; }",
+    ".ge .gt { margin-top: 12px; font-size: 15px; color: var(--verde); min-height: 20px; }",
+    ".ge .dados { display: flex; justify-content: center; gap: 7px; margin-top: 10px; }",
+    ".ge .dados button { width: 56px; border: none; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; }",
+    ".ge .dados button svg { width: 56px; height: 56px; display: block; }",
+    ".ge .dados button.gu svg rect { fill: #f0e2bf; stroke: #b8862b; stroke-width: 7; }",
+    ".ge .dados button i { font-style: normal; font-size: 10px; font-weight: 700; color: var(--oro); margin-top: 2px; white-space: nowrap; }",
+    ".ge .ayuda { font-size: 13px; color: var(--gris); margin-top: 10px; }",
+    ".ge .dados button.rueda svg { animation: rueda .35s ease-out; }",
+    "@keyframes rueda { from { transform: rotate(-200deg) scale(.6); } }",
+    ".ge .tirar { font: inherit; font-weight: 700; font-size: 15px; margin-top: 12px; border: none; border-radius: 10px; background: var(--oro); color: #1d2e22; padding: 11px 22px; cursor: pointer; }",
+    ".ge .tirar:disabled { background: var(--linea); color: var(--gris); cursor: default; }",
+    ".ge .plan table { width: 100%; max-width: 420px; margin: 12px auto 0; border-collapse: collapse; font-size: 14px; }",
+    ".ge .plan th, .ge .plan td { border-bottom: 1px dotted #cdbd9f; padding: 5px 4px; text-align: center; }",
+    ".ge .plan td:first-child { text-align: left; color: var(--tinta); white-space: nowrap; }",
+    ".ge .plan th { font-family: Bahnschrift, sans-serif; color: var(--gris); font-weight: 600; }",
+    ".ge .plan th.yo { color: #1d2e22; background: var(--oro); border-radius: 6px 6px 0 0; }",
+    ".ge .plan td { font-family: Bahnschrift, sans-serif; color: var(--verde); font-weight: 600; }",
+    ".ge .plan td.tacha { color: #b3a68e; }",
+    ".ge .plan td button { font: inherit; font-size: 13px; border-radius: 999px; padding: 3px 9px; cursor: pointer; border: 1.5px solid var(--verde); background: var(--verde); color: var(--papel); }",
+    ".ge .plan td button.ta { background: transparent; color: var(--gris); border-color: var(--linea); }",
+    ".ge .plan tr.tt td { border-bottom: none; border-top: 2px solid var(--oro); font-size: 15px; }",
+    ".mm button.hecha em { display: block; position: absolute; left: 0; right: 0; bottom: 0; background: rgba(31,58,43,.88); color: var(--papel); font: 600 10.5px/1.2 'Segoe UI', system-ui, sans-serif; font-style: normal; padding: 4px 3px; text-align: center; }"
   ].join("\n");
   document.head.appendChild(css);
 
@@ -61,22 +119,24 @@
       '<span class="res">¿La están pasando bien en la cabaña? <a href="' + RESENA + '" target="_blank" rel="noopener">Contalo en Google</a> ⭐</span></div>';
   }
 
-  // Fichas: la cabaña (techo alpino con ventanita) y el trébol de cuatro hojas.
+  // Fichas: la cabaña (techo alpino con ventanita) y la tetera gigante de la vereda. El trébol queda para el dorso del memotest.
+  var TET = '<svg viewBox="0 0 40 40" aria-label="Tetera"><g fill="#b8862b"><circle cx="20" cy="9.5" r="2.4"/><path d="M11.5 16.5 Q20 9.5 28.5 16.5 Z"/><ellipse cx="20" cy="24.5" rx="11.5" ry="9"/><rect x="12.5" y="32" width="15" height="3" rx="1.2"/></g>' +
+    '<g fill="none" stroke="#b8862b" stroke-linecap="round"><path d="M9.5 23 C5.5 22.5 4 18 2.8 13.5" stroke-width="3.4"/><path d="M31 18.5 C38 18 38 31 30.5 30" stroke-width="2.8"/></g></svg>';
   var CAB = '<svg viewBox="0 0 40 40" aria-label="Cabaña"><path d="M4 34 L20 5 L36 34" fill="none" stroke="#23402e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="21" width="8" height="9" fill="none" stroke="#23402e" stroke-width="2.6"/></svg>';
   var TRE = '<svg viewBox="0 0 40 40" aria-label="Trébol"><g fill="#b8862b"><ellipse cx="13.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(-45 13.5 13.5)"/><ellipse cx="26.5" cy="13.5" rx="6.6" ry="7.6" transform="rotate(45 26.5 13.5)"/><ellipse cx="13.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(45 13.5 26.5)"/><ellipse cx="26.5" cy="26.5" rx="6.6" ry="7.6" transform="rotate(-45 26.5 26.5)"/></g><path d="M22 23 C25 28 27 32 28 37" fill="none" stroke="#b8862b" stroke-width="2.4" stroke-linecap="round"/></svg>';
 
-  // ---------- TA-TE-TI: cabaña contra trébol ----------
+  // ---------- TA-TE-TI: cabaña contra tetera ----------
   function tateti(c) {
     var modo = "dos", tablero, turno, fin, pts = { C: 0, T: 0 }, empieza = "C";
-    c.innerHTML = '<div class="jg"><h3>Ta-te-ti</h3><div class="bj">La cabaña contra el trébol. Tres en línea gana.</div>' +
+    c.innerHTML = '<div class="jg"><h3>Ta-te-ti</h3><div class="bj">La cabaña contra la tetera. Tres en línea gana.</div>' +
       '<div class="modos"><button type="button" data-m="dos" class="on">De a dos</button><button type="button" data-m="bot">Contra la casa</button></div>' +
-      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TRE + '<b>0</b></span></div>' +
+      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' +
       '<div class="ttt"></div><div class="msg"></div>' + finHTML() + '</div>';
     var g = c.querySelector(".ttt"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
     var L = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     function ganador(t) { for (var i = 0; i < L.length; i++) { var a = L[i]; if (t[a[0]] && t[a[0]] === t[a[1]] && t[a[1]] === t[a[2]]) return a; } return null; }
     function dibujar() {
-      g.innerHTML = tablero.map(function (v, i) { return '<button type="button" data-i="' + i + '" aria-label="Casilla ' + (i + 1) + '">' + (v === "C" ? CAB : v === "T" ? TRE : "") + '</button>'; }).join("");
+      g.innerHTML = tablero.map(function (v, i) { return '<button type="button" data-i="' + i + '" aria-label="Casilla ' + (i + 1) + '">' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>'; }).join("");
       c.querySelectorAll(".marc span").forEach(function (s) { var j = s.getAttribute("data-j"); s.classList.toggle("turno", !fin && j === turno); s.querySelector("b").textContent = pts[j]; });
     }
     function nueva() { tablero = ["", "", "", "", "", "", "", "", ""]; turno = empieza; fin = false; empieza = empieza === "C" ? "T" : "C"; msg.textContent = ""; f.classList.remove("on"); dibujar(); if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 450); }
@@ -87,7 +147,7 @@
       if (w) {
         fin = true; pts[turno]++; dibujar();
         w.forEach(function (k) { g.children[k].classList.add("gana"); });
-        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganó la cabaña!" : "¡Ganó el trébol! ¡Sláinte!");
+        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganó la cabaña!" : "¡Ganó la tetera! ¡Sláinte!");
         f.classList.add("on"); return;
       }
       if (tablero.every(Boolean)) { fin = true; dibujar(); msg.textContent = "Empate. Como el río: tranqui."; f.classList.add("on"); return; }
@@ -128,20 +188,37 @@
   var MAX = 6;
   function sinAcento(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
   function rio(errores) {
-    // El agua sube de a un escalón por error; con 6 llega al techo de la cabaña.
-    var nivel = 150 - errores * 17, ola = "M0 " + nivel + " q 17.5 -6 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 V 170 H 0 Z";
-    return '<svg class="rio" viewBox="0 0 280 170" aria-hidden="true">' +
-      '<rect width="280" height="170" rx="14" fill="#fbf7ee"/>' +
+    // La cabaña está sobre pilotes, como en el Delta. El agua sube un escalón por error
+    // y con el último error llega justo al piso de la cabaña (y = 112).
+    var PISO = 112, FONDO = 184, nivel = FONDO - errores * (FONDO - PISO) / MAX;
+    var ola = "M0 " + nivel + " q 17.5 -5 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 t 35 0 V 196 H 0 Z";
+    return '<svg class="rio" viewBox="0 0 280 196" aria-hidden="true">' +
+      '<rect width="280" height="196" rx="14" fill="#fbf7ee"/>' +
+      // Pilotes y piso de madera.
+      '<g stroke="#a8502a" stroke-width="4" stroke-linecap="round"><line x1="92" y1="' + PISO + '" x2="92" y2="192"/><line x1="140" y1="' + PISO + '" x2="140" y2="192"/><line x1="188" y1="' + PISO + '" x2="188" y2="192"/></g>' +
+      '<line x1="66" y1="' + PISO + '" x2="214" y2="' + PISO + '" stroke="#a8502a" stroke-width="5" stroke-linecap="round"/>' +
       // La cabaña: solo el techo alpino hasta el piso, con su ventanita (como en el logo).
-      '<path d="M76 150 L140 34 L204 150" fill="#f6f0e4" stroke="#23402e" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '<rect x="128" y="100" width="24" height="28" fill="none" stroke="#23402e" stroke-width="3.5"/>' +
-      '<line x1="62" y1="150" x2="218" y2="150" stroke="#a8502a" stroke-width="3"/>' +
-      '<path d="' + ola + '" fill="rgba(70,120,140,.55)" style="transition: d .5s"/>' +
-      '<text x="270" y="22" text-anchor="end" font-family="Bahnschrift, sans-serif" font-size="14" fill="#776e63">' + (MAX - errores) + ' de ' + MAX + '</text></svg>';
+      '<path d="M78 ' + (PISO - 3) + ' L140 12 L202 ' + (PISO - 3) + '" fill="#f6f0e4" stroke="#23402e" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<rect x="128" y="64" width="24" height="28" fill="none" stroke="#23402e" stroke-width="3.5"/>' +
+      '<path d="' + ola + '" fill="rgba(70,120,140,.6)"/>' +
+      (errores >= MAX ? '<text x="140" y="160" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="#fbf7ee">¡El agua llegó al piso!</text>' : '') +
+      '</svg>';
+  }
+  // Oportunidades que quedan: en texto y con salvavidas (dorados los que quedan, grises los usados).
+  function vidas(errores) {
+    var q = MAX - errores;
+    var t = q === 0 ? "No quedan oportunidades" : q === 1 ? "¡Te queda <b>1</b> oportunidad!" : "Te quedan <b>" + q + "</b> oportunidades";
+    var aros = "";
+    for (var i = 0; i < MAX; i++) {
+      var ok = i < q;
+      aros += '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="' + (ok ? "#b8862b" : "#d8ccb6") + '" stroke-width="5"/>' +
+        (ok ? '<g stroke="#f6f0e4" stroke-width="2.2"><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/></g>' : '') + '</svg>';
+    }
+    return '<div class="vidas' + (q <= 2 ? ' poca' : '') + '"><div class="aros">' + aros + '</div><div class="vt">' + t + '</div></div>';
   }
   function ahorcado(c) {
     var modo = "casa", pal, pista, usadas, errores, fin;
-    c.innerHTML = '<div class="jg ah"><h3>Ahorcado de la sudestada</h3><div class="bj">Adiviná la palabra antes de que el río tape la cabaña.</div>' +
+    c.innerHTML = '<div class="jg ah"><h3>Ahorcado de la sudestada</h3><div class="bj">Adiviná la palabra antes de que el río llegue al piso de la cabaña.</div>' +
       '<div class="modos"><button type="button" data-m="casa" class="on">Palabras de la casa</button><button type="button" data-m="dos">Una de ustedes</button></div>' +
       '<div class="zona"></div><div class="msg"></div>' + finHTML() + '</div>';
     var z = c.querySelector(".zona"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
@@ -155,7 +232,7 @@
       pintar();
     }
     function pintar() {
-      z.querySelector(".dib").innerHTML = rio(errores);
+      z.querySelector(".dib").innerHTML = rio(errores) + vidas(errores);
       // Cada palabra en su bloque, así se ve dónde termina una y empieza la otra.
       z.querySelector(".pal").innerHTML = pal.split(" ").map(function (w) {
         return '<span class="w">' + w.split("").map(function (l) { return usadas[l] || fin ? l : "_"; }).join(" ") + '</span>';
@@ -187,18 +264,44 @@
   }
 
   // ---------- MEMOTEST de la carta: de a dos, por turnos ----------
-  var FICHAS = ["🍕", "🥟", "🍋", "🍺", "☕", "🍰", "🧉", "🍔"];
+  // Los platos salen con su foto de Fudo (la misma de la carta). Cada partida toma 8 al azar de esta lista.
+  // Si un plato se saca de Fudo o no tiene foto, no entra. Si quedan menos de 8, se completa con emojis.
+  var PLATOS = [
+    ["MILA LA SERENA", "Mila La Serena"], ["MILANESA NAPOLITANA", "Milanesa napolitana"], ["EMPANADA CARNE CUCHILLO", "Empanada de carne"],
+    ["PIZZA MUZZARELLA", "Pizza muzzarella"], ["PIZZA RUCULA, CHERRY Y PARMESANO", "Pizza rúcula y cherry"], ["WRAP DE BONDIOLA", "Wrap de bondiola"],
+    ["PROVOLETA LA SERENA", "Provoleta La Serena"], ["RABAS", "Rabas"], ["BARBECUE RIBS", "Ribs a la barbacoa"], ["JARRA DE LIMONADA", "Limonada"],
+    ["COCHOTORTA", "Chocotorta"], ["AVOCADO TOAST", "Avocado toast"], ["SUBMARINO", "Submarino"], ["SORRENTINOS CASEROS", "Sorrentinos caseros"],
+    ["BROWNIE CON HELADO", "Brownie con helado"], ["BONDIOLA A LA MOSTAZA", "Bondiola a la mostaza"], ["ENSALADA LA SERENA", "Ensalada La Serena"]
+  ];
+  var EMOJIS = [["🍕", "Pizza"], ["🥟", "Empanada"], ["🍋", "Limonada"], ["🍺", "Cerveza"], ["☕", "Café"], ["🍰", "Postre"], ["🧉", "Mate"], ["🍔", "Hamburguesa"]];
+  var PARES = 8;
+  function fotosFudo() {
+    var mapa = {};
+    ((window.FUDO && FUDO.categorias) || []).forEach(function (cat) {
+      (cat.productos || []).forEach(function (p) { if (p.foto) mapa[p.nombre.replace(/[^\wÑ ,]/g, "").replace(/\s+/g, " ").trim().toUpperCase()] = p.foto; });
+    });
+    return PLATOS.filter(function (p) { return mapa[p[0]]; }).map(function (p) { return { foto: mapa[p[0]], n: p[1] }; });
+  }
   function memotest(c) {
-    var cartas, abiertas, turno, pts, bloqueo, hechas;
+    var cartas, abiertas, turno, pts, bloqueo, hechas, FICHAS;
     c.innerHTML = '<div class="jg"><h3>Memotest</h3><div class="bj">Por turnos: si encontrás el par, seguís jugando.</div>' +
       '<div class="marc"><span data-j="0">Jugador 1 · <b>0</b></span><span data-j="1">Jugador 2 · <b>0</b></span></div>' +
       '<div class="mm"></div><div class="msg"></div>' + finHTML() + '</div>';
     var g = c.querySelector(".mm"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
-    function marcador() { c.querySelectorAll(".marc span").forEach(function (s) { var j = +s.getAttribute("data-j"); s.classList.toggle("turno", hechas < FICHAS.length && j === turno); s.querySelector("b").textContent = pts[j]; }); }
+    function marcador() { c.querySelectorAll(".marc span").forEach(function (s) { var j = +s.getAttribute("data-j"); s.classList.toggle("turno", hechas < PARES && j === turno); s.querySelector("b").textContent = pts[j]; }); }
     function nueva() {
-      cartas = azar(FICHAS.concat(FICHAS)); abiertas = []; turno = 0; pts = [0, 0]; bloqueo = false; hechas = 0;
+      // 8 platos al azar; si faltan fotos, se completa con emojis.
+      var fotos = azar(fotosFudo()).slice(0, PARES);
+      FICHAS = fotos.concat(EMOJIS.slice(0, PARES - fotos.length).map(function (e) { return { emoji: e[0], n: e[1] }; }));
+      FICHAS.forEach(function (x) { if (x.foto) new Image().src = x.foto; }); // se precargan para que no aparezcan en blanco al dar vuelta
+      cartas = azar(FICHAS.map(function (x, k) { return k; }).concat(FICHAS.map(function (x, k) { return k; })));
+      abiertas = []; turno = 0; pts = [0, 0]; bloqueo = false; hechas = 0;
       msg.textContent = ""; f.classList.remove("on");
-      g.innerHTML = cartas.map(function (x, i) { return '<button type="button" data-i="' + i + '" aria-label="Carta ' + (i + 1) + '"><i class="do">' + TRE + '</i><span>' + x + '</span></button>'; }).join("");
+      g.innerHTML = cartas.map(function (k, i) {
+        var x = FICHAS[k];
+        return '<button type="button" data-i="' + i + '" aria-label="Carta ' + (i + 1) + '"><i class="do">' + TRE + '</i>' +
+          (x.foto ? '<img alt="" src="' + x.foto + '">' : '<span>' + x.emoji + '</span>') + '<em>' + x.n + '</em></button>';
+      }).join("");
       marcador();
     }
     g.addEventListener("click", function (e) {
@@ -208,7 +311,8 @@
       var a = abiertas[0], d = abiertas[1]; abiertas = [];
       if (cartas[+a.getAttribute("data-i")] === cartas[+d.getAttribute("data-i")]) {
         a.classList.replace("vista", "hecha"); d.classList.replace("vista", "hecha"); pts[turno]++; hechas++; marcador();
-        if (hechas === FICHAS.length) {
+        msg.textContent = "¡Par! " + FICHAS[cartas[+a.getAttribute("data-i")]].n;
+        if (hechas === PARES) {
           msg.textContent = pts[0] === pts[1] ? "¡Empate! Se pide otra ronda." : "¡Ganó el jugador " + (pts[0] > pts[1] ? 1 : 2) + "! 🎉";
           f.classList.add("on");
         }
@@ -221,7 +325,223 @@
     nueva();
   }
 
+  // ---------- CUATRO EN LÍNEA: cabañas contra teteras ----------
+  function cuatro(c) {
+    var FIL = 6, COL = 7, modo = "dos", t, turno, fin, pts = { C: 0, T: 0 }, empieza = "C";
+    c.innerHTML = '<div class="jg"><h3>Cuatro en línea</h3><div class="bj">Cabañas contra teteras. Tocá una columna y la ficha cae hasta abajo. Cuatro seguidas gana.</div>' +
+      '<div class="modos"><button type="button" data-m="dos" class="on">De a dos</button><button type="button" data-m="bot">Contra la casa</button></div>' +
+      '<div class="marc"><span data-j="C">' + CAB + '<b>0</b></span><span data-j="T">' + TET + '<b>0</b></span></div>' +
+      '<div class="c4"></div><div class="msg"></div>' + finHTML() + '</div>';
+    var g = c.querySelector(".c4"), msg = c.querySelector(".msg"), f = c.querySelector(".fin");
+    function fila(tab, col) { for (var r = FIL - 1; r >= 0; r--) if (!tab[r][col]) return r; return -1; }
+    // Devuelve las casillas ganadoras si la ficha en (r, col) hizo cuatro en línea.
+    function linea(tab, r, col) {
+      var j = tab[r][col], dirs = [[0, 1], [1, 0], [1, 1], [1, -1]];
+      for (var d = 0; d < dirs.length; d++) {
+        var cel = [[r, col]];
+        [1, -1].forEach(function (s) {
+          var rr = r + dirs[d][0] * s, cc = col + dirs[d][1] * s;
+          while (rr >= 0 && rr < FIL && cc >= 0 && cc < COL && tab[rr][cc] === j) { cel.push([rr, cc]); rr += dirs[d][0] * s; cc += dirs[d][1] * s; }
+        });
+        if (cel.length >= 4) return cel;
+      }
+      return null;
+    }
+    function dibujar(gana) {
+      var h = "";
+      for (var r = 0; r < FIL; r++) for (var k = 0; k < COL; k++) {
+        var v = t[r][k], esG = gana && gana.some(function (x) { return x[0] === r && x[1] === k; });
+        h += '<button type="button" data-c="' + k + '" aria-label="Columna ' + (k + 1) + '" class="' + (esG ? 'gana' : '') + '">' + (v === "C" ? CAB : v === "T" ? TET : "") + '</button>';
+      }
+      g.innerHTML = h;
+      c.querySelectorAll(".marc span").forEach(function (s) { var j = s.getAttribute("data-j"); s.classList.toggle("turno", !fin && j === turno); s.querySelector("b").textContent = pts[j]; });
+    }
+    function nueva() {
+      t = []; for (var r = 0; r < FIL; r++) t.push(["", "", "", "", "", "", ""]);
+      turno = empieza; empieza = empieza === "C" ? "T" : "C"; fin = false; msg.textContent = ""; f.classList.remove("on"); dibujar();
+      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 500);
+    }
+    function jugar(col) {
+      if (fin) return;
+      var r = fila(t, col); if (r < 0) return;
+      t[r][col] = turno;
+      var w = linea(t, r, col);
+      if (w) {
+        fin = true; pts[turno]++; dibujar(w);
+        msg.textContent = modo === "bot" ? (turno === "C" ? "¡Le ganaste a la casa! 🎉" : "Ganó la casa. ¿La revancha?") : (turno === "C" ? "¡Ganaron las cabañas!" : "¡Ganaron las teteras!");
+        f.classList.add("on"); return;
+      }
+      if (t[0].every(Boolean)) { fin = true; dibujar(); msg.textContent = "Empate: se llenó el tablero."; f.classList.add("on"); return; }
+      turno = turno === "C" ? "T" : "C"; dibujar();
+      if (modo === "bot" && turno === "T") setTimeout(jugadaBot, 500);
+    }
+    // La casa: gana si puede, tapa casi siempre, no regala una jugada ganadora y prefiere el centro.
+    function jugadaBot() {
+      if (fin) return;
+      var libres = []; for (var k = 0; k < COL; k++) if (fila(t, k) >= 0) libres.push(k);
+      function gana(j, k) { var r = fila(t, k); t[r][k] = j; var w = linea(t, r, k); t[r][k] = ""; return !!w; }
+      function regala(k) { var r = fila(t, k); if (r <= 0) return false; t[r][k] = "T"; var x = gana("C", k); t[r][k] = ""; return x; }
+      var col = libres.filter(function (k) { return gana("T", k); })[0];
+      if (col === undefined && Math.random() < 0.9) col = libres.filter(function (k) { return gana("C", k); })[0];
+      if (col === undefined) {
+        var seguras = libres.filter(function (k) { return !regala(k); }), op = seguras.length ? seguras : libres;
+        op.sort(function (a, b) { return Math.abs(a - 3) - Math.abs(b - 3) + (Math.random() - 0.5) * 2.2; });
+        col = op[0];
+      }
+      jugar(col);
+    }
+    g.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || (modo === "bot" && turno === "T")) return; jugar(+b.getAttribute("data-c")); });
+    c.querySelectorAll(".modos button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        modo = b.getAttribute("data-m"); pts = { C: 0, T: 0 }; empieza = "C";
+        c.querySelectorAll(".modos button").forEach(function (x) { x.classList.toggle("on", x === b); }); nueva();
+      });
+    });
+    c.querySelector(".otra").addEventListener("click", nueva);
+    nueva();
+  }
+
+  // ---------- ¿QUÉ PLATO ES?: la foto arranca de muy cerca y borrosa ----------
+  // 5 rondas. Si acertás de entrada valen 3 puntos; cada vez que alejás la foto, vale uno menos.
+  var ZOOM = [3.4, 2.1, 1], BLUR = [7, 3, 0];
+  function quePlato(c) {
+    var lista = fotosFudo(), RONDAS = 5, rondas, ronda, puntos, etapa, actual, origen, listo;
+    if (lista.length < 4) { c.innerHTML = '<div class="jg"><h3>¿Qué plato es?</h3><div class="bj">Hoy no pudimos cargar las fotos de la carta. Probá en un rato.</div></div>'; return; }
+    lista.forEach(function (p) { new Image().src = p.foto; });
+    c.innerHTML = '<div class="jg qp"><h3>¿Qué plato es?</h3><div class="bj">Mirá la foto de cerca y adiviná el plato de la carta. Cuanto antes aciertes, más puntos.</div>' +
+      '<div class="marc"><span class="ron"></span><span class="pun"></span></div>' +
+      '<div class="qf"><img alt=""></div><div class="qv"></div>' +
+      '<button type="button" class="alejar">🔍 Alejar la foto (vale un punto menos)</button>' +
+      '<div class="qo"></div><div class="msg"></div><button type="button" class="sig">Siguiente plato ›</button>' + finHTML() + '</div>';
+    var img = c.querySelector(".qf img"), qo = c.querySelector(".qo"), msg = c.querySelector(".msg"), f = c.querySelector(".fin"),
+      alejar = c.querySelector(".alejar"), sig = c.querySelector(".sig");
+    function vale() { return 3 - etapa; }
+    function foto() {
+      img.style.transformOrigin = origen;
+      img.style.transform = "scale(" + ZOOM[etapa] + ")";
+      img.style.filter = "blur(" + BLUR[etapa] + "px)";
+      c.querySelector(".qv").innerHTML = listo ? "" : "Si acertás ahora: <b>" + vale() + (vale() === 1 ? " punto" : " puntos") + "</b>";
+      alejar.style.display = listo || etapa >= 2 ? "none" : "";
+    }
+    function marcador() { c.querySelector(".ron").textContent = "Plato " + Math.min(ronda + 1, RONDAS) + " de " + RONDAS; c.querySelector(".pun").innerHTML = "Puntos: <b>" + puntos + "</b>"; }
+    function mostrar() {
+      actual = rondas[ronda]; etapa = 0; listo = false;
+      origen = (25 + Math.random() * 50) + "% " + (25 + Math.random() * 50) + "%";
+      img.src = actual.foto; foto(); marcador(); msg.textContent = ""; sig.style.display = "none";
+      var otras = azar(lista.filter(function (p) { return p.n !== actual.n; })).slice(0, 3);
+      qo.innerHTML = azar(otras.concat([actual])).map(function (p) { return '<button type="button">' + p.n + '</button>'; }).join("");
+    }
+    function nueva() { rondas = azar(lista.slice()).slice(0, RONDAS); ronda = 0; puntos = 0; f.classList.remove("on"); mostrar(); }
+    qo.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b || listo) return;
+      listo = true;
+      var ok = b.textContent === actual.n, gano = ok ? vale() : 0;
+      puntos += gano; etapa = 2; foto(); marcador();
+      qo.querySelectorAll("button").forEach(function (x) { if (x.textContent === actual.n) x.classList.add("si"); else if (x === b) x.classList.add("no"); x.disabled = true; });
+      msg.textContent = ok ? "¡Bien! " + actual.n + " (+" + gano + ")" : "Era: " + actual.n;
+      if (ronda + 1 < RONDAS) sig.style.display = "";
+      else {
+        var fr = puntos >= 13 ? "¡Sos de la casa!" : puntos >= 8 ? "¡Muy bien! Conocés la carta." : "Te faltan probar unos cuantos platos 😉";
+        setTimeout(function () { msg.textContent = "Sumaste " + puntos + " de " + (RONDAS * 3) + ". " + fr; f.classList.add("on"); }, 1300);
+      }
+    });
+    alejar.addEventListener("click", function () { if (!listo && etapa < 2) { etapa++; foto(); } });
+    sig.addEventListener("click", function () { ronda++; mostrar(); });
+    c.querySelector(".otra").addEventListener("click", nueva);
+    nueva();
+  }
+
+  // ---------- GENERALA con dados en pantalla (reglas de la casa, las del reglamento del Jueves de Juegos) ----------
+  var CATS = [["1", "Al 1"], ["2", "Al 2"], ["3", "Al 3"], ["4", "Al 4"], ["5", "Al 5"], ["6", "Al 6"], ["E", "Escalera"], ["F", "Full"], ["P", "Póker"], ["G", "Generala"], ["D", "Doble generala"]];
+  var PIPS = { 1: [[50, 50]], 2: [[28, 28], [72, 72]], 3: [[28, 28], [50, 50], [72, 72]], 4: [[28, 28], [72, 28], [28, 72], [72, 72]],
+    5: [[28, 28], [72, 28], [50, 50], [28, 72], [72, 72]], 6: [[28, 25], [72, 25], [28, 50], [72, 50], [28, 75], [72, 75]] };
+  function dado(v) {
+    return '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="5" y="5" width="90" height="90" rx="18" fill="#fffaf0" stroke="#23402e" stroke-width="5"/>' +
+      (v ? PIPS[v].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="9" fill="#23402e"/>'; }).join("") :
+        '<text x="50" y="64" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#d8ccb6">?</text>') + '</svg>';
+  }
+  // Puntos de un casillero con estos dados. servido = salió en el primer tiro. tieneG = ya anotó 50 en generala.
+  function puntaje(cat, d, servido, tieneG) {
+    var cnt = [0, 0, 0, 0, 0, 0, 0]; d.forEach(function (x) { cnt[x]++; });
+    var vals = cnt.slice(1).filter(Boolean).sort();
+    if (/^[1-6]$/.test(cat)) return cnt[+cat] * +cat;
+    var u = d.slice().sort().join("");
+    if (cat === "E") return (u === "12345" || u === "23456" || u === "13456") ? 20 + (servido ? 5 : 0) : 0;
+    if (cat === "F") return vals.join(",") === "2,3" ? 30 + (servido ? 5 : 0) : 0;
+    if (cat === "P") return cnt.some(function (n) { return n >= 4; }) ? 40 + (servido ? 5 : 0) : 0;
+    if (cat === "G") return cnt.some(function (n) { return n === 5; }) ? 50 : 0;
+    if (cat === "D") return cnt.some(function (n) { return n === 5; }) && tieneG ? 100 : 0;
+    return 0;
+  }
+  function promoJueves() {
+    var hoy = new Date(), estreno = new Date(2026, 11, 3);
+    var cuando = hoy < estreno ? "Arranca el <b>jueves 3 de diciembre</b>, desde las 20 h." : "<b>Todos los jueves</b>, desde las 20 h.";
+    return '<div class="promoj"><div class="pt">🎲 Jueves de Juegos en La Serena</div><div class="ps">' + cuando +
+      ' Truco, chinchón, podrida, carioca, generala y desconfío, con cartas, dados y anotador en la mesa. Se juega por la gloria, nunca por plata.</div>' +
+      '<a class="btn" href="https://wa.me/5491153349375?text=%C2%A1Hola!%20Quiero%20reservar%20una%20mesa%20para%20el%20Jueves%20de%20Juegos" target="_blank" rel="noopener">Reservá tu mesa para el jueves</a></div>';
+  }
+  function generala(c) {
+    var n = 2, plan, jug, dados, guard, tiro, fin;
+    c.innerHTML = '<div class="jg ge"><h3>Generala</h3><div class="bj">Tres tiros por turno. Tocá los dados que querés guardar y volvé a tirar el resto.</div>' + promoJueves() +
+      '<div class="modos"><span class="ml">Jugadores:</span>' + [1, 2, 3, 4].map(function (k) { return '<button type="button" data-n="' + k + '"' + (k === 2 ? ' class="on"' : '') + '>' + k + '</button>'; }).join("") + '</div>' +
+      '<div class="gt"></div><div class="dados"></div><button type="button" class="tirar">Tirar los dados</button>' +
+      '<div class="msg"></div><div class="plan"></div>' + finHTML() + '</div>';
+    var gt = c.querySelector(".gt"), gd = c.querySelector(".dados"), bt = c.querySelector(".tirar"), msg = c.querySelector(".msg"), gp = c.querySelector(".plan"), f = c.querySelector(".fin");
+    function nombre(j) { return n === 1 ? "Tu" : "J" + (j + 1); }
+    function tot(j) { return CATS.reduce(function (s, k) { return s + (plan[j][k[0]] || 0); }, 0); }
+    function nueva() {
+      plan = []; for (var j = 0; j < n; j++) plan.push({});
+      jug = 0; fin = false; f.classList.remove("on"); msg.textContent = ""; turnoNuevo();
+    }
+    function turnoNuevo() { dados = [0, 0, 0, 0, 0]; guard = [false, false, false, false, false]; tiro = 0; pintar(); }
+    function pintar() {
+      gt.innerHTML = fin ? "" : (n === 1 ? "Tu turno" : "Turno del <b>jugador " + (jug + 1) + "</b>") + " · tiro " + tiro + " de 3";
+      gd.innerHTML = dados.map(function (v, i) { return '<button type="button" data-i="' + i + '" class="' + (guard[i] ? 'gu' : '') + '"' + (!tiro || fin ? ' disabled' : '') + '>' + dado(v) + (guard[i] ? '<i>✔ guardado</i>' : '') + '</button>'; }).join("");
+      bt.disabled = fin || tiro >= 3; bt.textContent = tiro === 0 ? "Tirar los dados" : tiro >= 3 ? "Anotá en la planilla" : "Tirar de nuevo (" + (3 - tiro) + ")";
+      var h = (tiro && !fin ? '<div class="ayuda">Tocá un casillero de la planilla para anotar' + (tiro < 3 ? ', o volvé a tirar' : '') + '.</div>' : '') + '<table><tr><th></th>' + plan.map(function (p, j) { return '<th class="' + (j === jug && !fin ? 'yo' : '') + '">' + nombre(j) + '</th>'; }).join("") + '</tr>';
+      CATS.forEach(function (k) {
+        h += '<tr><td>' + k[1] + '</td>' + plan.map(function (p, j) {
+          if (p[k[0]] !== undefined) return '<td class="' + (p[k[0]] ? '' : 'tacha') + '">' + (p[k[0]] || "✕") + '</td>';
+          if (j !== jug || fin || !tiro) return '<td></td>';
+          var v = puntaje(k[0], dados, tiro === 1, p.G === 50);
+          return '<td><button type="button" data-k="' + k[0] + '" class="' + (v ? 'an' : 'ta') + '">' + (v ? v : "tachar") + '</button></td>';
+        }).join("") + '</tr>';
+      });
+      h += '<tr class="tt"><td>Total</td>' + plan.map(function (p, j) { return '<td>' + tot(j) + '</td>'; }).join("") + '</tr></table>';
+      gp.innerHTML = h;
+    }
+    function terminar(texto) { fin = true; msg.innerHTML = texto; f.classList.add("on"); pintar(); }
+    bt.addEventListener("click", function () {
+      if (fin || tiro >= 3) return;
+      dados = dados.map(function (v, i) { return guard[i] ? v : 1 + Math.floor(Math.random() * 6); });
+      tiro++; msg.textContent = ""; pintar();
+      gd.querySelectorAll("button:not(.gu)").forEach(function (b) { b.classList.add("rueda"); });
+      if (tiro === 1 && dados.every(function (v) { return v === dados[0]; })) {
+        terminar("¡GENERALA SERVIDA! " + (n === 1 ? "Ganaste en el acto 🎉" : "Gana el jugador " + (jug + 1) + " en el acto 🎉"));
+      }
+    });
+    gd.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || b.disabled) return; var i = +b.getAttribute("data-i"); guard[i] = !guard[i]; pintar(); });
+    gp.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-k]"); if (!b || fin) return;
+      var k = b.getAttribute("data-k");
+      plan[jug][k] = puntaje(k, dados, tiro === 1, plan[jug].G === 50);
+      if (plan[jug][k] === 50 && k === "G") msg.textContent = "¡Generala!";
+      var completo = plan.every(function (p) { return CATS.every(function (x) { return p[x[0]] !== undefined; }); });
+      if (completo) {
+        var ts = plan.map(function (p, j) { return tot(j); }), max = Math.max.apply(null, ts), ganan = ts.map(function (v, j) { return v === max ? j + 1 : 0; }).filter(Boolean);
+        terminar(n === 1 ? "Hiciste <b>" + max + "</b> puntos. ¿Lo superás el jueves?" : ganan.length > 1 ? "¡Empate con " + max + " puntos!" : "¡Ganó el jugador " + ganan[0] + " con " + max + " puntos! 🎉");
+        return;
+      }
+      jug = (jug + 1) % n; turnoNuevo();
+    });
+    c.querySelectorAll(".modos button").forEach(function (b) {
+      b.addEventListener("click", function () { n = +b.getAttribute("data-n"); c.querySelectorAll(".modos button").forEach(function (x) { x.classList.toggle("on", x === b); }); nueva(); });
+    });
+    c.querySelector(".otra").addEventListener("click", nueva);
+    nueva();
+  }
+
   window.JUEGOS = {
-    abrir: function (id, cont) { ({ tateti: tateti, ahorcado: ahorcado, memotest: memotest }[id] || tateti)(cont); }
+    abrir: function (id, cont) { ({ tateti: tateti, ahorcado: ahorcado, memotest: memotest, cuatro: cuatro, plato: quePlato, generala: generala }[id] || tateti)(cont); }
   };
 })();
