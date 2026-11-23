@@ -655,9 +655,12 @@
 
   // 6. Juegos para la mesa (23/11). Los juegos están en juegos/juegos.js, que se descarga recién al abrir uno.
   var JUEGOS_LISTA = [
-    { id: "tateti", ic: "⌗", t: "Ta-te-ti", s: "Cabaña contra trébol. De a dos o contra la casa." },
-    { id: "ahorcado", ic: "🌊", t: "Ahorcado de la sudestada", s: "Adiviná antes de que el río tape la cabaña." },
-    { id: "memotest", ic: "🍕", t: "Memotest", s: "Encontrá los pares de la carta, por turnos." }
+    { id: "tateti", ic: "⌗", t: "Ta-te-ti", s: "Cabaña contra tetera. De a dos o contra la casa." },
+    { id: "ahorcado", ic: "🌊", t: "Ahorcado de la sudestada", s: "Adiviná antes de que el río llegue a la cabaña." },
+    { id: "memotest", ic: "🍕", t: "Memotest", s: "Encontrá los pares de la carta, por turnos." },
+    { id: "cuatro", ic: "◉", t: "Cuatro en línea", s: "Cabañas contra teteras. De a dos o contra la casa." },
+    { id: "plato", ic: "🔍", t: "¿Qué plato es?", s: "Mirá la foto de cerca y adiviná el plato de la carta." },
+    { id: "generala", ic: "🎲", t: "Generala", s: "Con dados en pantalla, de 1 a 4 jugadores. ¡Y los jueves, en la mesa!" }
   ];
   seccion("juegos", "Juegos para la mesa", '<div class="juegos">' + JUEGOS_LISTA.map(function (j) {
     return '<button type="button" class="jgo" data-jg="' + j.id + '"><span class="ic">' + j.ic + '</span><span class="tx"><b>' + esc(j.t) + '</b><span>' + esc(j.s) + '</span></span><span class="va">Jugar ›</span></button>';
