@@ -95,6 +95,15 @@
   .ev .mas { font-size: 13px; font-weight: 600; color: var(--oro); margin: 10px 0 10px; }
   .vercal { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 10px; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--verde); background: var(--crema2); border: 1.5px solid var(--verde); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
 
+  /* Juegos para la mesa */
+  .juegos { display: grid; gap: 8px; margin-top: 12px; }
+  .jgo { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; font: inherit; color: var(--tinta); background: var(--crema2); border: 1px solid var(--linea); border-radius: 14px; padding: 12px 14px; cursor: pointer; }
+  .jgo .ic { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--verde); color: var(--oro); display: flex; align-items: center; justify-content: center; font-size: 24px; font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; }
+  .jgo .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .jgo .tx b { font-size: 15.5px; }
+  .jgo .tx span { font-size: 13px; color: var(--gris); line-height: 1.35; margin-top: 2px; }
+  .jgo .va { flex: none; font-size: 13.5px; font-weight: 700; color: var(--oro); }
+
   /* Hoja que sube desde abajo: detalle de un evento y calendario */
   .velo { position: fixed; inset: 0; z-index: 10; background: rgba(20,32,25,.6); display: none; align-items: flex-end; justify-content: center; }
   .velo.on { display: flex; }
@@ -393,7 +402,10 @@
     });
     if (!pres.length) return null;
     var nombre = f.t || pres.map(function (i) { return i.lab; }).join(f.sep || " · ");
-    var desc = [f.lista ? pres.map(function (i) { return i.lab; }).join(", ") : "", f.d || ""].filter(Boolean).join(" · ");
+    // Las variedades se leen como opciones: "a, b o c" (cada una es un producto distinto).
+    var labs = pres.map(function (i) { return i.lab; });
+    var listaTxt = labs.length > 1 ? labs.slice(0, -1).join(", ") + " o " + labs[labs.length - 1] : labs.join("");
+    var desc = [f.lista ? listaTxt : "", f.d || ""].filter(Boolean).join(" · ");
     if (f.lista) desc = cap(desc);
     var fotos = pres.map(function (i) { return i.x.p.foto; }).filter(Boolean);
     if (f.foto && foto(f.foto)) fotos.unshift(foto(f.foto));
@@ -428,7 +440,7 @@
 
   var html = "";
   // Ícono de cada categoría (por palabra del título; el orden importa: "ensaladas" antes que "saladas").
-  var ICONOS = [["SE VIENE", "📅"], ["PROMO", "🏷️"], ["CLUB", "☘️"], ["ENTRADA", "🧀"], ["PRINCIPAL", "🍖"], ["PASTA", "🍝"], ["PIZZA", "🍕"],
+  var ICONOS = [["JUEGOS", "🎲"], ["SE VIENE", "📅"], ["PROMO", "🏷️"], ["CLUB", "☘️"], ["ENTRADA", "🧀"], ["PRINCIPAL", "🍖"], ["PASTA", "🍝"], ["PIZZA", "🍕"],
     ["EMPANADA", "🥟"], ["MILANESA", "🥩"], ["HAMBURGUESA", "🍔"], ["WRAP", "🌯"], ["ENSALADA", "🥗"], ["INFANTIL", "🧒"], ["CAFE", "☕"],
     ["SALADA", "🥐"], ["DULCE", "🍰"], ["POSTRE", "🍰"], ["BEBIDA", "🍋"], ["CERVEZA", "🍺"], ["TRAGO", "🍸"], ["VINO", "🍷"]];
   function icono(titulo) {
@@ -640,6 +652,16 @@
     '<a class="btn" href="' + wa(CLUB.wa) + '">' + (previa ? 'Quiero anotarme' : 'Quiero ser Sereno') + '</a>' +
     '<div class="letra">Los beneficios son con consumo en el local. Los premios son en productos, no en descuentos.</div></div>';
   seccion("club", "Club La Serena", h, "", 1);
+
+  // 6. Juegos para la mesa (23/11). Los juegos están en juegos/juegos.js, que se descarga recién al abrir uno.
+  var JUEGOS_LISTA = [
+    { id: "tateti", ic: "⌗", t: "Ta-te-ti", s: "Cabaña contra trébol. De a dos o contra la casa." },
+    { id: "ahorcado", ic: "🌊", t: "Ahorcado de la sudestada", s: "Adiviná antes de que el río tape la cabaña." },
+    { id: "memotest", ic: "🍕", t: "Memotest", s: "Encontrá los pares de la carta, por turnos." }
+  ];
+  seccion("juegos", "Juegos para la mesa", '<div class="juegos">' + JUEGOS_LISTA.map(function (j) {
+    return '<button type="button" class="jgo" data-jg="' + j.id + '"><span class="ic">' + j.ic + '</span><span class="tx"><b>' + esc(j.t) + '</b><span>' + esc(j.s) + '</span></span><span class="va">Jugar ›</span></button>';
+  }).join("") + '</div>', "para la espera", 1);
 
   document.getElementById("carta").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
@@ -857,11 +879,25 @@
   function abrirDesdeHash() {
     var h = location.hash.slice(1);
     if (h === "calendario") { abrirCalendario(calPag); return; }
+    if (/^juego-/.test(h)) { abrirJuego(h.slice(6)); return; }
     for (var i = 0; i < EVENTOS.length; i++) if (idEv(EVENTOS[i]) === h) { abrirEvento(i, volverAlCal); return; }
     for (var i = 0; i < FICHAS.length; i++) if (FICHAS[i].id === h) { abrirPlato(i); return; }
     cerrarHoja();
   }
-  if (/^#(evento-|plato-|calendario$)/.test(location.hash)) abrirDesdeHash();
+  // Juegos: la primera vez se descarga juegos/juegos.js y después se dibuja el juego en la hoja.
+  function abrirJuego(id) {
+    mostrarHoja('<div id="juego"><div class="jg" style="padding:40px 16px;text-align:center;color:var(--gris)">Cargando el juego…</div></div>', "juego-" + id);
+    function dibujarJuego() { var c = document.getElementById("juego"); if (c && window.JUEGOS) JUEGOS.abrir(id, c); }
+    if (window.JUEGOS) return dibujarJuego();
+    var s = document.createElement("script");
+    s.src = "juegos/juegos.js"; s.onload = dibujarJuego;
+    s.onerror = function () { var c = document.getElementById("juego"); if (c) c.innerHTML = '<div class="jg" style="padding:40px 16px;text-align:center">No se pudo cargar el juego. Probá de nuevo.</div>'; };
+    document.head.appendChild(s);
+  }
+  document.querySelectorAll("[data-jg]").forEach(function (b) {
+    b.addEventListener("click", function () { abrirJuego(b.getAttribute("data-jg")); });
+  });
+  if (/^#(evento-|plato-|juego-|calendario$)/.test(location.hash)) abrirDesdeHash();
 
   // Categorías desplegables: al abrir una se cierran las demás.
   // El título que se toca queda quieto en la pantalla (si se cierra otra categoría de más arriba, se compensa el corrimiento).
@@ -891,7 +927,7 @@
     if (!document.getElementById(id) || !document.getElementById(id).classList.contains("pleg")) return;
     a.addEventListener("click", function (e) { e.preventDefault(); history.replaceState(null, "", "#" + id); irASeccion(id); });
   });
-  if (location.hash && !/^#(evento-|plato-|calendario$)/.test(location.hash)) irASeccion(location.hash.slice(1));
+  if (location.hash && !/^#(evento-|plato-|juego-|calendario$)/.test(location.hash)) irASeccion(location.hash.slice(1));
 </script>
 </body>
 </html>
