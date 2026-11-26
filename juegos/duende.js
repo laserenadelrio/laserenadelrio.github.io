@@ -1,7 +1,7 @@
 // ¿Dónde está Lucky? (pedido de Marcos, 26/11/2026). Lucky, el duende de La Serena, se esconde en fotos de la casa.
 // Cada partida son 5 fotos. En cada foto hay escondites pensados a mano (ESCONDITES): detrás de un balde, en la boca
 // del horno, entre la rúcula... Lucky se asoma desde atrás de algo, así que se ve solo la galera y los ojos, o solo la galera.
-//   Fácil: se asoma (galera y ojos), más grande.   Medio: se asoma, más chico.   Difícil: solo la galera, chiquita.
+//   Fácil: se asoma (galera y ojos).   Medio: solo la galera, algo transparente.   Difícil: solo la copa (sin ala), casi del color de la foto.
 // Si se toca mal, suma 3 segundos. Para sumar escondites: x e y son el punto (en % de la foto) donde está el borde del que
 // se asoma; s es el ancho de la galera en % de la foto; r es el giro; "solo" = ahí va siempre solo la galera.
 // Las fotos son las del rompecabezas (juegos/fotos/). El dibujo de Lucky sale de duende-svg.js.
@@ -67,7 +67,9 @@
   var FOTOS = Object.keys(ESCONDITES);
   JUEGOS.duendeEscondites = ESCONDITES;
   // [nombre, multiplicador de tamaño, parte]
-  var NIVELES = [["Fácil", 2.2, "asoma"], ["Medio", 1.5, "asoma"], ["Difícil", 1.1, "sombrero"]];
+  // [nombre, tamaño, parte, opacidad, color apagado]. Camuflado (26/11, Marcos: "sigue siendo fácil"): en Medio va solo la galera,
+  // un poco transparente; en Difícil solo asoma la copa (sin ala), más chica y casi del color de la foto.
+  var NIVELES = [["Fácil", 1.8, "asoma", 1, 1], ["Medio", 1.5, "sombrero", 0.85, 0.75], ["Difícil", 1.8, "copa", 0.72, 0.55]];
   var RONDAS = 5;
 
   function juego(c) {
@@ -91,14 +93,15 @@
       img.src = "juegos/fotos/" + foto + ".jpg";
       cap.innerHTML = foto === "fachada" ? '<span class="cr">Foto: @sebastian_penna</span>' : "";
       lugar = E.lugares[Math.floor(Math.random() * E.lugares.length)];
-      var parte = lugar.solo ? "sombrero" : nivel[2];
+      var parte = lugar.solo && nivel[2] === "asoma" ? "sombrero" : nivel[2];
       var w = lugar.s * nivel[1];  // ancho de la galera (de punta a punta del ala) en % de la foto
       // Cada parte tiene su proporción (alto/ancho del dibujo recortado): galera 280x146, asomado 300x184.
-      var ancho = parte === "sombrero" ? w : w * 300 / 280, alto = parte === "sombrero" ? ancho * 146 / 280 : ancho * 184 / 300;
+      var ancho = parte === "sombrero" ? w : parte === "copa" ? w * 156 / 280 : w * 300 / 280;
+      var alto = ancho * (parte === "sombrero" ? 146 / 280 : parte === "copa" ? 118 / 156 : 184 / 300);
       var caras = ["guino", "contento", "sorpresa"], cara = caras[Math.floor(Math.random() * 3)];
       var espejo = Math.random() < 0.5 ? -1 : 1;
       cap.insertAdjacentHTML("beforeend", '<b class="du" style="left:' + (lugar.x - ancho / 2) + '%;top:' + (lugar.y - alto) + '%;width:' + ancho + '%;height:' + alto + '%;' +
-        'transform:rotate(' + (lugar.r || 0) + 'deg) scaleX(' + espejo + ');filter:' + (E.luz || "none") + '">' +
+        'transform:rotate(' + (lugar.r || 0) + 'deg) scaleX(' + espejo + ');opacity:' + nivel[3] + ';filter:' + (E.luz || "") + ' saturate(' + nivel[4] + ')">' +
         DUENDE.svg({ cara: cara, boca: "trebol", parte: parte, attrs: ' preserveAspectRatio="none"' }) + '</b>');
     }
     cont.addEventListener("click", function (e) {
@@ -138,6 +141,7 @@
     ".dn .cap svg { width: 100%; height: 100%; display: block; }",
     ".dn .cap .du { transform-origin: 50% 100%; }",
     ".dn .cap .cr { right: 6px; bottom: 5px; font-size: 10.5px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.8); pointer-events: none; }",
+    ".dn .cap .du.ok { opacity: 1 !important; filter: none !important; }",
     ".dn .cap .du.ok svg { animation: encontrado .9s ease-out; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px #e9b949); }",
     "@keyframes encontrado { 40% { transform: scale(1.8); } }",
     ".dn .mal { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; border: 3px solid #d9534f; animation: mal .6s ease-out forwards; pointer-events: none; }",
@@ -150,7 +154,7 @@
   // Primero se baja el dibujo de Lucky y después se arma el juego.
   JUEGOS.extra.duende = function (c) {
     if (window.DUENDE) return juego(c);
-    var s = document.createElement("script"); s.src = "juegos/duende-svg.js?v=2";
+    var s = document.createElement("script"); s.src = "juegos/duende-svg.js?v=3";
     s.onload = function () { juego(c); if (JUEGOS.alAbrir) JUEGOS.alAbrir("duende", c); };
     document.head.appendChild(s);
   };
