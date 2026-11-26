@@ -100,7 +100,7 @@
   .jhero { margin-top: 12px; position: relative; overflow: hidden; text-align: center; border-radius: 18px; padding: 18px 14px 16px; color: var(--papel);
     background: radial-gradient(circle at 50% -10%, rgba(184,134,43,.35), transparent 60%), var(--verde); }
   .jhero::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,134,43,.6); border-radius: 13px; pointer-events: none; }
-  .jlogos { display: flex; justify-content: center; gap: 6px; }
+  .jlogos { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 300px; margin: 0 auto; }
   .jlogos span { width: 42px; height: 42px; flex: none; border-radius: 12px; background: #2b4a36; box-shadow: inset 0 0 0 1.5px rgba(184,134,43,.6); display: flex; align-items: center; justify-content: center;
     animation: flota 3.2s ease-in-out infinite; animation-delay: calc(var(--i) * -0.53s); }
   .jlogos svg { width: 34px; height: 34px; display: block; }
@@ -750,6 +750,17 @@
       plato: svg('<circle cx="19" cy="20" r="14" fill="' + K + '"/><circle cx="19" cy="20" r="9" fill="none" stroke="#d8ccb6" stroke-width="1.6"/><circle cx="16" cy="18" r="3" fill="' + B + '"/><circle cx="22" cy="22.5" r="2.6" fill="#6d8f4e"/><circle cx="21" cy="15.5" r="1.8" fill="#e9b949"/>' +
         '<circle cx="31" cy="31" r="8.5" fill="rgba(246,240,228,.55)" stroke="' + O + '" stroke-width="3.2"/><path d="M37.2 37.2 L44 44" stroke="' + O + '" stroke-width="4.5" stroke-linecap="round"/>' +
         '<text x="31" y="35.4" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="12" fill="' + V + '">?</text>'),
+      // Segunda tanda (26/11)
+      colorear: svg('<path d="M24 6 C11 6 4 15 4 24 C4 35 13 42 21 42 C25 42 26 39 24 36 C22 33 24 30 28 30 L34 30 C40 30 44 26 44 20 C44 12 36 6 24 6 Z" fill="' + K + '"/>' +
+        '<circle cx="14" cy="20" r="3.4" fill="' + B + '"/><circle cx="22" cy="13" r="3.4" fill="' + O + '"/><circle cx="32" cy="14" r="3.4" fill="#4a7a8c"/><circle cx="13" cy="30" r="3.4" fill="#6d8f4e"/>' +
+        '<path d="M44 30 L31 43" stroke="' + O + '" stroke-width="4" stroke-linecap="round"/>'),
+      rompe: svg('<path d="M6 6 H20 C18 10 20 14 24 14 C28 14 30 10 28 6 H42 V20 C38 18 34 20 34 24 C34 28 38 30 42 28 V42 H6 Z" fill="' + K + '"/>' +
+        '<path d="M6 6 H20 C18 10 20 14 24 14 V24 H6 Z" fill="' + O + '"/><path d="M24 6 V42 M6 24 H42" stroke="' + V + '" stroke-width="1.6"/>'),
+      oca: svg('<path d="M24 24 m0 -2 a2 2 0 1 1 0 4 a5 5 0 1 1 0 -10 a8 8 0 1 1 0 16 a11 11 0 1 1 0 -22 a14 14 0 1 1 0 28 a17 17 0 1 1 0 -34" fill="none" stroke="' + K + '" stroke-width="3" stroke-linecap="round"/>' +
+        '<g transform="translate(28 26) scale(.45)"><g fill="' + O + '"><circle cx="20" cy="9.5" r="2.4"/><path d="M11.5 16.5 Q20 9.5 28.5 16.5 Z"/><ellipse cx="20" cy="24.5" rx="11.5" ry="9"/></g></g>'),
+      duende: svg('<path d="M12 6 Q22 3 32 5 L33 24 Q22 26 11 24 Z" fill="#3f7a4f"/><path d="M11 18 Q22 21 33 18 L33 23 Q22 26 11 23 Z" fill="#7a4a2a"/><rect x="19" y="18" width="6" height="5" rx="1" fill="none" stroke="#e9b949" stroke-width="1.6"/>' +
+        '<path d="M4 25 Q22 30 40 25" stroke="' + K + '" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M12 27 C10 36 14 42 22 43 C30 42 34 36 32 27" fill="#d9763a"/>' +
+        '<circle cx="33" cy="33" r="8" fill="rgba(246,240,228,.35)" stroke="' + O + '" stroke-width="3"/><path d="M39 39 L45 45" stroke="' + O + '" stroke-width="4" stroke-linecap="round"/>'),
       generala: svg('<g transform="rotate(-14 16 28)"><rect x="5" y="17" width="22" height="22" rx="5" fill="' + K + '"/>' + pips([[10, 22], [22, 22], [16, 28], [10, 34], [22, 34]], V) + '</g>' +
         '<g transform="rotate(12 33 19)"><rect x="22" y="8" width="22" height="22" rx="5" fill="' + O + '"/>' + pips([[27, 13], [33, 19], [39, 25]], K) + '</g>')
     };
@@ -761,12 +772,17 @@
     { id: "memotest", t: "Memotest", s: "Pares de platos de la carta.", ch: ["👥 2", "📸 fotos"] },
     { id: "cuatro", t: "Cuatro en línea", s: "Cabañas contra teteras.", ch: ["👥 2", "🏠 vs. la casa"] },
     { id: "plato", t: "¿Qué plato es?", s: "Adiviná el plato de bien de cerca.", ch: ["👤 1 o más", "5 rondas"] },
-    { id: "generala", t: "Generala", s: "Con dados en pantalla.", ch: ["👥 1 a 4", "🎲 dados"] }
+    { id: "generala", t: "Generala", s: "Con dados en pantalla.", ch: ["👥 1 a 4", "🎲 dados"] },
+    // Segunda tanda (26/11, pedido de Marcos)
+    { id: "colorear", t: "Colorear", s: "Dibujos de La Serena para pintar.", ch: ["🎨 chicos", "💾 guardalo"] },
+    { id: "rompe", t: "Rompecabezas", s: "Fotos de la cabaña y de la carta.", ch: ["🧩 chicos", "🧠 grandes"] },
+    { id: "oca", t: "De tetera en tetera", s: "El juego de la oca de La Serena.", ch: ["👥 2 a 4", "🎲 dado"] },
+    { id: "duende", t: "¿Dónde está Lucky?", s: "Encontrá al duende de la cabaña.", ch: ["👤 1 o más", "⏱️ reloj"] }
   ];
   var REGLAS = [["truco", "Truco"], ["chinchon", "Chinchón"], ["podrida", "Podrida"], ["carioca", "Carioca"], ["generala", "Generala"], ["desconfio", "Desconfío"]];
   var hj = '<div class="jhero"><div class="jlogos">' + JUEGOS_LISTA.map(function (j, i) { return '<span style="--i:' + i + '">' + LOGO[j.id] + '</span>'; }).join("") + '</div>' +
     '<div class="jt">¿Una partida mientras sale la comida?</div>' +
-    '<div class="js">Seis juegos para jugar en la mesa desde el celu. De a uno, de a dos o contra la casa.</div></div>' +
+    '<div class="js">' + JUEGOS_LISTA.length + ' juegos para jugar en la mesa desde el celu. De a uno, de a dos, contra la casa o para pintar.</div></div>' +
     '<div class="jgrid">' + JUEGOS_LISTA.map(function (j, i) {
       return '<button type="button" class="jcard" data-jg="' + j.id + '" style="--i:' + i + '"><span class="ic">' + LOGO[j.id] + '</span><b>' + esc(j.t) + '</b><span class="jd">' + esc(j.s) + '</span>' +
         '<span class="chips">' + j.ch.map(function (c) { return '<i>' + esc(c) + '</i>'; }).join("") + '</span><span class="va">Jugar ›</span></button>';
@@ -781,7 +797,7 @@
     REGLAS.map(function (r) { return '<button type="button" data-rg="' + r[0] + '">' + esc(r[1]) + '</button>'; }).join("") + '</div>' +
     '<div class="bts"><a class="r" href="' + wa("¡Hola! Quiero reservar una mesa para el Jueves de Juegos") + '">Reservá tu mesa</a>' +
     '<a class="t" href="reglamentos/">Ver todos ›</a></div></div>';
-  seccion("juegos", "Juegos para la mesa", hj, "¡6 juegos!", 1);
+  seccion("juegos", "Juegos para la mesa", hj, "¡" + JUEGOS_LISTA.length + " juegos!", 1);
 
   document.getElementById("carta").innerHTML = html;
   document.getElementById("act").textContent = "Precios actualizados al " + FUDO.actualizado.split(" ")[0] + ".";
@@ -1010,12 +1026,14 @@
     mostrarHoja('<div id="juego"><div class="jg" style="padding:40px 16px;text-align:center;color:var(--gris)">Cargando el juego…</div></div>', "juego-" + id);
     function dibujarJuego() {
       var c = document.getElementById("juego"); if (!c || !window.JUEGOS) return;
+      // Los juegos nuevos (26/11) se bajan aparte: el logo se pone cuando terminan de dibujarse.
+      JUEGOS.alAbrir = function (jid, cc) { var h = cc.querySelector("h3"); if (h && LOGO[jid] && !cc.querySelector(".jlogo")) h.insertAdjacentHTML("beforebegin", '<div class="jlogo">' + LOGO[jid] + '</div>'); };
       JUEGOS.abrir(id, c);
-      var h3 = c.querySelector("h3"); if (h3 && LOGO[id]) h3.insertAdjacentHTML("beforebegin", '<div class="jlogo">' + LOGO[id] + '</div>');
+      JUEGOS.alAbrir(id, c);
     }
     if (window.JUEGOS) return dibujarJuego();
     var s = document.createElement("script");
-    s.src = "juegos/juegos.js"; s.onload = dibujarJuego;
+    s.src = "juegos/juegos.js?v=2"; s.onload = dibujarJuego;
     s.onerror = function () { var c = document.getElementById("juego"); if (c) c.innerHTML = '<div class="jg" style="padding:40px 16px;text-align:center">No se pudo cargar el juego. Probá de nuevo.</div>'; };
     document.head.appendChild(s);
   }
