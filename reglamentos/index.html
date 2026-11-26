@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reglamentos · Jueves de Juegos · La Serena</title>
+<meta name="description" content="Las reglas de truco, chinchón, podrida, carioca, generala y desconfío, como se juegan en La Serena.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2323402e'/%3E%3Cpath d='M10 52 L32 12 L54 52' fill='none' stroke='%23b8862b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='27' y='32' width='10' height='12' fill='none' stroke='%23f6f0e4' stroke-width='3'/%3E%3C/svg%3E">
+<!-- Generado con Jueves-de-juegos/armar-reglamentos-web.ps1 a partir de reglamentos-A5.html (el librito). No editar a mano: editar el librito y volver a armar. -->
+<style>
+  :root { --papel:#f6f0e4; --verde:#23402e; --oro:#b8862b; --barro:#a8502a; --tinta:#2a2520; --gris:#776e63; --linea:#d8ccb6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--verde); }
+  body { background: var(--papel); color: var(--tinta); font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; max-width: 640px; margin: 0 auto; min-height: 100vh; }
+  header { background: radial-gradient(ellipse at 50% 30%, #2f5640 0%, #1f3a2b 60%, #142a1d 100%); color: var(--papel); text-align: center; padding: 22px 18px 24px; }
+  header .volver { display: inline-block; color: var(--oro); text-decoration: none; font-size: 13px; letter-spacing: .08em; margin-bottom: 14px; }
+  header .k { font-family: Georgia, serif; letter-spacing: .3em; font-size: 11px; text-transform: uppercase; color: var(--oro); }
+  header h1 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 44px; line-height: .95; margin-top: 8px; }
+  header h1 span { display: block; font-style: normal; font-size: 13px; letter-spacing: .5em; text-transform: uppercase; color: var(--oro); margin: 6px 0; }
+  header p { font-family: Georgia, serif; font-style: italic; color: #d9cfba; font-size: 15px; margin-top: 12px; }
+  header .hh { display: inline-block; margin-top: 14px; background: var(--oro); color: #1f3a2b; border-radius: 8px; padding: 7px 14px; font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; font-size: 14px; }
+  nav { position: sticky; top: 0; z-index: 5; background: var(--papel); border-bottom: 1px solid var(--linea); display: flex; gap: 6px; overflow-x: auto; padding: 10px 12px; scrollbar-width: none; }
+  nav a { flex: none; text-decoration: none; color: var(--verde); border: 1px solid var(--verde); border-radius: 20px; padding: 5px 12px; font-size: 14px; }
+  main { padding: 16px 14px 30px; }
+  h2.sec { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: .22em; text-transform: uppercase; color: var(--verde); border-bottom: 2px solid var(--oro); padding-bottom: 5px; margin: 8px 0 10px; }
+  details.juego { background: #fffaf0; border: 1px solid var(--linea); border-radius: 12px; margin: 10px 0; scroll-margin-top: 60px; overflow: hidden; }
+  details.juego summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; }
+  details.juego summary::-webkit-details-marker { display: none; }
+  summary .n { font-family: Georgia, serif; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); }
+  summary .f { color: var(--oro); font-size: 18px; transition: transform .2s; }
+  details[open] summary .f { transform: rotate(180deg); }
+  .in { padding: 0 16px 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 14px; background: var(--verde); color: var(--papel); }
+  .chip.oro { background: var(--oro); }
+  .chip.linea { background: transparent; color: var(--verde); border: 1px solid var(--verde); }
+  .bajada { font-family: Georgia, serif; font-style: italic; color: var(--gris); font-size: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--oro); margin-bottom: 4px; }
+  .in h2 { font-family: Georgia, serif; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); margin: 14px 0 5px; }
+  p, li { font-size: 15.5px; line-height: 1.5; }
+  p + p { margin-top: 6px; }
+  ul, ol { padding-left: 20px; }
+  li { margin: 3px 0; }
+  b { color: var(--verde); }
+  table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 14.5px; }
+  td { padding: 6px 6px; border-bottom: 1px solid var(--linea); vertical-align: top; line-height: 1.35; }
+  td:last-child { text-align: right; font-weight: 600; color: var(--verde); }
+  table.n td:first-child { font-weight: 600; color: var(--barro); width: 26px; }
+  table.n td:last-child { text-align: left; font-weight: 400; color: var(--tinta); }
+  .orden { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0; }
+  .orden span { font-size: 13.5px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; padding: 2px 7px; }
+  .orden span.top1 { background: var(--verde); color: var(--papel); border-color: var(--verde); }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .tip { margin-top: 12px; background: #fff; border: 1px dashed var(--oro); border-radius: 8px; padding: 10px 12px; font-size: 14.5px; line-height: 1.45; }
+  .tip b { color: var(--barro); }
+  .guia { background: var(--verde); color: var(--papel); border-radius: 12px; padding: 14px 14px 16px; margin-top: 18px; }
+  .guia h2.sec { color: var(--papel); }
+  .guia table td { border-bottom-color: rgba(184,134,43,.45); }
+  .guia table tr:first-child td { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--oro); font-weight: 600; }
+  .guia table td:last-child { text-align: left; font-weight: 400; color: #e2d9c6; }
+  .guia table td.c { text-align: center; white-space: nowrap; color: var(--papel); font-weight: 600; }
+  .guia b { color: var(--oro); }
+  .guia ul { margin-top: 4px; }
+  .guia li { color: #efe7d6; margin: 6px 0; }
+  .cta { display: block; text-align: center; margin: 20px 0 6px; background: #25d366; color: #fff; text-decoration: none; font-weight: 600; border-radius: 10px; padding: 13px; font-size: 16px; }
+  footer { text-align: center; padding: 14px 16px 26px; font-size: 13px; color: var(--gris); }
+  footer a { color: var(--verde); }
+  footer .sin { font-family: Georgia, serif; font-style: italic; color: var(--verde); font-size: 15px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <a class="volver" href="../">← Volver a la carta</a>
+  <div class="k">Todos los jueves · desde las 20 h</div>
+  <h1>Jueves<span>de</span>Juegos</h1>
+  <p>Los reglamentos de la casa, para tenerlos en la mesa.</p>
+  <div class="hh">Happy hour de latas · toda la noche</div>
+</header>
+<nav><a href="#truco">Truco</a><a href="#chinchon">Chinchón</a><a href="#podrida">Podrida</a><a href="#carioca">Carioca</a><a href="#generala">Generala</a><a href="#desconfio">Desconfío</a><a href="#guia">¿A qué jugamos?</a></nav>
+<main>
+  <h2 class="sec">Los seis juegos</h2>
+  <details class="juego" id="truco"><summary><span class="n">Truco</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">Cartas españolas · 40</span><span class="chip oro">2, 4 o 6 jugadores</span><span class="chip linea">A 30 puntos</span></div><div class="bajada">El clásico de la mesa argentina: mentir con cara seria.</div>
+    <h2>Preparación</h2>
+    <p>Se sacan los 8, los 9 y los comodines. Se reparten 3 cartas a cada uno. Si son 4 o 6, se juega en parejas o tríos, sentados en forma alternada. Es <b>mano</b> el que está a la derecha del que reparte.</p>
+    <h2>Las cartas, de mayor a menor</h2>
+    <div class="orden"><span class="top1">1 espada</span><span class="top1">1 basto</span><span class="top1">7 espada</span><span class="top1">7 oro</span><span>3</span><span>2</span><span>1 copa y 1 oro</span><span>12</span><span>11</span><span>10</span><span>7 copa y 7 basto</span><span>6</span><span>5</span><span>4</span></div>
+    <h2>La mano</h2>
+    <p>Se juegan hasta 3 bazas; gana la mano el que gana 2. Si una baza empata (<b>parda</b>), define la siguiente; si la primera la ganó alguien y después hay parda, gana el que ganó la primera. Si todo es parda, gana el mano.</p>
+    <h2>El truco</h2>
+    <table>
+      <tr><td><b>Truco</b> · si no lo quieren, 1 punto</td><td>2</td></tr>
+      <tr><td><b>Retruco</b> · si no lo quieren, 2</td><td>3</td></tr>
+      <tr><td><b>Vale cuatro</b> · si no lo quieren, 3</td><td>4</td></tr>
+      <tr><td>Mano sin cantar nada</td><td>1</td></tr>
+    </table>
+    <h2>El envido (solo en la primera baza)</h2>
+    <p>Dos cartas del mismo palo suman 20 más sus números (las figuras valen 0): 7 y 6 de copa = 33. Sin dos del mismo palo, vale la carta más alta. Si empatan, gana el mano. "¡El envido está primero!" frena un truco cantado en la primera baza.</p>
+    <table>
+      <tr><td><b>Envido</b></td><td>2</td></tr>
+      <tr><td><b>Real envido</b></td><td>3</td></tr>
+      <tr><td><b>Envido + envido</b> · <b>envido + real</b></td><td>4 · 5</td></tr>
+      <tr><td><b>Falta envido</b>: lo que le falta al que va ganando para llegar a 30</td><td>falta</td></tr>
+      <tr><td>No querido: lo cantado antes, o 1 punto</td><td>1+</td></tr>
+    </table>
+    <div class="tip"><b>En La Serena se juega sin flor.</b> Irse al mazo regala los puntos de lo que esté en juego. Las primeras 15 son "malas" y las otras 15, "buenas".</div>
+  </div></details>
+<details class="juego" id="chinchon"><summary><span class="n">Chinchón</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">Cartas españolas · 48 + 2 comodines</span><span class="chip oro">2 a 6 jugadores</span><span class="chip linea">Sale el que pasa 100</span></div><div class="bajada">Armá juegos, cortá a tiempo y no te quedes con cartas altas.</div>
+    <h2>Preparación</h2>
+    <p>Se reparten 7 cartas a cada uno. El resto queda boca abajo (el mazo) y se da vuelta una carta al lado: es el <b>pozo</b>. Empieza el que está a la derecha del que reparte.</p>
+    <h2>En tu turno</h2>
+    <ol>
+      <li>Levantás una carta: la de arriba del mazo o la de arriba del pozo.</li>
+      <li>Tirás una carta al pozo. Siempre terminás con 7.</li>
+    </ol>
+    <h2>Los juegos</h2>
+    <ul>
+      <li><b>Grupo:</b> 3 o 4 cartas del mismo número (tres 5, cuatro 12).</li>
+      <li><b>Escalera:</b> 3 o más cartas seguidas del mismo palo (4-5-6 de oro).</li>
+      <li>El <b>comodín</b> reemplaza cualquier carta.</li>
+    </ul>
+    <h2>Cortar</h2>
+    <p>En tu turno, en vez de tirar al pozo, podés <b>cortar</b>: ponés tu carta boca abajo y mostrás tus juegos. Para cortar, las cartas que no entran en ningún juego tienen que sumar <b>5 o menos</b>. Los demás muestran sus juegos y suman los puntos de lo que les quedó suelto.</p>
+    <h2>Puntos de la ronda</h2>
+    <table>
+      <tr><td>Cada carta suelta</td><td>su número</td></tr>
+      <tr><td>Comodín suelto</td><td>25</td></tr>
+      <tr><td>Cortar con las 7 cartas en juego, sin comodín</td><td>−10</td></tr>
+      <tr><td><b>¡Chinchón!</b> 7 cartas seguidas del mismo palo, sin comodín</td><td>gana la partida</td></tr>
+    </table>
+    <h2>Cómo termina</h2>
+    <p>Los puntos se anotan y se acumulan. El que pasa los <b>100 puntos</b> sale del juego. Gana el último que queda adentro.</p>
+    <div class="tip"><b>Truco de la casa:</b> si el mazo se termina, se mezcla el pozo (menos la carta de arriba) y se sigue. Antes de empezar, acuerden si se permite "reengancharse" una vez pagando la vuelta de mate o de café.</div>
+  </div></details>
+<details class="juego" id="podrida"><summary><span class="n">Podrida</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">Cartas francesas · 52</span><span class="chip oro">3 a 7 jugadores</span><span class="chip linea">Gana el que más suma</span></div><div class="bajada">Decí cuántas bazas vas a ganar… y ganá exactamente esas.</div>
+    <h2>Las rondas</h2>
+    <p>En la primera ronda se reparte <b>1 carta</b> a cada uno; en la segunda, 2; y así se sube hasta <b>7 cartas</b>. Después se baja de a una hasta volver a 1. El que reparte va rotando hacia la derecha.</p>
+    <p>Después de repartir, se da vuelta la carta de arriba del mazo: su palo es el <b>triunfo</b> de la ronda.</p>
+    <h2>Las cartas, de mayor a menor</h2>
+    <div class="orden"><span class="top1">A</span><span>K</span><span>Q</span><span>J</span><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span></div>
+    <h2>Las apuestas</h2>
+    <p>Mirando sus cartas, cada uno dice cuántas bazas va a ganar, empezando por el de la derecha del que reparte. El que reparte habla último y <b>no puede pedir un número que haga que la suma dé justo la cantidad de cartas repartidas</b>: así, alguien siempre se "pudre".</p>
+    <h2>El juego</h2>
+    <ul>
+      <li>Sale el de la derecha del que reparte. Hay que <b>seguir el palo</b> si se tiene.</li>
+      <li>Si no tenés del palo, podés tirar triunfo (y cortás) o cualquier otra carta.</li>
+      <li>Gana la baza el triunfo más alto o, si no hubo triunfo, la carta más alta del palo que salió. El que gana sale en la siguiente.</li>
+    </ul>
+    <h2>Puntos</h2>
+    <table>
+      <tr><td>Cumpliste: hiciste exactamente las bazas que pediste</td><td>+10</td></tr>
+      <tr><td>Cada baza que ganaste, cumplas o no</td><td>+1</td></tr>
+    </table>
+    <div class="tip"><b>Ejemplos:</b> pediste 2 y ganaste 2: 10 + 2 = 12 puntos. Pediste 0 y no ganaste ninguna: 10 puntos. Pediste 1 y ganaste 3 ("te pudriste"): 3 puntos. Al terminar la última ronda de 1 carta, gana el que más puntos tiene.</div>
+  </div></details>
+<details class="juego" id="carioca"><summary><span class="n">Carioca</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">2 mazos franceses + 4 comodines</span><span class="chip oro">2 a 5 jugadores</span><span class="chip linea">Gana el que menos suma</span></div><div class="bajada">Ocho rondas, cada una con su "contrato". Paciencia y buena memoria.</div>
+    <h2>Los juegos</h2>
+    <ul>
+      <li><b>Pierna:</b> 3 cartas del mismo número, de cualquier palo.</li>
+      <li><b>Escalera:</b> 4 cartas seguidas del mismo palo (el As va antes del 2 o después de la K).</li>
+      <li>El <b>comodín</b> reemplaza cualquier carta: uno por juego como máximo.</li>
+    </ul>
+    <h2>Las 8 rondas (el contrato)</h2>
+    <table class="n">
+      <tr><td>1</td><td>Dos piernas</td></tr>
+      <tr><td>2</td><td>Una pierna y una escalera</td></tr>
+      <tr><td>3</td><td>Dos escaleras</td></tr>
+      <tr><td>4</td><td>Tres piernas</td></tr>
+      <tr><td>5</td><td>Dos piernas y una escalera</td></tr>
+      <tr><td>6</td><td>Una pierna y dos escaleras</td></tr>
+      <tr><td>7</td><td>Cuatro piernas</td></tr>
+      <tr><td>8</td><td>Tres escaleras</td></tr>
+    </table>
+    <h2>En tu turno</h2>
+    <p>Se reparten <b>12 cartas</b> a cada uno y se da vuelta una para el pozo. En tu turno levantás del mazo o del pozo y tirás una al pozo. Cuando tenés el contrato completo, te <b>bajás</b>: lo mostrás sobre la mesa. Desde el turno siguiente podés <b>pegar</b> cartas en tus juegos o en los de otros que ya se bajaron.</p>
+    <p>La ronda termina cuando alguien se queda sin cartas.</p>
+    <h2>Puntos (lo que te quedó en la mano)</h2>
+    <div class="dos">
+      <table><tr><td>Del 2 al 10</td><td>su número</td></tr><tr><td>J, Q y K</td><td>10</td></tr></table>
+      <table><tr><td>As</td><td>20</td></tr><tr><td>Comodín</td><td>30</td></tr></table>
+    </div>
+    <div class="tip"><b>Al final de la ronda 8</b> se suman todos los puntos: gana el que tiene <b>menos</b>. Si nadie se puede bajar y se termina el mazo, se mezcla el pozo y se sigue.</div>
+  </div></details>
+<details class="juego" id="generala"><summary><span class="n">Generala</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">5 dados y un cubilete</span><span class="chip oro">2 o más jugadores</span><span class="chip linea">11 turnos cada uno</span></div><div class="bajada">Tres tiros, once casilleros y un grito: ¡generala!</div>
+    <h2>En tu turno</h2>
+    <ol>
+      <li>Tirás los 5 dados.</li>
+      <li>Apartás los que te sirven y volvés a tirar el resto. Podés tirar <b>hasta 3 veces</b> en total.</li>
+      <li>Anotás el resultado en un casillero libre de la planilla. Si no te sirve ninguno, tenés que <b>tachar</b> uno (vale 0).</li>
+    </ol>
+    <h2>Los casilleros</h2>
+    <table>
+      <tr><td><b>Del 1 al 6</b>: se suman solo los dados de ese número (tres 4 = 12)</td><td>suma</td></tr>
+      <tr><td><b>Escalera</b>: 1-2-3-4-5 o 2-3-4-5-6 (también 3-4-5-6-1)</td><td>20</td></tr>
+      <tr><td><b>Full</b>: tres iguales y dos iguales</td><td>30</td></tr>
+      <tr><td><b>Póker</b>: cuatro iguales</td><td>40</td></tr>
+      <tr><td><b>Generala</b>: los cinco iguales</td><td>50</td></tr>
+      <tr><td><b>Doble generala</b>: una segunda generala</td><td>100</td></tr>
+    </table>
+    <h2>Servido</h2>
+    <p>Si sale en el <b>primer tiro</b>, es "servido" y vale 5 más: escalera 25, full 35, póker 45.</p>
+    <p><b>Generala servida: ganás la partida en el acto.</b></p>
+    <h2>Cómo termina</h2>
+    <p>Después de 11 turnos cada uno (todos los casilleros llenos o tachados), se suma la planilla. Gana el que tiene más puntos.</p>
+    <div class="tip"><b>Consejo:</b> tachá temprano el casillero que menos te cuesta perder (el 1, por ejemplo) y guardate la generala para el final: siempre hay tiempo para un milagro.</div>
+  </div></details>
+<details class="juego" id="desconfio"><summary><span class="n">Desconfío</span><span class="f">&#9662;</span></summary><div class="in"><div class="chips"><span class="chip">5 dados y un cubilete por jugador</span><span class="chip oro">3 a 6 jugadores</span><span class="chip linea">Queda el último con dados</span></div><div class="bajada">Todos ven sus dados, nadie ve los de los demás. ¿Quién miente?</div>
+    <h2>Cada vuelta</h2>
+    <p>Todos tiran sus dados <b>tapados con el cubilete</b> y miran solo los suyos. Los <b>unos son comodines</b>: cuentan como cualquier número.</p>
+    <h2>Las apuestas</h2>
+    <p>El primero apuesta cuántos dados de un número hay <b>en toda la mesa</b>, sumando los de todos: "cinco cuatros". El siguiente tiene dos opciones:</p>
+    <ul>
+      <li><b>Subir:</b> más dados ("seis cuatros") o la misma cantidad de un número más alto ("cinco cincos").</li>
+      <li><b>"¡Desconfío!"</b>: dice que la apuesta anterior es mentira.</li>
+    </ul>
+    <h2>Se levantan los cubiletes</h2>
+    <table>
+      <tr><td>Hay <b>al menos</b> los dados apostados (contando los unos)</td><td>pierde un dado el que desconfió</td></tr>
+      <tr><td>Hay <b>menos</b> de lo apostado</td><td>pierde un dado el que apostó</td></tr>
+    </table>
+    <p>El que perdió el dado empieza la vuelta siguiente. El que se queda sin dados, sale.</p>
+    <h2>Apostar a los unos</h2>
+    <p>Como son comodines, valen el doble: se puede pasar a unos con <b>la mitad</b> de la cantidad (redondeando para arriba): de "seis cincos" a "tres unos". Para volver de unos a otro número, hay que apostar el doble más uno.</p>
+    <h2>Cómo termina</h2>
+    <p>Gana el último jugador que conserva al menos un dado.</p>
+    <div class="tip"><b>Variante "calzo":</b> en vez de subir o desconfiar, decís "¡calzo!" si creés que hay justo esa cantidad. Si acertás, recuperás un dado; si no, perdés uno.</div>
+  </div></details>
+
+  <section class="guia" id="guia">
+    <h2 class="sec">¿A qué jugamos?</h2>
+    <table class="guia">
+      <tr><td>Juego</td><td class="c">Jugadores</td><td class="c">Dura</td><td>Ideal si…</td></tr>
+      <tr><td><b>Generala</b></td><td class="c">2 o más</td><td class="c">20 min</td><td>nunca jugaron juntos: se aprende en un minuto</td></tr>
+      <tr><td><b>Desconfío</b></td><td class="c">3 a 6</td><td class="c">15 min</td><td>son varios y les gusta mentir con cara seria</td></tr>
+      <tr><td><b>Truco</b></td><td class="c">2, 4 o 6</td><td class="c">30 min</td><td>quieren el clásico, de a dos o en parejas</td></tr>
+      <tr><td><b>Chinchón</b></td><td class="c">2 a 6</td><td class="c">40 min</td><td>van a quedarse un rato largo</td></tr>
+      <tr><td><b>Podrida</b></td><td class="c">3 a 7</td><td class="c">45 min</td><td>son muchos y quieren reírse de quien se pudre</td></tr>
+      <tr><td><b>Carioca</b></td><td class="c">2 a 5</td><td class="c">1 h o más</td><td>tienen toda la noche y buena memoria</td></tr>
+    </table>
+<h2 class="sec" style="margin-top:18px">Reglas de la casa</h2>
+<ul class="reglas">
+      <li><b>No se juega por plata.</b> Lo único que se apuesta es la gloria (y, como mucho, quién invita la próxima vuelta de café).</li>
+      <li>Cartas, dados, anotadores, lapiceras y reglamentos se piden en la barra y se devuelven al irse.</li>
+      <li>Cuidemos las cartas: lejos de los vasos y de la salsa de la pizza.</li>
+      <li>Si en tu casa se juega distinto, vale: acuérdenlo antes de empezar.</li>
+      <li>¿Les falta gente? Pregunten en la barra: capaz hay otra mesa buscando rival.</li>
+    </ul>
+  </section>
+  <a class="cta" href="https://wa.me/5491153349375?text=%C2%A1Hola!%20Quiero%20reservar%20una%20mesa%20para%20el%20Jueves%20de%20Juegos">Reservá tu mesa para el jueves</a>
+</main>
+<footer>
+  <div class="sin">Se juega por la gloria: nunca por plata.</div>
+  La Serena · Av. Victorica 708, Tigre · <a href="https://instagram.com/laserenadelrio">@laserenadelrio</a><br>
+  <a href="../">Ver la carta completa</a>
+</footer>
+<script>
+  // Si se entra con #truco (o cualquier juego), se abre ese reglamento.
+  function abrir() { var d = location.hash && document.getElementById(location.hash.slice(1)); if (d && d.tagName === "DETAILS") d.open = true; }
+  window.addEventListener("hashchange", abrir); abrir();
+  [].forEach.call(document.querySelectorAll('nav a'), function (a) { a.addEventListener('click', function () { var d = document.getElementById(a.getAttribute('href').slice(1)); if (d && d.tagName === "DETAILS") d.open = true; }); });
+</script>
+</body>
+</html>
