@@ -179,10 +179,13 @@
   /* Hoja que sube desde abajo: detalle de un evento y calendario */
   .velo { position: fixed; inset: 0; z-index: 10; background: rgba(20,32,25,.6); display: none; align-items: flex-end; justify-content: center; }
   .velo.on { display: flex; }
-  .hoja { background: var(--papel); width: 100%; max-width: 640px; max-height: 92vh; overflow-y: auto; border-radius: 18px 18px 0 0; position: relative; padding-bottom: 22px; animation: sube .22s ease-out; overscroll-behavior: contain; }
+  .hoja { background: var(--papel); width: 100%; max-width: 640px; max-height: 92vh; max-height: calc(100dvh - 24px); overflow-y: auto; border-radius: 18px 18px 0 0; position: relative; padding-bottom: 22px; animation: sube .22s ease-out; overscroll-behavior: contain; }
   @keyframes sube { from { transform: translateY(40px); opacity: .5; } }
-  .hoja .x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(31,58,43,.88); color: var(--papel); font-size: 22px; line-height: 1; cursor: pointer; }
+  /* La X queda pegada arriba aunque se baje en la hoja (26/11: en el celu quedaba fuera de la pantalla) */
+  .hoja .x { position: sticky; float: right; top: 10px; margin: 10px 10px -46px 0; z-index: 6; box-shadow: 0 2px 8px rgba(0,0,0,.25); width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(31,58,43,.88); color: var(--papel); font-size: 22px; line-height: 1; cursor: pointer; }
   .hoja .volver { font: inherit; font-size: 14px; font-weight: 600; color: var(--papel); background: rgba(31,58,43,.88); border: none; border-radius: 999px; padding: 8px 14px; position: absolute; top: 10px; left: 10px; z-index: 2; cursor: pointer; }
+  .im .cre { position: absolute; right: 8px; bottom: 6px; font-size: 10.5px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.85); pointer-events: none; }
+  .ev .im, .hoja .im { position: relative; }
   .hoja .im { display: flex; height: 250px; background: #ece2cd; border-radius: 18px 18px 0 0; overflow: hidden; }
   .hoja .im img { flex: 1; min-width: 0; height: 100%; object-fit: cover; display: block; }
   .hoja .im.vacia { height: 96px; background: var(--verde); align-items: center; justify-content: center; }
@@ -530,7 +533,9 @@
   // 1. Lo que se viene
   var evs = EVENTOS.filter(function (e) { return e.mostrar <= HOY && HOY <= e.hasta; }).sort(function (a, b) { return a.dia < b.dia ? -1 : 1; });
   // Fotos de un evento: los productos de Fudo que tengan foto (hasta dos).
-  function fotosEv(e) { return (e.foto || []).map(foto).filter(Boolean).slice(0, 2); }
+  // Fotos del evento: de Fudo (por nombre de producto) o propias (una ruta a fotos/eventos/...).
+  function fotosEv(e) { return (e.foto || []).map(function (k) { return /\.(jpe?g|png|webp)$/i.test(k) ? k : foto(k); }).filter(Boolean).slice(0, 2); }
+  function credEv(e) { return e.credito ? '<span class="cre">' + esc(e.credito) + '</span>' : ""; }
   function etiqueta(e) {
     var hoy = e.dia <= HOY && HOY <= e.hasta, man = e.dia === MANANA;
     return '<span class="tag' + (hoy || man ? ' hoy' : '') + '">' + (hoy ? "¡Hoy!" : man ? "¡Mañana!" : esc(e.tag)) + '</span>';
@@ -554,7 +559,7 @@
     h += '<div class="sub">Fechas especiales</div><div class="eventos" id="evs">';
     evs.forEach(function (e) {
       var cerrado = e.cierre && HOY > e.cierre, fs = fotosEv(e);
-      h += '<div class="ev" role="button" tabindex="0" data-ev="' + EVENTOS.indexOf(e) + '">' + (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img loading="lazy" alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '') +
+      h += '<div class="ev" role="button" tabindex="0" data-ev="' + EVENTOS.indexOf(e) + '">' + (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img loading="lazy" alt="" src="' + esc(s) + '">'; }).join("") + credEv(e) + '</div>' : '') +
         '<div class="top">' + etiqueta(e) + '<span class="cuando">' + esc(e.fecha) + '</span></div>' +
         '<div class="t">' + esc(e.t) + '</div>' + (e.sub ? '<div class="su">' + esc(e.sub) + '</div>' : '') + '<div class="s">' + esc(e.s) + '</div>' +
         (e.precio ? '<div class="pr">' + esc(e.precio) + '</div>' : '') + (e.urgente && !cerrado ? '<div><span class="urg">' + esc(e.urgente) + '</span></div>' : '') +
@@ -872,7 +877,7 @@
     volverAlCal = !!desdeCal;
     var fs = fotosEv(e), cerrado = e.cierre && HOY > e.cierre;
     var h = (desdeCal ? '<button class="volver" type="button" id="volver">‹ Calendario</button>' : '') +
-      (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img alt="" src="' + esc(s) + '">'; }).join("") + '</div>' : '<div class="im vacia">' + CABANA.replace('width="30" height="26"', 'width="56" height="48"') + '</div>') +
+      (fs.length ? '<div class="im">' + fs.map(function (s) { return '<img alt="" src="' + esc(s) + '">'; }).join("") + credEv(e) + '</div>' : '<div class="im vacia">' + CABANA.replace('width="30" height="26"', 'width="56" height="48"') + '</div>') +
       '<div class="cu"><div class="top">' + etiqueta(e) + '<span class="cuando">' + esc(e.fecha) + '</span></div><h3>' + esc(e.t) + '</h3>' +
       (e.sub ? '<div class="su">' + esc(e.sub) + '</div>' : '') + '<div class="s">' + esc(e.s) + '</div>' +
       (e.precio ? '<div class="pr">' + esc(e.precio) + '</div>' : '') + (e.urgente && !cerrado ? '<div><span class="urg">' + esc(e.urgente) + '</span></div>' : '') +
@@ -1033,7 +1038,7 @@
     }
     if (window.JUEGOS) return dibujarJuego();
     var s = document.createElement("script");
-    s.src = "juegos/juegos.js?v=2"; s.onload = dibujarJuego;
+    s.src = "juegos/juegos.js?v=3"; s.onload = dibujarJuego;
     s.onerror = function () { var c = document.getElementById("juego"); if (c) c.innerHTML = '<div class="jg" style="padding:40px 16px;text-align:center">No se pudo cargar el juego. Probá de nuevo.</div>'; };
     document.head.appendChild(s);
   }
