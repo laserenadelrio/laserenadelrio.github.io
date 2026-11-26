@@ -669,7 +669,7 @@
       if (!APARTE[id]) return tateti(cont);
       if (JUEGOS.extra[id]) return JUEGOS.extra[id](cont);
       var s = document.createElement("script");
-      s.src = "juegos/" + id + ".js?v=2";
+      s.src = "juegos/" + id + ".js?v=3";
       s.onload = function () { if (JUEGOS.extra[id] && document.body.contains(cont)) { JUEGOS.extra[id](cont); if (JUEGOS.alAbrir) JUEGOS.alAbrir(id, cont); } };
       s.onerror = function () { cont.innerHTML = '<div class="jg" style="padding:40px 16px">No se pudo cargar el juego. Probá de nuevo.</div>'; };
       document.head.appendChild(s);
