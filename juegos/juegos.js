@@ -657,7 +657,22 @@
     nueva();
   }
 
+  // Juegos de la segunda tanda (26/11): cada uno en su archivo (juegos/<id>.js), que se baja recién al abrirlo.
+  // El archivo se registra en JUEGOS.extra[id] y usa las herramientas comunes de JUEGOS.util.
+  var PROPIOS = { tateti: tateti, ahorcado: ahorcado, memotest: memotest, cuatro: cuatro, plato: quePlato, generala: generala };
+  var APARTE = { colorear: 1, rompe: 1, oca: 1, duende: 1 };
   window.JUEGOS = {
-    abrir: function (id, cont) { ({ tateti: tateti, ahorcado: ahorcado, memotest: memotest, cuatro: cuatro, plato: quePlato, generala: generala }[id] || tateti)(cont); }
+    extra: {},
+    util: { el: el, azar: azar, finHTML: finHTML, festejo: festejo, cartelHTML: cartelHTML, turnoCartel: turnoCartel, fotosFudo: fotosFudo, variados: variados, CAB: CAB, TET: TET, TRE: TRE, RESENA: RESENA },
+    abrir: function (id, cont) {
+      if (PROPIOS[id]) return PROPIOS[id](cont);
+      if (!APARTE[id]) return tateti(cont);
+      if (JUEGOS.extra[id]) return JUEGOS.extra[id](cont);
+      var s = document.createElement("script");
+      s.src = "juegos/" + id + ".js?v=2";
+      s.onload = function () { if (JUEGOS.extra[id] && document.body.contains(cont)) { JUEGOS.extra[id](cont); if (JUEGOS.alAbrir) JUEGOS.alAbrir(id, cont); } };
+      s.onerror = function () { cont.innerHTML = '<div class="jg" style="padding:40px 16px">No se pudo cargar el juego. Probá de nuevo.</div>'; };
+      document.head.appendChild(s);
+    }
   };
 })();
