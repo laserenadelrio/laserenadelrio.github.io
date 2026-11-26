@@ -128,6 +128,49 @@
   .jjue .ic svg { width: 34px; height: 34px; display: block; }
   .jjue b { display: block; color: var(--oro); font-family: Georgia, serif; font-weight: 400; font-size: 15.5px; }
   .jjue em { font-style: normal; font-weight: 700; color: #1d2e22; background: var(--oro); border-radius: 999px; padding: 6px 10px; flex: none; font-size: 12.5px; }
+  /* Jueves de Juegos y sus reglamentos (26/11): dentro del desplegable de juegos */
+  .jjv { margin-top: 14px; position: relative; border-radius: 18px; padding: 16px 14px 14px; color: var(--papel); text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(184,134,43,.3), transparent 65%), var(--verde); }
+  .jjv::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,134,43,.6); border-radius: 13px; pointer-events: none; }
+  .jjv .k { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--oro); }
+  .jjv .jt { font-family: Georgia, serif; font-style: italic; font-size: 30px; line-height: 1; margin-top: 6px; }
+  .jjv .cu2 { font-size: 13.5px; color: #d9c79f; margin-top: 8px; line-height: 1.4; }
+  .jjv .hh { display: inline-block; margin-top: 10px; background: var(--oro); color: #1d2e22; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; border-radius: 8px; padding: 6px 12px; }
+  .jjv .rt { font-family: Georgia, serif; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--oro); margin: 16px 0 8px; }
+  .jjv .rgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; position: relative; }
+  .jjv .rgs button { font: inherit; font-size: 13.5px; font-weight: 600; color: var(--verde); background: var(--papel); border: none; border-radius: 10px; padding: 9px 4px; cursor: pointer; }
+  .jjv .rgs button:active { transform: scale(.96); }
+  .jjv .bts { display: flex; gap: 8px; margin-top: 12px; position: relative; }
+  .jjv .bts a { flex: 1; text-decoration: none; font-weight: 700; font-size: 13.5px; border-radius: 10px; padding: 9px 6px; }
+  .jjv .bts .r { background: var(--oro); color: #1d2e22; }
+  .jjv .bts .t { color: var(--papel); border: 1.5px solid rgba(246,240,228,.6); }
+  /* Reglamento abierto en la hoja */
+  .rg { padding: 18px 16px 0; }
+  .rg h3 { font-family: Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: .12em; text-transform: uppercase; color: var(--verde); text-align: center; margin: 4px 0 10px; }
+  .rg .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; justify-content: center; }
+  .rg .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 14px; background: var(--verde); color: var(--papel); }
+  .rg .chip.oro { background: var(--oro); }
+  .rg .chip.linea { background: transparent; color: var(--verde); border: 1px solid var(--verde); }
+  .rg .bajada { font-family: Georgia, serif; font-style: italic; color: var(--gris); font-size: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--oro); margin-bottom: 4px; text-align: center; }
+  .rg h2 { font-family: Georgia, serif; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--verde); margin: 14px 0 5px; }
+  .rg p, .rg li { font-size: 15px; line-height: 1.5; }
+  .rg p + p { margin-top: 6px; }
+  .rg ul, .rg ol { padding-left: 20px; }
+  .rg li { margin: 3px 0; }
+  .rg b { color: var(--verde); }
+  .rg table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 14px; }
+  .rg td { padding: 6px; border-bottom: 1px solid var(--linea); vertical-align: top; line-height: 1.35; }
+  .rg td:last-child { text-align: right; font-weight: 600; color: var(--verde); }
+  .rg table.n td:first-child { font-weight: 600; color: var(--barro, #a8502a); width: 26px; }
+  .rg table.n td:last-child { text-align: left; font-weight: 400; color: var(--tinta); }
+  .rg .orden { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0; }
+  .rg .orden span { font-size: 13px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; padding: 2px 7px; }
+  .rg .orden span.top1 { background: var(--verde); color: var(--papel); border-color: var(--verde); }
+  .rg .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .rg .tip { margin-top: 12px; background: #fff; border: 1px dashed var(--oro); border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.45; }
+  .rg .otros { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 18px 0 4px; }
+  .rg .otros button { font: inherit; font-size: 13px; color: var(--verde); background: transparent; border: 1px solid var(--verde); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .rg .otros button.on { background: var(--verde); color: var(--papel); }
   @media (prefers-reduced-motion: reduce) { .jlogos span, section.pleg.abierta .jhero, section.pleg.abierta .jcard { animation: none; } }
   /* Logo del juego arriba de su título, dentro de la hoja */
   .jlogo { width: 68px; height: 68px; margin: 0 auto 8px; border-radius: 18px; background: var(--verde); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(184,134,43,.55), 0 4px 12px rgba(31,58,43,.2); }
@@ -720,6 +763,7 @@
     { id: "plato", t: "¿Qué plato es?", s: "Adiviná el plato de bien de cerca.", ch: ["👤 1 o más", "5 rondas"] },
     { id: "generala", t: "Generala", s: "Con dados en pantalla.", ch: ["👥 1 a 4", "🎲 dados"] }
   ];
+  var REGLAS = [["truco", "Truco"], ["chinchon", "Chinchón"], ["podrida", "Podrida"], ["carioca", "Carioca"], ["generala", "Generala"], ["desconfio", "Desconfío"]];
   var hj = '<div class="jhero"><div class="jlogos">' + JUEGOS_LISTA.map(function (j, i) { return '<span style="--i:' + i + '">' + LOGO[j.id] + '</span>'; }).join("") + '</div>' +
     '<div class="jt">¿Una partida mientras sale la comida?</div>' +
     '<div class="js">Seis juegos para jugar en la mesa desde el celu. De a uno, de a dos o contra la casa.</div></div>' +
@@ -727,8 +771,16 @@
       return '<button type="button" class="jcard" data-jg="' + j.id + '" style="--i:' + i + '"><span class="ic">' + LOGO[j.id] + '</span><b>' + esc(j.t) + '</b><span class="jd">' + esc(j.s) + '</span>' +
         '<span class="chips">' + j.ch.map(function (c) { return '<i>' + esc(c) + '</i>'; }).join("") + '</span><span class="va">Jugar ›</span></button>';
     }).join("") + '</div>' +
-    '<a class="jjue" href="' + wa("¡Hola! Quiero reservar una mesa para el Jueves de Juegos") + '"><span class="ic">' + LOGO.generala + '</span><span><b>Jueves de Juegos</b>' +
-    (HOY < "2026-12-03" ? 'Desde el jueves 3/12, a las 20 h' : 'Todos los jueves, desde las 20 h') + ': truco, generala y más, con cartas y dados de verdad.</span><em>Reservá ›</em></a>';
+    // 26/11 (Marcos): los reglamentos del librito van acá mismo, promocionando los Jueves de Juegos.
+    // Cada reglamento se abre en la hoja, leído de reglamentos/index.html (que se arma desde el librito).
+    '<div class="jjv"><div class="k">' + (HOY < "2026-12-03" ? 'Desde el jueves 3/12 · 20 h' : 'Todos los jueves · 20 h') + '</div>' +
+    '<div class="jt">Jueves de Juegos</div>' +
+    '<div class="cu2">Cartas, dados, anotadores y reglamentos en la mesa. Traé a tu gente y jugá en la cabaña.</div>' +
+    '<div class="hh">Happy hour de latas · toda la noche</div>' +
+    '<div class="rt">Los reglamentos de la casa</div><div class="rgs">' +
+    REGLAS.map(function (r) { return '<button type="button" data-rg="' + r[0] + '">' + esc(r[1]) + '</button>'; }).join("") + '</div>' +
+    '<div class="bts"><a class="r" href="' + wa("¡Hola! Quiero reservar una mesa para el Jueves de Juegos") + '">Reservá tu mesa</a>' +
+    '<a class="t" href="reglamentos/">Ver todos ›</a></div></div>';
   seccion("juegos", "Juegos para la mesa", hj, "¡6 juegos!", 1);
 
   document.getElementById("carta").innerHTML = html;
@@ -948,6 +1000,7 @@
     var h = location.hash.slice(1);
     if (h === "calendario") { abrirCalendario(calPag); return; }
     if (/^juego-/.test(h)) { abrirJuego(h.slice(6)); return; }
+    if (/^regla-/.test(h)) { abrirRegla(h.slice(6)); return; }
     for (var i = 0; i < EVENTOS.length; i++) if (idEv(EVENTOS[i]) === h) { abrirEvento(i, volverAlCal); return; }
     for (var i = 0; i < FICHAS.length; i++) if (FICHAS[i].id === h) { abrirPlato(i); return; }
     cerrarHoja();
@@ -969,7 +1022,34 @@
   document.querySelectorAll("[data-jg]").forEach(function (b) {
     b.addEventListener("click", function () { abrirJuego(b.getAttribute("data-jg")); });
   });
-  if (/^#(evento-|plato-|juego-|calendario$)/.test(location.hash)) abrirDesdeHash();
+  // Reglamentos del Jueves de Juegos: se leen una vez de reglamentos/index.html y se muestran en la hoja.
+  var reglasDoc = null;
+  function abrirRegla(id) {
+    mostrarHoja('<div class="rg" id="rg"><div style="padding:40px 0;text-align:center;color:var(--gris)">Cargando el reglamento…</div></div>', "regla-" + id);
+    function dibujar() {
+      var c = document.getElementById("rg"), d = reglasDoc && reglasDoc.getElementById(id); if (!c) return;
+      if (!d) { c.innerHTML = '<div style="padding:40px 0;text-align:center">No se pudo cargar el reglamento. Probá de nuevo.</div>'; return; }
+      var r = REGLAS.filter(function (x) { return x[0] === id; })[0];
+      c.innerHTML = (LOGO.generala ? '<div class="jlogo">' + (id === "generala" ? LOGO.generala : LOGO_CARTAS) + '</div>' : '') +
+        '<h3>' + esc(r ? r[1] : id) + '</h3>' + d.querySelector(".in").innerHTML +
+        '<div class="otros">' + REGLAS.map(function (x) { return '<button type="button" data-rg2="' + x[0] + '"' + (x[0] === id ? ' class="on"' : '') + '>' + esc(x[1]) + '</button>'; }).join("") + '</div>' +
+        '<div class="acciones"><a class="btn" href="' + wa("¡Hola! Quiero reservar una mesa para el Jueves de Juegos") + '">Reservá para el jueves</a></div>';
+      c.querySelectorAll("[data-rg2]").forEach(function (b) {
+        b.addEventListener("click", function () { var n = b.getAttribute("data-rg2"); if (n !== id) { history.replaceState(null, "", "#regla-" + n); abrirReglaSinHist(n); } });
+      });
+    }
+    if (reglasDoc) return dibujar();
+    fetch("reglamentos/").then(function (r) { return r.text(); }).then(function (t) {
+      reglasDoc = new DOMParser().parseFromString(t, "text/html"); dibujar();
+    }).catch(dibujar);
+  }
+  function abrirReglaSinHist(id) { abrirRegla(id); hoja.scrollTop = 0; }
+  var LOGO_CARTAS = '<svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-12 18 26)"><rect x="7" y="10" width="20" height="29" rx="3.5" fill="#f6f0e4"/><circle cx="17" cy="24.5" r="5" fill="none" stroke="#a8502a" stroke-width="2.4"/></g>' +
+    '<g transform="rotate(10 31 23)"><rect x="21" y="8" width="20" height="29" rx="3.5" fill="#b8862b"/><path d="M31 15 L31 30 M27 19 L35 19" stroke="#f6f0e4" stroke-width="2.6" stroke-linecap="round"/></g></svg>';
+  document.querySelectorAll("[data-rg]").forEach(function (b) {
+    b.addEventListener("click", function () { abrirRegla(b.getAttribute("data-rg")); });
+  });
+  if (/^#(evento-|plato-|juego-|regla-|calendario$)/.test(location.hash)) abrirDesdeHash();
 
   // Categorías desplegables: al abrir una se cierran las demás.
   // El título que se toca queda quieto en la pantalla (si se cierra otra categoría de más arriba, se compensa el corrimiento).
