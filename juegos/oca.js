@@ -29,7 +29,12 @@
     ["Se llenó el deck un domingo de sol.", 2],
     ["Un turista se sacó una foto con la tetera gigante de la vereda.", 1],
     ["Halloween: caramelos para todos los chicos.", "trebol"],
-    ["Martes de vermut: un Kit Vermutero para la mesa.", 1]
+    ["Martes de vermut: un Kit Vermutero para la mesa.", 1],
+    ["Pasó Checho en bicicleta a usar el baño y dejó cambio. Buen augurio.", "trebol"],
+    ["Checho te cuidó el auto toda la tarde.", 2],
+    ["Caipi, la Jefa, se escapó al deck y saliste a buscarla.", "turno"],
+    ["Caipi se robó una medialuna de una mesa. Caos total.", -2],
+    ["Caipi inspeccionó la cocina y dio el visto bueno.", "tira"]
   ];
   // Las 30 casillas. ef: "tetera" (salta a la próxima y tira), número (avanza o retrocede), {a: casilla} (va a esa casilla),
   // "tira", "turno", "trebol", "hist", "chacal". malo: 1 = un trébol te salva.
@@ -45,7 +50,7 @@
     { ic: "🫖", t: "Tetera", ef: "tetera" },
     { ic: "🍕", t: "Pizza libre", d: "Miércoles de PIZZA LIBRE: comés rápido y seguís viaje.", ef: 2 },
     { ic: "⭐", t: "Historia", ef: "hist" },
-    { ic: "🍀", t: "Trébol", d: "Un cliente te regaló un trébol de cuatro hojas.", ef: "trebol" },
+    { ic: "🚲", t: "Checho", d: "Pasó Checho con su bicicleta a dejar cambio. ¡Buen augurio!", ef: "trebol" },
     { ic: "🌊", t: "Crecida", d: "El agua tapó la costanera y hay que dar la vuelta.", ef: { a: 10 }, malo: 1 },
     { ic: "⭐", t: "Historia", ef: "hist" },
     { ic: "🫖", t: "Tetera", ef: "tetera" },
@@ -59,7 +64,7 @@
     { ic: "⭐", t: "Historia", ef: "hist" },
     { ic: "🌧️", t: "Sudestada", d: "Se largó la sudestada y te volaron las servilletas.", ef: { a: 14 }, malo: 1 },
     { ic: "🍀", t: "Trébol", d: "Un trébol más para la colección.", ef: "trebol" },
-    { ic: "⭐", t: "Historia", ef: "hist" },
+    { ic: "🐶", t: "Caipi", d: "Llegó Caipi, la Jefa del negocio, y desordenó todo.", ef: "caipi" },
     { ic: "🫖", t: "Tetera", d: "La última tetera, la gigante de la vereda.", ef: "tira" },
     { ic: "🤦", t: "¡Casaló!", d: "Pediste 40 kg de rúcula para un lunes cerrado. ¡Casaló!", ef: { a: 23 }, malo: 1 },
     { ic: "⭐", t: "Historia", ef: "hist" },
@@ -76,6 +81,12 @@
     if (q.ef === "tetera" || i === 27) return "te"; if (q.ef === "hist") return "hi"; if (q.ef === "trebol") return "tr";
     return q.malo ? "ma" : "bu";
   }
+  // Un dado dibujado, crema con puntos verdes (como los del PEXA).
+  var PIPS = { 1: [[20, 20]], 2: [[11, 11], [29, 29]], 3: [[11, 11], [20, 20], [29, 29]], 4: [[11, 11], [29, 11], [11, 29], [29, 29]], 5: [[11, 11], [29, 11], [20, 20], [11, 29], [29, 29]], 6: [[11, 11], [29, 11], [11, 20], [29, 20], [11, 29], [29, 29]] };
+  function dadoSVG(nn) {
+    return '<svg viewBox="0 0 40 40" width="52" height="52" aria-label="Dado: ' + nn + '"><rect x="2" y="2" width="36" height="36" rx="8" fill="#fbf6ea" stroke="#1f3a2b" stroke-width="2.6"/>' +
+      PIPS[nn].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.7" fill="#1f3a2b"/>'; }).join("") + '</svg>';
+  }
   function efTexto(ef) {
     if (ef === "tira") return "Tirás de nuevo."; if (ef === "turno") return "Perdés un turno."; if (ef === "trebol") return "Ganás un trébol 🍀.";
     if (typeof ef === "number") return ef > 0 ? "Avanzás " + ef + "." : "Retrocedés " + (-ef) + ".";
@@ -88,17 +99,18 @@
     c.innerHTML = '<div class="jg oc"><h3>De tetera en tetera</h3><div class="bj">El juego de la oca de La Serena. Tirá el dado, avanzá y mirá qué te toca en cada casilla. Gana el primero que llega a la pizza 🍕 de la 30.</div>' +
       '<div class="modos"><button type="button" data-n="1">Contra la casa</button><button type="button" data-n="2" class="on">2</button><button type="button" data-n="3">3</button><button type="button" data-n="4">4</button></div>' +
       U.cartelHTML() + '<div class="jug"></div>' +
-      '<div class="otb"><svg class="fl" viewBox="0 0 600 500"></svg><div class="tb"></div><div class="ocv"></div></div>' +
-      '<div class="ocd"><button type="button" class="tirar"><span class="dado">🎲</span> Tirar el dado</button></div>' +
+      '<div class="otb"><svg class="sd" viewBox="0 0 600 500" preserveAspectRatio="none"></svg><div class="tb"></div><svg class="fl" viewBox="0 0 600 500" preserveAspectRatio="none"></svg>' +
+      '<button type="button" class="dm" aria-label="Tirar el dado"><span class="dmd">' + dadoSVG(5) + '</span><b>¡Tocá o revoleá el dado!</b></button><div class="ocv"></div></div>' +
       '<div class="msg"></div>' + U.finHTML() +
       '<details class="ayu" open><summary>Cómo se juega</summary><ul>' +
-      '<li>Por turno, tirás el dado y avanzás. Al caer, aparece la tarjeta de la casilla. <b>Tocá cualquier casilla</b> para ver qué hace.</li>' +
+      '<li>Por turno, <b>tocá el dado</b> (o agarralo y revoleálo) y avanzás por el sendero. Al caer, aparece la tarjeta de la casilla. <b>Tocá cualquier casilla</b> para ver qué hace.</li>' +
+      '<li>🌉 <b>Puentes</b>: las flechas doradas te llevan para adelante y las rojas para atrás; los puntitos se mueven hacia donde vas.</li>' +
       '<li>🫖 <b>Teteras</b>: "De tetera en tetera y tiro porque me toca": saltás a la próxima tetera y tirás otra vez.</li>' +
       '<li>🍀 <b>Tréboles</b>: te los guardás (hasta 3). Si caés en una casilla mala (roja), un trébol te salva.</li>' +
       '<li>⭐ <b>Historias de La Serena</b>: sacás una tarjeta con algo que pasó de verdad.</li>' +
       '<li>🍕 <b>Llegada</b>: hay que llegar justo a la 30; si te pasás, rebotás para atrás.</li></ul></details></div>';
     var tb = c.querySelector(".tb"), fl = c.querySelector(".fl"), ov = c.querySelector(".ocv"), jugEl = c.querySelector(".jug"),
-        msg = c.querySelector(".msg"), f = c.querySelector(".fin"), btn = c.querySelector(".tirar"), dado = c.querySelector(".dado");
+        msg = c.querySelector(".msg"), f = c.querySelector(".fin"), sd = c.querySelector(".sd"), otb = c.querySelector(".otb"), dm = c.querySelector(".dm");
 
     function nombre(j) { return bot ? (j === 0 ? "Vos" : "La casa") : FICHAS[j][1]; }
     function dibujar() {
@@ -109,17 +121,26 @@
           '<b>' + i + '</b><i>' + q.ic + '</i><small>' + q.t + '</small><span class="fs"></span></button>';
       }
       tb.innerHTML = h;
-      // Flechas: saltos para adelante (dorado) y para atrás (rojo).
       function cen(i) { var p = lugar(i); return [p[0] * 100 + 50, p[1] * 100 + 50]; }
+      // El sendero: un camino de tierra que pasa por todas las casillas en orden, con flechitas que marcan para dónde se va.
+      var cam = "M" + cen(1).join(" "), fle = "";
+      for (var k = 2; k <= META; k++) {
+        var A = cen(k - 1), B = cen(k); cam += " L" + B.join(" ");
+        var mx = (A[0] + B[0]) / 2, my = (A[1] + B[1]) / 2, ang = Math.atan2(B[1] - A[1], B[0] - A[0]) * 180 / Math.PI;
+        fle += '<path d="M-7 -9 L5 0 L-7 9" transform="translate(' + mx + ' ' + my + ') rotate(' + ang + ')"/>';
+      }
+      sd.innerHTML = '<path class="cam" d="' + cam + '"/><path class="camb" d="' + cam + '"/><g class="chev">' + fle + '</g>';
+      // Puentes: saltos para adelante (dorado) y para atrás (rojo), con los puntitos corriendo hacia donde se va.
       var sal = [[4, 9], [9, 15], [15, 21], [21, 27], [8, 17]], vue = [[13, 10], [24, 14], [28, 23]], s = "";
       function flecha(a, b, cl) {
-        var A = cen(a), B = cen(b), mx = (A[0] + B[0]) / 2 + (A[1] === B[1] ? 0 : 40), my = (A[1] + B[1]) / 2 - (A[1] === B[1] ? 45 : 0);
-        return '<path class="' + cl + '" d="M' + A[0] + ' ' + (A[1] - 8) + ' Q' + mx + ' ' + my + ' ' + B[0] + ' ' + (B[1] + 8) + '" marker-end="url(#pf-' + cl + ')"/>';
+        var A = cen(a), B = cen(b), mx = (A[0] + B[0]) / 2 + (A[1] === B[1] ? 0 : 46), my = (A[1] + B[1]) / 2 - (A[1] === B[1] ? 50 : 0);
+        var d = 'M' + (A[0] + 16) + ' ' + (A[1] - 22) + ' Q' + mx + ' ' + my + ' ' + (B[0] + 16) + ' ' + (B[1] + 20);
+        return '<path class="bo ' + cl + '" d="' + d + '"/><path class="pu ' + cl + '" d="' + d + '" marker-end="url(#pf-' + cl + ')"/>';
       }
       sal.forEach(function (x) { s += flecha(x[0], x[1], "ad"); });
       vue.forEach(function (x) { s += flecha(x[0], x[1], "at"); });
-      fl.innerHTML = '<defs><marker id="pf-ad" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#b8862b"/></marker>' +
-        '<marker id="pf-at" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#c0503a"/></marker></defs>' + s;
+      fl.innerHTML = '<defs><marker id="pf-ad" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#e9b949" stroke="#5a3d10" stroke-width="1.2"/></marker>' +
+        '<marker id="pf-at" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#e0664d" stroke="#5a1d10" stroke-width="1.2"/></marker></defs>' + s;
       pintar();
     }
     function pintar() {
@@ -132,7 +153,7 @@
       }).join("");
       var fi = '<span class="fi">' + FICHAS[turno][0] + '</span>';
       U.turnoCartel(c, fi + (bot ? (turno === 0 ? "Te toca a vos" : "Tira la casa…") : "Le toca a " + FICHAS[turno][1].toLowerCase()), fin ? "nada" : ["", "barro", "oro", ""][turno]);
-      btn.disabled = fin || ocupado || (bot && turno === 1);
+      dm.classList.toggle("on", !fin && !ocupado && !(bot && turno === 1));
     }
     function nueva() {
       pos = []; espera = []; treb = []; turno = 0; fin = false; ocupado = false;
@@ -147,23 +168,64 @@
       })();
     }
     function saltar(j, a, luego) { setTimeout(function () { pos[j] = a; pintar(); luego(); }, 250); }
+    // El dado, como en el PEXA: se toca (cae girando sobre el tablero) o se agarra y se revolea (rebota en el tablero).
     function tirar() {
       if (fin || ocupado) return;
       ocupado = true; ov.classList.remove("on"); pintar();
-      var k = 0, d;
-      dado.classList.add("gira");
-      (function rueda() {
-        d = 1 + Math.floor(Math.random() * 6); dado.textContent = "⚀⚁⚂⚃⚄⚅"[d - 1];
-        if (++k < 8) return setTimeout(rueda, 70);
-        dado.classList.remove("gira");
-        var j = turno, dest = pos[j] + d;
-        msg.innerHTML = FICHAS[j][0] + " " + nombre(j) + " sacó un <b>" + d + "</b>.";
+      var d = 1 + Math.floor(Math.random() * 6), el = document.createElement("span");
+      el.className = "tiro"; el.innerHTML = dadoSVG(1 + Math.floor(Math.random() * 6)); otb.appendChild(el);
+      var k = 0, iv = setInterval(function () { el.innerHTML = dadoSVG(++k > 6 ? d : 1 + Math.floor(Math.random() * 6)); if (k > 6) clearInterval(iv); }, 85);
+      setTimeout(function () { el.classList.add("cae"); resultado(d); }, 800);
+      setTimeout(function () { el.remove(); }, 1700);
+    }
+    function revolear(e0) {
+      if (fin || ocupado) return;
+      var R = otb.getBoundingClientRect(), x0 = e0.clientX, y0 = e0.clientY, pts = [[x0, y0, performance.now()]], arr = false, el = null, D = null;
+      function mueve(e) {
+        if (!arr && Math.hypot(e.clientX - x0, e.clientY - y0) > 12) {
+          arr = true; ocupado = true; pintar();
+          el = document.createElement("span"); el.className = "tiro vuela"; el.innerHTML = dadoSVG(5); otb.appendChild(el);
+          D = { x: e.clientX - R.left, y: e.clientY - R.top, vx: 0, vy: 0, a: 0, va: 0 };
+        }
+        if (!arr) return;
+        pts.push([e.clientX, e.clientY, performance.now()]); if (pts.length > 6) pts.shift();
+        D.x = e.clientX - R.left; D.y = e.clientY - R.top; D.a += 6; pon(); e.preventDefault();
+      }
+      function pon() { el.style.transform = "translate(" + (D.x - 26).toFixed(1) + "px," + (D.y - 26).toFixed(1) + "px) rotate(" + D.a.toFixed(0) + "deg)"; }
+      function suelta() {
+        dm.removeEventListener("pointermove", mueve); dm.removeEventListener("pointerup", suelta); dm.removeEventListener("pointercancel", suelta);
+        if (!arr) return tirar();
+        var a = pts[0], b = pts[pts.length - 1], dt = Math.max(16, b[2] - a[2]), vx = (b[0] - a[0]) / dt * 1000, vy = (b[1] - a[1]) / dt * 1000;
+        if (Math.hypot(vx, vy) < 500) { var cx = R.width / 2 - D.x, cy = R.height / 2 - D.y, nn = Math.hypot(cx, cy) || 1; vx = vx * 0.4 + cx / nn * 700; vy = vy * 0.4 + cy / nn * 700; }
+        var sp = Math.hypot(vx, vy); if (sp > 2400) { vx *= 2400 / sp; vy *= 2400 / sp; }
+        D.vx = vx; D.vy = vy; D.va = (Math.random() < 0.5 ? -1 : 1) * (500 + Math.random() * 500);
+        var d = 1 + Math.floor(Math.random() * 6), t0 = performance.now(), ult = t0, cara = 0, m = 30;
+        (function paso(now) {
+          var s = Math.min(0.04, (now - ult) / 1000); ult = now;
+          D.x += D.vx * s; D.y += D.vy * s; D.a += D.va * s;
+          if (D.x < m) { D.x = m; D.vx = Math.abs(D.vx) * 0.62; D.va *= -0.8; } if (D.x > R.width - m) { D.x = R.width - m; D.vx = -Math.abs(D.vx) * 0.62; D.va *= -0.8; }
+          if (D.y < m) { D.y = m; D.vy = Math.abs(D.vy) * 0.62; D.va *= -0.8; } if (D.y > R.height - m) { D.y = R.height - m; D.vy = -Math.abs(D.vy) * 0.62; D.va *= -0.8; }
+          var fr = Math.pow(0.18, s); D.vx *= fr; D.vy *= fr; D.va *= Math.pow(0.12, s);
+          var rapido = Math.hypot(D.vx, D.vy) > 45;
+          if (now - cara > 90) { cara = now; el.innerHTML = dadoSVG(Math.hypot(D.vx, D.vy) > 220 ? 1 + Math.floor(Math.random() * 6) : d); }
+          pon();
+          if (rapido && now - t0 < 2600) return requestAnimationFrame(paso);
+          D.a = Math.round(D.a / 90) * 90; el.style.transition = "transform .25s ease-out"; el.innerHTML = dadoSVG(d); pon(); el.classList.add("cae");
+          resultado(d); setTimeout(function () { el.remove(); }, 1300);
+        })(t0);
+      }
+      dm.addEventListener("pointermove", mueve); dm.addEventListener("pointerup", suelta); dm.addEventListener("pointercancel", suelta);
+    }
+    function resultado(d) {
+      var j = turno, dest = pos[j] + d;
+      msg.innerHTML = FICHAS[j][0] + " " + nombre(j) + " sacó un <b>" + d + "</b>.";
+      setTimeout(function () {
         if (dest > META) {
           var reb = META - (dest - META);
           msg.innerHTML += " Se pasó y rebota a la " + reb + ".";
           mover(j, META, function () { setTimeout(function () { mover(j, reb, function () { caer(j); }); }, 250); });
         } else mover(j, dest, function () { caer(j); });
-      })();
+      }, 350);
     }
     // La tarjeta de la casilla: qué pasa y el botón para seguir.
     function tarjeta(j, q, titulo, texto, efecto, luego) {
@@ -207,6 +269,12 @@
           var t = pos[j]; pos[j] = pos[con]; pos[con] = t; pintar(); setTimeout(function () { fin_(j, false); }, 300);
         });
       }
+      if (ef === "caipi") {
+        return tarjeta(j, q, titulo, texto, "Todos los demás retroceden 2.", function () {
+          for (var k = 0; k < n; k++) if (k !== j) pos[k] = Math.max(1, pos[k] - 2);
+          pintar(); setTimeout(function () { fin_(j, false); }, 300);
+        });
+      }
       tarjeta(j, q, titulo, texto, efTexto(ef), function () {
         if (ef === "tira") return fin_(j, true);
         if (ef === "turno") { espera[j] = 1; return fin_(j, false); }
@@ -234,10 +302,10 @@
       var i = +b.getAttribute("data-i"), q = CAS[i], ef = q.ef, d = q.d || "";
       if (ef === "hist") d = "Sacás una tarjeta con algo que pasó de verdad en La Serena.";
       if (ef === "tetera") d = "De tetera en tetera y tiro porque me toca: saltás a la " + TETERAS[TETERAS.indexOf(i) + 1] + " y tirás de nuevo.";
-      var e2 = ef === "chacal" || ef === "hist" || ef === "tetera" ? "" : efTexto(ef);
+      var e2 = ef === "chacal" || ef === "hist" || ef === "tetera" ? "" : ef === "caipi" ? "Todos los demás retroceden 2." : efTexto(ef);
       msg.innerHTML = q.ic + " <b>Casilla " + i + " · " + q.t + "</b>: " + d + (e2 ? " " + e2 : "") + (q.malo ? " <i>(un trébol te salva)</i>" : "");
     });
-    btn.addEventListener("click", function () { if (!(bot && turno === 1)) tirar(); });
+    dm.addEventListener("pointerdown", function (e) { if (e.button > 0 || (bot && turno === 1)) return; try { dm.setPointerCapture(e.pointerId); } catch (x) {} revolear(e); });
     c.querySelectorAll(".modos button").forEach(function (b) {
       b.addEventListener("click", function () {
         var v = +b.getAttribute("data-n"); bot = v === 1; n = bot ? 2 : v;
@@ -257,12 +325,31 @@
     ".oc .jug em { font-style: normal; width: 24px; height: 24px; border-radius: 50%; background: var(--c); display: flex; align-items: center; justify-content: center; font-size: 13px; }",
     ".oc .jug small { font-weight: 400; color: var(--gris); }",
     ".oc .jug b { font-size: 11px; letter-spacing: -2px; }",
-    ".oc .otb { position: relative; width: min(360px, 94vw); aspect-ratio: 6 / 5; margin: 10px auto 0; padding: 4px; border-radius: 12px; background: var(--verde); box-sizing: border-box; }",
-    ".oc .tb { position: absolute; inset: 4px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 3px; }",
+    ".oc .otb { position: relative; width: min(370px, 95vw); aspect-ratio: 6 / 5; margin: 10px auto 0; padding: 4px; border-radius: 12px; background: #3d6b45; box-sizing: border-box; box-shadow: inset 0 0 0 3px var(--verde); }",
+    ".oc .sd { position: absolute; inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); z-index: 0; pointer-events: none; }",
+    ".oc .sd .cam { fill: none; stroke: #d8b98a; stroke-width: 30; stroke-linejoin: round; stroke-linecap: round; }",
+    ".oc .sd .camb { fill: none; stroke: #b8935e; stroke-width: 2; stroke-dasharray: 2 10; stroke-linecap: round; }",
+    ".oc .sd .chev path { fill: none; stroke: #6b4a22; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }",
+    ".oc .tb { position: absolute; inset: 4px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 9px; z-index: 1; }",
     ".oc .fl { position: absolute; inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); z-index: 2; pointer-events: none; }",
-    ".oc .fl path { fill: none; stroke-width: 4; stroke-dasharray: 8 7; stroke-linecap: round; opacity: .7; }",
-    ".oc .fl path.ad { stroke: #b8862b; }",
-    ".oc .fl path.at { stroke: #c0503a; }",
+    ".oc .fl path { fill: none; stroke-linecap: round; }",
+    ".oc .fl path.bo { stroke: #2a2520; stroke-width: 7; opacity: .45; }",
+    ".oc .fl path.pu { stroke-width: 4; stroke-dasharray: 9 8; animation: puVa 1s linear infinite; }",
+    ".oc .fl path.pu.ad { stroke: #e9b949; }",
+    ".oc .fl path.pu.at { stroke: #e0664d; }",
+    "@keyframes puVa { to { stroke-dashoffset: -18; } }",
+    ".oc .dm { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 4; display: none; flex-direction: column; align-items: center; gap: 1px; padding: 5px 9px 4px; border: 2.5px solid var(--verde); border-radius: 14px; background: rgba(255,250,240,.9); box-shadow: 0 5px 0 var(--verde), 0 0 0 5px rgba(233,185,73,.5); cursor: grab; font: inherit; touch-action: none; animation: dmLat 1.3s ease-in-out infinite; }",
+    ".oc .dm.on { display: flex; }",
+    ".oc .dm .dmd svg { width: 38px; height: 38px; }",
+    ".oc .dm b { font-size: 11px; color: var(--verde); white-space: nowrap; }",
+    ".oc .dm .dmd svg { display: block; filter: drop-shadow(0 4px 3px rgba(0,0,0,.35)); animation: dmBaila .9s ease-in-out infinite; }",
+    "@keyframes dmLat { 50% { box-shadow: 0 5px 0 var(--verde), 0 0 0 10px rgba(233,185,73,.2); } }",
+    "@keyframes dmBaila { 50% { transform: translateY(-4px) rotate(-8deg); } }",
+    ".oc .tiro { position: absolute; left: calc(50% - 26px); top: calc(50% - 26px); z-index: 6; pointer-events: none; filter: drop-shadow(0 8px 8px rgba(0,0,0,.45)); animation: tiroRueda .8s cubic-bezier(.2,.8,.3,1); }",
+    ".oc .tiro.vuela { left: 0; top: 0; animation: none; }",
+    ".oc .tiro.cae svg { animation: tiroMarca .5s ease-out; }",
+    "@keyframes tiroRueda { 0% { transform: translateY(-90px) rotate(-420deg) scale(.5); } 70% { transform: translateY(6px) rotate(12deg) scale(1.1); } 100% { transform: none; } }",
+    "@keyframes tiroMarca { 40% { transform: scale(1.35); filter: drop-shadow(0 0 8px #e9b949); } }",
     ".oc .ca { position: relative; font: inherit; border: none; padding: 0; cursor: pointer; background: #fffaf0; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; overflow: hidden; color: var(--tinta); }",
     ".oc .ca b { position: absolute; top: 2px; left: 4px; font: 700 9.5px Bahnschrift, sans-serif; color: rgba(42,37,32,.55); }",
     ".oc .ca i { font-style: normal; font-size: 19px; line-height: 1; margin-top: 4px; }",
@@ -288,11 +375,7 @@
     ".oc .tj p { font-size: 14px; line-height: 1.35; margin: 6px 0 0; }",
     ".oc .tj b { display: block; margin-top: 8px; font-size: 15px; color: #8a5a12; }",
     ".oc .tj button { margin-top: 10px; font: inherit; font-weight: 700; font-size: 15px; border: none; border-radius: 10px; background: var(--verde); color: var(--papel); padding: 8px 22px; cursor: pointer; }",
-    ".oc .ocd { margin-top: 12px; }",
-    ".oc .tirar { font: inherit; font-weight: 700; font-size: 16px; border: none; border-radius: 12px; background: var(--oro); color: #1d2e22; padding: 11px 22px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }",
-    ".oc .tirar:disabled { background: var(--linea); color: var(--gris); cursor: default; }",
-    ".oc .dado { font-size: 26px; line-height: 1; display: inline-block; }",
-    ".oc .dado.gira { animation: rueda .25s linear infinite; }",
+
     ".oc .msg { font-size: 15px; line-height: 1.4; min-height: 1.4em; }",
     ".oc .ayu { text-align: left; max-width: 360px; margin: 14px auto 0; font-size: 13.5px; color: var(--tinta); }",
     ".oc .ayu summary { cursor: pointer; font-weight: 600; color: var(--verde); }",
