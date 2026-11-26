@@ -3,7 +3,8 @@
 // En el calendario aparece siempre, aunque todavía no haya llegado "mostrar".
 // "wa" es el mensaje que le queda escrito al cliente en WhatsApp al tocar el botón.
 // Al tocar la tarjeta se abre el detalle:
-//   foto: productos de Fudo de los que se toma la foto (la primera que tenga) · info: renglones con datos útiles
+//   foto: productos de Fudo de los que se toma la foto (la primera que tenga), o una foto propia ("fotos/eventos/....jpg")
+//   credito: "Foto: @usuario" si la foto es de un fotógrafo · info: renglones con datos útiles
 //   hora: ["desde", "hasta"] para agendarlo en el calendario del celular (sin hora, se agenda el día entero)
 //   ic: dibujito para el calendario · de: la noche fija de la semana que ese día reemplaza (pizza, truco o vermut)
 
@@ -39,17 +40,17 @@ var EVENTOS = [
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el lunes 23/11." },
   { mostrar: "2026-11-20", dia: "2026-11-29", hasta: "2026-11-29", fecha: "Domingo 29/11", tag: "Día del Ñoqui", ic: "🍝",
     t: "Ñoquis del 29", s: "Ñoquis caseros y el billete bajo el plato, para que no falte la plata.",
-    foto: ["ÑOQUIS"],
+    foto: ["fotos/eventos/noquis.jpg"],
     info: ["Ñoquis caseros con bolognesa, fileto, crema o rosa.", "No te olvides del billete bajo el plato."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el domingo 29/11." },
   { mostrar: "2026-11-26", dia: "2026-12-03", hasta: "2026-12-03", fecha: "Jueves 3/12 · desde las 20 h", tag: "Se estrena", ic: "🎲", de: "juegos",
-    t: "Jueves de Juegos", s: "Truco, chinchón, podrida, carioca, generala y desconfío: cartas, dados, anotadores y reglamentos en la mesa.",
-    precio: "Happy hour de latas toda la noche: 2 Imperial 9.000", foto: ["CERVEZA IMPERIAL LAGER 473ML"], hora: ["20:00", "01:00"],
-    info: ["Cartas españolas y francesas, dados, anotadores y el reglamento de cada juego en la mesa.", "Truco, chinchón, podrida, carioca, generala y desconfío.", "Se juega por la gloria: nunca por plata.", "Happy hour de latas toda la noche: 2 latas de Imperial 9.000.", "Después del estreno, todos los jueves desde las 20 h."],
+    t: "Jueves de Juegos", s: "Cartas, dados y reglamentos en la mesa. Truco, chinchón, generala y más.",
+    precio: "Happy hour de latas toda la noche: 2 Imperial 9.000", foto: ["fotos/eventos/jueves-de-juegos.jpg"], hora: ["20:00", "01:00"],
+    info: ["Truco, chinchón, podrida, carioca, generala y desconfío.", "Se juega por la gloria, nunca por plata.", "Después del estreno, todos los jueves desde las 20 h."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el Jueves de Juegos del 3/12." },
   { mostrar: "2026-11-20", dia: "2026-12-05", hasta: "2026-12-08", fecha: "Del sábado 5 al martes 8/12", tag: "Aniversario", ic: "🎉",
     t: "¡La Serena cumple 3 años!", s: "Brindis ¡Sláinte! a las 21 h, torta por mesa y empanadas de carne a $2.000, como en 2023, de 20 a 21 h. El lunes 7 abrimos.",
-    foto: ["EMPANADA CARNE CUCHILLO"],
+    foto: ["fotos/eventos/aniversario-cabana.jpg"], credito: "Foto: @sebastian_penna",
     info: ["Festejamos del sábado 5 al martes 8/12.", "Empanadas de carne a 2.000, como en 2023, de 20 a 21 h.", "Brindis ¡Sláinte! a las 21 h y torta por mesa.", "El lunes 7 y el martes 8 son feriado y abrimos. El miércoles 9 cerramos.", "Arranca el Club La Serena: hacete socio."],
     boton: "Reservá tu mesa", wa: "¡Hola! Quiero reservar una mesa para el aniversario de La Serena." }
 ];
@@ -65,7 +66,7 @@ var SEMANA = [
   { id: "pizza", ic: "🍕", dia: "Miércoles", hora: "de 20 a 00 h", t: "PIZZA LIBRE", s: "Porciones al horno de barro. Bebida aparte.", precios: [["Por persona", "20.000"]], desde: "2026-11-04", estilo: "oro" },
   { id: "truco", ic: "🃏", dia: "Jueves", hora: "desde las 20 h", t: "Truco", s: "Mazo y anotador en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-11-05", hasta: "2026-12-02", ocultar: "2026-11-26" },
   // Desde el 3/12 los jueves pasan a ser "Jueves de Juegos" (aprobado por Marcos el 17/11). Aparece en la grilla desde el 26/11, con "Arranca el 3/12".
-  { id: "juegos", ic: "🎲", dia: "Jueves", hora: "desde las 20 h", t: "Jueves de Juegos", s: "Truco, chinchón, podrida, carioca, generala y desconfío. Cartas, dados y reglamentos en la mesa. Happy hour de latas toda la noche.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-12-03", mostrar: "2026-11-26" }
+  { id: "juegos", ic: "🎲", dia: "Jueves", hora: "desde las 20 h", t: "Jueves de Juegos", s: "Cartas, dados y reglamentos en la mesa.", precios: [["2 latas de Imperial", "9.000"]], desde: "2026-12-03", mostrar: "2026-11-26" }
 ];
 
 // Menú del día (martes a viernes, hasta las 17 h): se despliega en la tarjeta de la promo. Dos platos por día, cada uno con su foto (en fotos/menu-dia/).
