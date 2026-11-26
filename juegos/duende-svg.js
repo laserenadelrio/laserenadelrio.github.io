@@ -6,7 +6,7 @@
 //   cara: "guino" (la del dibujo), "contento", "sorpresa"
 //   boca: "trebol" (la de la comunicación), "pipa" (solo para el archivo del dibujo original), "sonrisa"
 //   linea: true para la versión de colorear (solo trazo, sin color)
-//   parte: "todo" (por defecto), "asoma" (galera y ojos: se asoma desde atrás de algo), "sombrero" (solo la galera)
+//   parte: "todo" (por defecto), "asoma" (galera y ojos: se asoma desde atrás de algo), "sombrero" (solo la galera), "copa" (solo la copa, sin ala)
 // DUENDE.formas tiene las formas sueltas (las usa colorear.js, copiadas).
 (function () {
   var C = { galera: "#4c9656", galeraOsc: "#2f6b3a", banda: "#7b4a2c", hebilla: "#f2cf3a", barba: "#e27b44", barbaOsc: "#c25f2c",
@@ -61,8 +61,8 @@
       '<path d="' + F.banda + '" fill="' + f(C.banda) + '"' + s + '/>' +
       '<path fill-rule="evenodd" d="' + F.hebilla + '" fill="' + f(C.hebilla) + '"' + s + '/>' +
       '<path d="' + F.ala + '" fill="' + f(C.galeraOsc) + '"' + s + '/>';
-    var vb = parte === "sombrero" ? "10 8 280 146" : parte === "asoma" ? "0 0 300 184" : "0 0 300 300";
-    var cuerpo = parte === "sombrero" ? "" : barba + piel + ojos + (parte === "asoma" ? "" : nariz + sonrisa + extra);
+    var vb = parte === "sombrero" ? "10 8 280 146" : parte === "copa" ? "74 10 156 118" : parte === "asoma" ? "0 0 300 184" : "0 0 300 300";
+    var cuerpo = parte === "sombrero" || parte === "copa" ? "" : barba + piel + ojos + (parte === "asoma" ? "" : nariz + sonrisa + extra);
     if (parte === "asoma") cuerpo = barba + piel + ojos + nariz;
     return '<svg viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg"' + (o.attrs || "") + '>' + cuerpo + galera + '</svg>';
   }
